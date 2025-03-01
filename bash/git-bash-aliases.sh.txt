@@ -23,8 +23,11 @@
 
 
 
-# Constants required for script
-__ALIAS_LAST_UPDATE__='2025-02-12 04:51'
+# ----------------------------------
+# Constants
+# ----------------------------------
+
+__ALIAS_LAST_UPDATE__='2025-03-01 04:50'
 __ALIAS_TIMEOUT__='0.3'
 
 __JH_DEFAULT_JAVA_VERSION__='8' # valid values: '8', '17', '21' (formal value in pom.xml for '8' is '1.8')
@@ -47,9 +50,8 @@ ZH_CURRENT_ALIASES=''
 
 
 
-
 # ----------------------------------
-# Colors
+# Constants - Colors
 # ----------------------------------
 NOCOLOR='\033[0m'
 RED='\033[0;31m'
@@ -67,6 +69,13 @@ LIGHTBLUE='\033[1;34m'
 LIGHTPURPLE='\033[1;35m'
 LIGHTCYAN='\033[1;36m'
 WHITE='\033[1;37m'
+
+
+
+# ---------------------------------------------------
+# Settings
+# ---------------------------------------------------
+tabs -4
 
 
 
@@ -157,7 +166,7 @@ alias cdkl_s='command cd ~/Desktop/log'
 # ------------------------------------------------------
 alias grep='grep --color=always -P'
 alias sed='sed -E'
-alias less='less -R -M -i'
+alias less='less -R -M -i -x1,5'
 alias diff='diff --color=always'
 alias od='od -v -An -tx1 -w16'
 alias snc='sed -E '\''{ s/\x1B\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g }'\'
@@ -631,6 +640,7 @@ git config --system color.ui 'true'
 git config --system color.interactive 'true'
 git config --system help.format 'web'
 git config --system web.browser 'chrome'
+git config --system core.pager 'less -x1,5'
 
 
 
