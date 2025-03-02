@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-03-01 04:50'
+__ALIAS_LAST_UPDATE__='2025-03-02 18:31'
 __ALIAS_TIMEOUT__='0.3'
 
 __JH_DEFAULT_JAVA_VERSION__='8' # valid values: '8', '17', '21' (formal value in pom.xml for '8' is '1.8')
@@ -264,7 +264,7 @@ function __bh_h_greeting {
 
 
 # ------------------------------------------------------
-# Java Aliases - java automation
+# Java Aliases - Java automation
 # ------------------------------------------------------
 
 alias mc='echo "--> mvn clean"; sleep ${__ALIAS_TIMEOUT__}; mvn clean'
@@ -591,39 +591,39 @@ alias bo='__jh_bootstrap_prop_for_commit'
 
 
 
-s='--> Java Helper -- updated: ('${__ALIAS_LAST_UPDATE__}') \n'
-s=${s}'(commands are better tuned to be executed from maven project root folder)\n'
-s=${s}'  jl  : jps -l \n'
-s=${s}'  jj  : java -jar \n'
-s=${s}'  jjr : java -jar ./${jar_file} > ${log_file} \n'
-s=${s}'\n'
-s=${s}'  jjrg  : grep -P -i ${1} ${log_file} \n'
-s=${s}'  jjrgts: grep -P -i '\''tomcat started'\'' ${log_file} \n'
-s=${s}'\n'
-s=${s}'  sj  : __jh_from_pom_set_java_version # helper function  \n'
-s=${s}'\n'
-s=${s}'  mc  : mvn clean \n'
-s=${s}'  mci : mvn clean install -U -Dmaven.test.skip=true \n'
-s=${s}'  mcc : mvn -T 1C clean compile -Dmaven.test.skip=true --offline \n'
-s=${s}'  mcp : mvn -T 1C clean package -Dmaven.test.skip=true --offline \n'
-s=${s}'  mp  : mvn -T 1C package -Dmaven.test.skip=true --offline \n'
-s=${s}'  mrjr: mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline \n'
-s=${s}'  mrr : mvn resources:resources \n'
-s=${s}'  mec : mvn clean eclipse:clean \n'
-s=${s}'\n'
-s=${s}'  mdt : mvn dependency:tree \n'
-s=${s}'  mdr : mvn dependency:resolve -U \n'
-s=${s}'  mdp : mvn dependency:purge-local-repository -U \n'
-s=${s}'\n'
-s=${s}'  g   : ./gradlew \n'
-s=${s}'\n'
-s=${s}'  tk  : taskkill -- (mvn_folder_no_arg / pid / jps_name) \n'
-s=${s}'\n'
-s=${s}'  bl  : '\''./src/main/resources/bootstrap.properties'\'' for local \n'
-s=${s}'  bo  : '\''./src/main/resources/bootstrap.properties'\'' for commit \n'
-_jh_s=${s}
-unset s
-alias jh='less -f <( echo -e "${_jh_s}")'
+read -r -d '' _jh_help_string <<- HEREDOC_EOF
+--> Java Helper -- updated: (${__ALIAS_LAST_UPDATE__})
+	  (execute commands from maven project root folder)
+	  jl  : jps -l
+	  jj  : javaw -jar \${jar_file}
+	  jjr : javaw -jar \${jar_file} > ${log_file}
+	
+	  jjrg  : grep -P -i \${1} \${log_file}
+	  jjrgts: grep -P -i 'tomcat started' \${log_file}
+	
+	  sj  : __jh_from_pom_set_java_version # helper function
+	
+	  mc  : mvn clean
+	  mci : mvn clean install -U -Dmaven.test.skip=true
+	  mcc : mvn -T 1C clean compile -Dmaven.test.skip=true --offline
+	  mcp : mvn -T 1C clean package -Dmaven.test.skip=true --offline
+	  mp  : mvn -T 1C package -Dmaven.test.skip=true --offline
+	  mrjr: mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline
+	  mrr : mvn resources:resources
+	  mec : mvn clean eclipse:clean
+	
+	  mdt : mvn dependency:tree
+	  mdr : mvn dependency:resolve -U
+	  mdp : mvn dependency:purge-local-repository -U
+	
+	  g   : ./gradlew
+	
+	  tk  : taskkill -- [ (mvn_folder_no_arg) | pid | jps_name ]
+	
+	  bl  : './src/main/resources/bootstrap.properties' for local
+	  bo  : './src/main/resources/bootstrap.properties' for commit
+	HEREDOC_EOF
+alias jh='less -f <( echo -e "${_jh_help_string}")'
 
 
 
@@ -717,19 +717,31 @@ function __gh_gcmh {
     fi
     echo
     # commit action, depends on ${2}
-    if [ "${2}" = 'amend' ] ; then
-        echo '--> git commit --amend -m '\'"${_new_commit_message}"\'
-        echo
-        git commit --amend -m "${_new_commit_message}"
-    elif [ "${2}" = 'allow-empty' ] ; then
-        echo '--> git commit --allow-empty -m '\'"${_new_commit_message}"\'
-        echo
-        git commit --allow-empty -m "${_new_commit_message}"
-    else
-        echo '--> git commit -m '\'"${_new_commit_message}"\'
-        echo
-        git commit -m "${_new_commit_message}"
-    fi
+    case ${2} in
+        '' )
+            echo 'input cannot be empty'
+            echo
+            ;;
+        'normal' )
+            echo '--> git commit -m '\'"${_new_commit_message}"\'
+            echo
+            git commit -m "${_new_commit_message}"
+            ;;
+        'amend' )
+            echo '--> git commit --amend -m '\'"${_new_commit_message}"\'
+            echo
+            git commit --amend -m "${_new_commit_message}"
+            ;;
+        'allow-empty' )
+            echo '--> git commit --allow-empty -m '\'"${_new_commit_message}"\'
+            echo
+            git commit --allow-empty -m "${_new_commit_message}"
+            ;;
+        * )
+            echo "input not valid; accepted values: [ 'normal' | 'amend' | 'allow-empty' ]"
+            echo
+            ;;
+    esac
     # closing steps
     unset _current_branch _new_commit_message _continue
     echo
@@ -804,59 +816,60 @@ alias gmr='echo "--> git maintenance run"; sleep ${__ALIAS_TIMEOUT__}; git maint
 
 
 
-s='--> Git Helper ('${__ALIAS_LAST_UPDATE__}') \n'
-s=${s}'  (*: git alias available) \n' 
-s=${s}'  gs   : git status \n' 
-s=${s}'  gsi  : git status --ignored \n' 
-s=${s}'  gl*  : git log --graph --decorate \n'
-s=${s}'  gl1  : git log --graph --decorate -1 \n'
-s=${s}'  gla  : git log --graph --decorate --all  \n'
-s=${s}'  glnt : git log --no-walk --tags  \n'
-s=${s}'  glf  : git ls-files \n'
-s=${s}'\n'
-s=${s}'  gb*  : git branch \n'
-s=${s}'  gbf* : git branch --force \n'
-s=${s}'  gbd  : git branch -D <local-branches> # delete all, local helper \n'
-s=${s}'  gt   : git tag \n'
-s=${s}'\n'
-s=${s}'  gch* : git checkout # regex helper \n'
-s=${s}'  ga*  : git add \n'
-s=${s}'  gra* : git restore --staged \n'
-s=${s}'  gd*  : git diff \n'
-s=${s}'  gdc* : git diff --cached \n'
-s=${s}'  gco* : git commit # raw, primitive \n'
-s=${s}'  gcm  : git commit # fast message helper, mode '\'normal\'' \n'
-s=${s}'  gcam : git commit # fast message helper, mode '\'amend\'' \n'
-s=${s}'  gcem : git commit # fast message helper, mode '\'allow-empty\'' \n'
-s=${s}'  gro* : git restore --source \n'
-s=${s}'\n'
-s=${s}'  gm*  : git merge \n'
-s=${s}'  gms* : git merge --squash \n'
-s=${s}'  gri* : git rebase --interactive \n'
-s=${s}'  grs* : git reset --soft \n'
-s=${s}'\n'
-s=${s}'  gf  : git fetch --tags \n'
-s=${s}'  gff : git fetch --tags --force \n'
-s=${s}'\n'
-s=${s}'  gpl : git pull \n'
-s=${s}'\n'
-s=${s}'  gps : git push \n'
-s=${s}'  gpss: git push origin --set-upstream <current_branch> \n'
-s=${s}'  gpsd: git push origin --delete <current_branch> \n'
-s=${s}'  gpsf: git push origin --force <current_branch> \n'
-s=${s}'\n'
-s=${s}'  gz  : git stash \n'
-s=${s}'  gzl : git stash list \n'
-s=${s}'  gzs : git stash show --stat -p \n'
-s=${s}'  gzp : git stash pop \n'
-s=${s}'  gza : git stash apply \n'
-s=${s}'  gzd : git stash drop \n'
-s=${s}'  gzc : git stash clear \n'
-s=${s}'\n'
-s=${s}'  gmr : git maintenance run \n'
-_gh_s=${s}
-unset s
-alias gh='less -f <( echo -e "${_gh_s}" )'
+_gh_help_string=$( cat <<- HEREDOC_EOF | cat
+--> Git Helper ('${__ALIAS_LAST_UPDATE__}')
+	  (*: git alias available)
+	  gs   : git status
+	  gsi  : git status --ignored
+	  gl*  : git log --graph --decorate
+	  gl1  : git log --graph --decorate -1
+	  gla  : git log --graph --decorate --all
+	  glnt : git log --no-walk --tags
+	  glf  : git ls-files
+	
+	  gb*  : git branch
+	  gbf* : git branch --force
+	  gbd  : git branch -D <local-branches> # delete all, local helper
+	  gt   : git tag
+	
+	  gch* : git checkout # regex helper
+	  ga*  : git add
+	  gra* : git restore --staged
+	  gd*  : git diff
+	  gdc* : git diff --cached
+	  gco* : git commit # raw, primitive
+	  gcm  : git commit # fast message helper, mode 'normal'
+	  gcam : git commit # fast message helper, mode 'amend'
+	  gcem : git commit # fast message helper, mode 'allow-empty'
+	  gro* : git restore --source
+	
+	  gm*  : git merge
+	  gms* : git merge --squash
+	  gri* : git rebase --interactive
+	  grs* : git reset --soft
+	
+	  gf  : git fetch --tags
+	  gff : git fetch --tags --force
+	
+	  gpl : git pull
+	
+	  gps : git push
+	  gpss: git push origin --set-upstream <current_branch>
+	  gpsd: git push origin --delete <current_branch>
+	  gpsf: git push origin --force <current_branch>
+	
+	  gz  : git stash
+	  gzl : git stash list
+	  gzs : git stash show --stat -p
+	  gzp : git stash pop
+	  gza : git stash apply
+	  gzd : git stash drop
+	  gzc : git stash clear
+	
+	  gmr : git maintenance run
+	HEREDOC_EOF
+)
+alias gh='less -f <( echo -e "${_gh_help_string}" )'
 
 
 
@@ -874,49 +887,73 @@ if [ ${__kernel_is_windows__} -eq '0'  ]; then
     alias python='winpty python'
     alias ipython='winpty ipython'
     # notepad plus plus launcher
-    function __npp {
+    function __npp_launcher {
         echo 'notepad++ launcher -- begin...'
         notepad++ ${*} & 
         disown ${!} 
         echo 'notepad++ launcher -- done!'
     }
-    alias npp='__npp'
+    alias npp='__npp_launcher'
     # eclipse ide launcher
-    function __jh_ecl {
+    function __jh_eclipse_launcher {
         echo 'eclipse launcher -- begin...'
         __pwd__=$( pwd ) 
         __eh__=''
-        if [ -z ${1} ]
-        then
-            echo 'ECLIPSE_HOME: '${ECLIPSE_HOME}
-            __eh__=${ECLIPSE_HOME}
-        elif [ ${1} = 'old' ]
-        then
-            echo 'ECLIPSE_OLD_HOME: '${ECLIPSE_OLD_HOME}
-            __eh__=${ECLIPSE_OLD_HOME}
-        elif [ ${1} = 'sts' ]
-        then
-            echo 'STS_HOME: '${STS_HOME}
-            __eh__=${STS_HOME}
-        else
-            echo 'parameter ${1} not valid; should be empty or "old"'
-            return 1
-        fi
+        case ${1} in
+            '' )
+                echo 'parameter ${1} not valid, cannot be empty'
+                return 1
+                ;;
+            'main' )
+                echo 'ECLIPSE_HOME: '${ECLIPSE_HOME}
+                __eh__=${ECLIPSE_HOME}
+                ;;
+            'old' )
+                echo 'ECLIPSE_OLD_HOME: '${ECLIPSE_OLD_HOME}
+                __eh__=${ECLIPSE_OLD_HOME}
+                ;;
+            'sts' )
+                echo 'STS_HOME: '${STS_HOME}
+                __eh__=${STS_HOME}
+                ;;
+            'dbv' )
+                echo 'DBEAVER_HOME: '${DBEAVER_HOME}
+                __eh__=${DBEAVER_HOME}
+                ;;
+            * )
+                echo 'parameter ${1} not valid; accepted values: [ main | old | sts | dbv ]'
+                return 1
+                ;;
+        esac
         command cd ${__eh__}
-        if [ ${1} = 'sts'  ]
-        then
-            ./SpringToolSuite4 &
-        else
-            ./eclipse & 
-        fi
+        case ${1} in
+            '' )
+                echo 'parameter ${1} not valid, cannot be empty'
+                return 1
+                ;;
+            'main' | 'old' )
+                ./eclipse &
+                ;;
+            'sts' )
+                ./SpringToolSuite4 &
+                ;;
+            'dbv' )
+                ./dbeaver &
+                ;;
+            * )
+                echo 'parameter ${1} not valid; accepted values: [ main | old | sts | dbv ]'
+                return 1
+                ;;
+        esac
         disown ${!}
         command cd ${__pwd__}
         unset __pwd__ __eh__
         echo 'eclipse launcher -- done!'
     }
-    alias ecl=' __jh_ecl'
-    alias eclo='__jh_ecl old'
-    alias sts=' __jh_ecl sts'
+    alias ecl=' __jh_eclipse_launcher main'
+    alias eclo='__jh_eclipse_launcher old'
+    alias sts=' __jh_eclipse_launcher sts'
+    alias dbv=' __jh_eclipse_launcher dbv'
 fi
 
 unset __kernel_is_windows__
