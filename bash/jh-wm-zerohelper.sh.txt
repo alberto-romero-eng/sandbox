@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-02-04 18:34'
+__JH_WMP_UPDATED__='2025-03-07 16:00'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_START_LIST_FILE__='_jh-wm-start-platform-list.sh.txt'
@@ -70,6 +70,7 @@ function _jh_start_platform {
         _jh_start_service redirectionmanager
         _jh_start_service ui
 
+        # _jh_start_service keepa
         # _jh_start_service aecoc
         # _jh_start_service icecat
         # _jh_start_service pim
@@ -124,6 +125,7 @@ function _jh_remove_logs_platform {
     command rm -v redirection*.jar.log
     command rm -v ui*.jar.log
 
+    command rm -v keepa*.jar.log
     command rm -v aecoc*.jar.log
     command rm -v icecat*.jar.log
     command rm -v pim*.jar.log
@@ -185,6 +187,7 @@ function _jh_truncate_logs_platform {
     command echo -n '' > redirection*.jar.log
     command echo -n '' > ui*.jar.log
 
+    command echo -n '' > keepa*.jar.log
     command echo -n '' > aecoc*.jar.log
     command echo -n '' > icecat*.jar.log
     command echo -n '' > pim*.jar.log
@@ -213,9 +216,10 @@ function _jh_kill_platform {
     alias _0kp
     cdkj_s
 
-    _jh_kill_service pim
-    _jh_kill_service icecat
+    _jh_kill_service keepa
     _jh_kill_service aecoc
+    _jh_kill_service icecat
+    _jh_kill_service pim
 
     _jh_kill_service ui
     _jh_kill_service redirectionmanager
@@ -357,6 +361,10 @@ function _jh_start_service {
     then
         __JH_XMX__='192m'
 
+    elif [ ${1} = 'keepa' ]
+    then
+        __JH_XMX__='128m'
+
     elif [ ${1} = 'aecoc' ]
     then
         __JH_XMX__='128m'
@@ -497,6 +505,7 @@ function _jh_backup_alberto_platform {
     _jh_backup_alberto_service redirectionmanager
     _jh_backup_alberto_service ui
 
+    _jh_backup_alberto_service keepa
     _jh_backup_alberto_service aecoc
     _jh_backup_alberto_service icecat
     _jh_backup_alberto_service pim
@@ -562,6 +571,7 @@ function _jh_restore_alberto_platform {
     _jh_restore_alberto_service redirectionmanager
     _jh_restore_alberto_service ui
 
+    _jh_restore_alberto_service keepa
     _jh_restore_alberto_service aecoc
     _jh_restore_alberto_service icecat
     _jh_restore_alberto_service pim
@@ -614,6 +624,7 @@ function _jh_clean_restore_dir_alberto_platform {
     _jh_clean_restore_dir_alberto_service redirectionmanager
     _jh_clean_restore_dir_alberto_service ui
 
+    _jh_clean_restore_dir_alberto_service keepa
     _jh_clean_restore_dir_alberto_service aecoc
     _jh_clean_restore_dir_alberto_service icecat
     _jh_clean_restore_dir_alberto_service pim
@@ -667,6 +678,7 @@ function _jh_mysqldump_alberto_platform {
     _jh_mysqldump_alberto_service redirectionmanager
     # _jh_mysqldump_alberto_service ui # no database
 
+    _jh_mysqldump_alberto_service keepa
     _jh_mysqldump_alberto_service aecoc
     _jh_mysqldump_alberto_service icecat
     _jh_mysqldump_alberto_service pim
