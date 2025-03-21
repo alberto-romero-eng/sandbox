@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-03-02 18:31'
+__ALIAS_LAST_UPDATE__='2025-03-21 16:08'
 __ALIAS_TIMEOUT__='0.3'
 
 __JH_DEFAULT_JAVA_VERSION__='8' # valid values: '8', '17', '21' (formal value in pom.xml for '8' is '1.8')
@@ -287,30 +287,33 @@ function __jh_set_java_version {
     init_dir=$( pwd )
 
     # redefine JAVA_HOME
-    if [ -z ${1} ]
-    then
-        echo 'var ${1} should be: 8, 11, 17, 21'
-        return 1;
-    elif [ ${1} = '8' ]
-    then
-        command cd ${JAVA_8_HOME}
-    elif [ ${1} = '11' ]
-    then
-        command cd ${JAVA_11_HOME}
-    elif [ ${1} = '17' ]
-    then
-        command cd ${JAVA_17_HOME}
-    elif [ ${1} = '21' ]
-    then
-        command cd ${JAVA_21_HOME}
-    else
-        echo 'var ${1} should be: 8, 11, 17, 21'
-        return 1;
-    fi
+    case ${1} in
+		'' )
+			echo 'param ${1} cannot be empty'
+			return 1
+			;;
+		'8' )
+			command cd ${JAVA_8_HOME}
+			;;
+		'11' )
+			command cd ${JAVA_11_HOME}
+			;;
+		'17' )
+			command cd ${JAVA_17_HOME}
+			;;
+		'21' )
+			command cd ${JAVA_21_HOME}
+			;;
+		'NONE' | * )
+			echo 'param ${1} invalid; accepted values: 8, 11, 17, 21'
+			return 1
+			;;
+    esac
     JAVA_HOME=$( pwd )
 
     # delete current jdk from PATH
-    path_tmp1=$( sed -E 's/:[^:]+java[/]jdk[^:]+//g' <( echo ${PATH} ) ) 
+    # path_tmp1=$( sed -E 's/:[^:]+java[/]jdk[^:]+//g' <( echo ${PATH} ) ) # until 2025-03-21; 'java' in path
+	path_tmp1=$( sed -E 's/:[^:]+[/]jdk[^:]+//g' <( echo ${PATH} ) )
 
     # append executables dir in new JAVA_HOME to PATH
     command cd ./bin
