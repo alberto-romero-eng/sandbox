@@ -27,13 +27,13 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-03-21 16:08'
+__ALIAS_LAST_UPDATE__='2025-03-26 08:29'
 __ALIAS_TIMEOUT__='0.3'
 
 __JH_DEFAULT_JAVA_VERSION__='8' # valid values: '8', '17', '21' (formal value in pom.xml for '8' is '1.8')
 __JH_XMS__='8m'
 __JH_XMX__='256m'
-__JH_SPRING_PROFILES_ACTIVE__='alberto,albertodblocal' # comma separated values, no whitespace
+__JH_SPRING_PROFILES_ACTIVE__='alberto,albertolocal,albertodiff' # comma separated values, no whitespace; 'default' is first and implicit
 __JH_JAR_LOG_HOME__=${HOME}'/Desktop/log'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
