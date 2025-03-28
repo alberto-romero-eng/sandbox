@@ -11,6 +11,7 @@ import localhost.sandbox.jse8.A0Helper.JvmMemoryHelper;
 import localhost.sandbox.jse8.A0Helper.LargeStringHelper;
 import localhost.sandbox.jse8.A0Helper.LogHelper;
 import localhost.sandbox.jse8.A0Helper.ObjectCopyHelper;
+import localhost.sandbox.jse8.A0Helper.RecursiveGeneratorB62Helper;
 import localhost.sandbox.jse8.A0Helper.ReflectionFieldHelper;
 import localhost.sandbox.jse8.A0Helper.RunTimeStatsHelper;
 import localhost.sandbox.jse8.A0Helper.SimpleDateFormatHelper;
@@ -50,7 +51,7 @@ public class SandboxApplication {
 	public static void main(String[] args) {
 
 		// SystemPropertiesHelper.main();
-		EncodingMain.main();
+		// EncodingMain.main();
 		// JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// ObjectMain.main();
@@ -102,6 +103,7 @@ public class SandboxApplication {
 		// EnumMain.main();
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
+		RecursiveGeneratorB62Helper.main();
 
 
 	}
