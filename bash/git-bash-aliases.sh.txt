@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-03-26 08:29'
+__ALIAS_LAST_UPDATE__='2025-04-01 08:48'
 __ALIAS_TIMEOUT__='0.3'
 
 __JH_DEFAULT_JAVA_VERSION__='8' # valid values: '8', '17', '21' (formal value in pom.xml for '8' is '1.8')
@@ -565,7 +565,8 @@ alias g='__grh_g'
 function __jh_bootstrap_prop_for_local {
     if [ ! -e ./src/main/resources/bootstrap-alberto.properties ]
     then
-        echo 'file '\''./src/main/resources/bootstrap-alberto.properties'\'' does not exist, exit'
+        echo '--> file '\''./src/main/resources/bootstrap-alberto.properties'\'' does not exist, exit'
+        echo
         return 1
     fi
     echo '--> '\''bootstrap.properties'\'' for local (copy from '\''alberto'\'' file):'
@@ -574,23 +575,62 @@ function __jh_bootstrap_prop_for_local {
     echo
 }
 
-alias bl='__jh_bootstrap_prop_for_local'
+alias old_bl='__jh_bootstrap_prop_for_local'
 
 
 
 function __jh_bootstrap_prop_for_commit {
     if [ ! -e ./src/main/resources/bootstrap.properties ]
     then
-        echo 'file '\''./src/main/resources/bootstrap.properties'\'' does not exist, exit'
+        echo '--> file '\''./src/main/resources/bootstrap.properties'\'' does not exist, exit'
+        echo
         return 1
     fi
     echo '--> '\''bootstrap.properties'\'' for commit (restore from '\''dev'\'' branch):'
     command git restore --source dev ./src/main/resources/bootstrap.properties
     cat ./src/main/resources/bootstrap.properties
     echo
+    echo
 }
 
-alias bo='__jh_bootstrap_prop_for_commit'
+alias old_bo='__jh_bootstrap_prop_for_commit'
+
+
+
+function __jh_application_yml_for_local {
+    if [ ! -e ./src/main/resources/application-bsalberto.yml ]
+    then
+        echo '--> file '\''./src/main/resources/application-bsalberto.yml'\'' does not exist, exit'
+        return 1
+    fi
+    echo '--> '\''application.yml'\'' for local (copy from '\''bsalberto'\'' file):'
+    command cp -v ./src/main/resources/application-bsalberto.yml ./src/main/resources/application.yml
+    cat ./src/main/resources/application.yml
+    echo
+}
+
+alias al='__jh_application_yml_for_local'
+
+
+
+function __jh_applicaton_yml_for_commit {
+    if [ ! -e ./src/main/resources/application.yml ]
+    then
+        echo '--> file '\''./src/main/resources/application.yml'\'' does not exist, exit'
+        return 1
+    fi
+    echo '--> '\''application.yml'\'' for commit (restore from '\''dev'\'' branch, first 8 lines):'
+    command git restore --source dev ./src/main/resources/application.yml
+    cat ./src/main/resources/application.yml | head -8
+    echo
+}
+
+alias ao='__jh_applicaton_yml_for_commit'
+
+
+
+alias bl='old_bl ; al ;'
+alias bo='old_bo ; ao ;'
 
 
 
