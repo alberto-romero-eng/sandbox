@@ -18,7 +18,7 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2025-03-07 15:51'
+__KH_UPDATED__='2025-04-03 21:49'
 
 
 # initate required vars
@@ -648,8 +648,9 @@ function __kh_log {
     command cd ${__KH_KUBE_HOME__}
     echo 'kubectl logs for:'
     echo '__kh_kubeconfig: '${__kh_kubeconfig}
-    echo '__kh_pod: '${__kh_pod}
-    echo '__kh_container: '${__kh_container}
+    echo '__kh_namespace:  '${__kh_namespace}
+    echo '__kh_pod:        '${__kh_pod}
+    echo '__kh_container:  '${__kh_container}
     ### confirm, disabled due to zerohelper implementation, begin
     # read -p 'continue (y/n)?: ' _continue
     # if [ ${_continue} != 'y'  ] ; then
@@ -681,7 +682,7 @@ function __kh_log {
         _fflag=''
     fi
     # kubectl log 
-    _s='kubectl --kubeconfig '${__kh_kubeconfig}' logs '${__kh_pod}' '${__kh_container}' '${_tflag}' '${_fflag}' &> '\''./tmp/'${__kh_container}'.log'\'' & '
+    _s=${kk}' logs '${__kh_pod}' '${__kh_container}' '${_tflag}' '${_fflag}' &> '\''./tmp/'${__kh_container}'.log'\'' & '
     echo 'executing: '
     echo ${_s}
     eval ${_s}

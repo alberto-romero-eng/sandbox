@@ -629,8 +629,8 @@ alias ao='__jh_applicaton_yml_for_commit'
 
 
 
-alias bl='old_bl ; al ;'
-alias bo='old_bo ; ao ;'
+alias bl='old_bl ; al'
+alias bo='old_bo ; ao'
 
 
 
