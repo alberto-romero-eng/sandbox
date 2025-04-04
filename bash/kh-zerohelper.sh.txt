@@ -18,7 +18,7 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2025-04-03 21:49'
+__KH_UPDATED__='2025-04-04 05:55'
 
 
 # initate required vars
@@ -37,6 +37,8 @@ __KH_REGEX_WM4_PRO_HOEPLI__='wm4-pro-hoepli'
 __KH_REGEX_WM5_PRO_LOGISFASHION_MX__='wm5-pro-logisfashion-mx'
 __KH_REGEX_WM7_PRO_BEB__='wm7-pro-beb'
 __KH_REGEX_WM8_PRO_VEEPEE__='wm8-pro-veepee'
+__KH_REGEX_PRE_PIT__='pit'
+__KH_REGEX_V2_PRO_COMMON_TOOL__='v2-pro-common-tool'
 
 
 # regex definitions, pod/service selection
@@ -953,7 +955,8 @@ alias 14=' __kh_load '${__KH_REGEX_WM4_PRO_HOEPLI__}' ; '
 alias 15=' __kh_load '${__KH_REGEX_WM5_PRO_LOGISFASHION_MX__}' ; '
 alias 17=' __kh_load '${__KH_REGEX_WM7_PRO_BEB__}' ; '
 alias 18=' __kh_load '${__KH_REGEX_WM8_PRO_VEEPEE__}' ; '
-
+alias 19=' __kh_load '${__KH_REGEX_PRE_PIT__}' ; '
+alias 110=' __kh_load '${__KH_REGEX_V2_PRO_COMMON_TOOL__}' ; '
 
 # aliases, select service by regex
 alias 20='  __kh_set_service '${__KH_REGEX_API__}' ; '
