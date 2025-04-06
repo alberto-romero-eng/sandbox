@@ -1,0 +1,663 @@
+#!/bin/bash
+
+# JAVA HELPER WM PLATFORM
+# dependencies: git-bash-aliases.sh, set-java-version.sh
+
+__JH_WMP_UPDATED__='2025-04-06 12:14'
+__JH_TIMEOUT_RETRY_SEC__=15
+__JH_TIMEOUT_CONTINUE_SEC__=5
+__JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
+__JH_WMP_START_LIST_FILE__='_jh-wm-start-platform-list-v2.sh.txt'
+__JH_GIT_CHECKOUT_PULL_DEV_FAIL_FILE__='zgit-checkout-pull-dev-fail.tmp'
+__JH_GIT_COMPILE_FAIL_FILE__='zgit-compile-fail.tmp'
+__JH_RESTORE_DIR__='__RESTORE_LOC_ALB__'
+
+
+
+### list(s)
+
+__JH_ALL_MICROSERVICES__='
+microservicesregistry
+
+usermanagement
+mappingmanagement
+
+marketplaceebay
+marketplacemirakl
+marketplacemiravia
+marketplaceamazon
+marketplacemakro
+marketplacealiexpress
+marketplaceprestashop
+
+productmanagement
+ordermanagement
+ktypeprocessor
+bulkfileprocessor
+apiprocessor
+
+merchantlogisfashion
+
+carrierseur
+carriertipsa
+carriercorreosexpress
+
+templategenerator
+mailing
+redirectionmanager
+ui
+
+keepa
+aecoc
+icecat
+pim
+'
+
+
+
+### enum-like vars
+
+# microservicesregistry
+__JH_WM_MICROSERVICESREGISTRY_FOLDER__='microservicesregistry'
+__JH_WM_MICROSERVICESREGISTRY_JAR_REGEX__='microservices'
+__JH_WM_MICROSERVICESREGISTRY_XMX__='128m'
+
+# usermanagement
+__JH_WM_USERMANAGEMENT_FOLDER__='usermanagement'
+__JH_WM_USERMANAGEMENT_JAR_REGEX__='usermanagement'
+__JH_WM_USERMANAGEMENT_XMX__='256m'
+
+# mappingmanagement
+__JH_WM_MAPPINGMANAGEMENT_FOLDER__='mappingmanagement'
+__JH_WM_MAPPINGMANAGEMENT_JAR_REGEX__='mapping'
+__JH_WM_MAPPINGMANAGEMENT_XMX__='256m'
+
+# marketplaceebay
+__JH_WM_MARKETPLACEEBAY_FOLDER__='marketplaceebay'
+__JH_WM_MARKETPLACEEBAY_JAR_REGEX__='marketplaceebay'
+__JH_WM_MARKETPLACEEBAY_XMX__='320m'
+
+# marketplacemirakl
+__JH_WM_MARKETPLACEMIRAKL_FOLDER__='marketplacemirakl'
+__JH_WM_MARKETPLACEMIRAKL_JAR_REGEX__='marketplacemirakl'
+__JH_WM_MARKETPLACEMIRAKL_XMX__='192m'
+
+# marketplacemiravia
+__JH_WM_MARKETPLACEMIRAVIA_FOLDER__='marketplacemiravia'
+__JH_WM_MARKETPLACEMIRAVIA_JAR_REGEX__='marketplacemiravia'
+__JH_WM_MARKETPLACEMIRAVIA_XMX__='192m'
+
+# marketplaceamazon
+__JH_WM_MARKETPLACEAMAZON_FOLDER__='marketplaceamazon'
+__JH_WM_MARKETPLACEAMAZON_JAR_REGEX__='marketplaceamazon'
+__JH_WM_MARKETPLACEAMAZON_XMX__='192m'
+
+# marketplacemakro
+__JH_WM_MARKETPLACEMAKRO_FOLDER__='marketplacemakro'
+__JH_WM_MARKETPLACEMAKRO_JAR_REGEX__='marketplacemakro'
+__JH_WM_MARKETPLACEMAKRO_XMX__='192m'
+
+# marketplacealiexpress
+__JH_WM_MARKETPLACEALIEXPRESS_FOLDER__='marketplacealiexpress'
+__JH_WM_MARKETPLACEALIEXPRESS_JAR_REGEX__='marketplacealiexpress'
+__JH_WM_MARKETPLACEALIEXPRESS_XMX__='192m'
+
+# marketplaceprestashop
+__JH_WM_MARKETPLACEPRESTASHOP_FOLDER__='marketplaceprestashop'
+__JH_WM_MARKETPLACEPRESTASHOP_JAR_REGEX__='marketplaceprestashop'
+__JH_WM_MARKETPLACEPRESTASHOP_XMX__='192m'
+
+# productmanagement
+__JH_WM_PRODUCTMANAGEMENT_FOLDER__='productmanagement'
+__JH_WM_PRODUCTMANAGEMENT_JAR_REGEX__='productmanagement'
+__JH_WM_PRODUCTMANAGEMENT_XMX__='256m'
+
+# ordermanagement
+__JH_WM_ORDERMANAGEMENT_FOLDER__='ordermanagement'
+__JH_WM_ORDERMANAGEMENT_JAR_REGEX__='ordermanagement'
+__JH_WM_ORDERMANAGEMENT_XMX__='416m'
+
+# ktypeprocessor
+__JH_WM_KTYPEPROCESSOR_FOLDER__='ktypeprocessor'
+__JH_WM_KTYPEPROCESSOR_JAR_REGEX__='ktypeprocessor'
+__JH_WM_KTYPEPROCESSOR_XMX__='192m'
+
+# bulkfileprocessor
+__JH_WM_BULKFILEPROCESSOR_FOLDER__='bulkfileprocessor'
+__JH_WM_BULKFILEPROCESSOR_JAR_REGEX__='bulk'
+__JH_WM_BULKFILEPROCESSOR_XMX__='256m'
+
+# apiprocessor
+__JH_WM_APIPROCESSOR_FOLDER__='apiprocessor'
+__JH_WM_APIPROCESSOR_JAR_REGEX__='apiprocessor'
+__JH_WM_APIPROCESSOR_XMX__='192m'
+
+# merchantlogisfashion
+__JH_WM_MERCHANTLOGISFASHION_FOLDER__='merchantlogisfashion'
+__JH_WM_MERCHANTLOGISFASHION_JAR_REGEX__='merchantlogisfashion'
+__JH_WM_MERCHANTLOGISFASHION_XMX__='192m'
+
+# carrierseur
+__JH_WM_CARRIERSEUR_FOLDER__='carrierseur'
+__JH_WM_CARRIERSEUR_JAR_REGEX__='carrierseur'
+__JH_WM_CARRIERSEUR_XMX__='128m'
+
+# carriertipsa
+__JH_WM_CARRIERTIPSA_FOLDER__='carriertipsa'
+__JH_WM_CARRIERTIPSA_JAR_REGEX__='carriertipsa'
+__JH_WM_CARRIERTIPSA_XMX__='128m'
+
+# carriercorreosexpress
+__JH_WM_CARRIERCORREOSEXPRESS_FOLDER__='carriercorreosexpress'
+__JH_WM_CARRIERCORREOSEXPRESS_JAR_REGEX__='carriercorreosexpress'
+__JH_WM_CARRIERCORREOSEXPRESS_XMX__='128m'
+
+# templategenerator
+__JH_WM_TEMPLATEGENERATOR_FOLDER__='templategenerator'
+__JH_WM_TEMPLATEGENERATOR_JAR_REGEX__='template'
+__JH_WM_TEMPLATEGENERATOR_XMX__='128m'
+
+# mailing
+__JH_WM_MAILING_FOLDER__='mailing'
+__JH_WM_MAILING_JAR_REGEX__='mailing'
+__JH_WM_MAILING_XMX__='128m'
+
+# redirectionmanager
+__JH_WM_REDIRECTIONMANAGER_FOLDER__='redirectionmanager'
+__JH_WM_REDIRECTIONMANAGER_JAR_REGEX__='redirectionmanager'
+__JH_WM_REDIRECTIONMANAGER_XMX__='128m'
+
+# ui
+__JH_WM_UI_FOLDER__='ui'
+__JH_WM_UI_JAR_REGEX__='ui'
+__JH_WM_UI_XMX__='192m'
+
+# keepa
+__JH_WM_KEEPA_FOLDER__='keepa'
+__JH_WM_KEEPA_JAR_REGEX__='keepa'
+__JH_WM_KEEPA_XMX__='128m'
+
+# aecoc
+__JH_WM_AECOC_FOLDER__='aecoc'
+__JH_WM_AECOC_JAR_REGEX__='aecoc'
+__JH_WM_AECOC_XMX__='128m'
+
+# icecat
+__JH_WM_ICECAT_FOLDER__='icecat'
+__JH_WM_ICECAT_JAR_REGEX__='icecat'
+__JH_WM_ICECAT_XMX__='128m'
+
+# pim
+__JH_WM_PIM_FOLDER__='pim'
+__JH_WM_PIM_JAR_REGEX__='pim'
+__JH_WM_PIM_XMX__='128m'
+
+
+
+
+### main functions
+
+
+
+function _jh_start_platform {
+
+    __date_ini=$( date )
+    __uxt_ini=$( date +'%s' )
+
+    alias _0sp
+    cdkj_s
+    sj8
+    echo
+    sleep ${__JH_TIMEOUT_CONTINUE_SEC__}
+
+    cdkj_s
+
+    if [ -e ${__JH_WMP_START_LIST_FILE__} ]
+    then
+        echo -e 'starting platform from definitions in file '\'${__JH_WMP_START_LIST_FILE__}\'
+        command source ${__JH_WMP_START_LIST_FILE__}
+        _jh_wm_start_platform_list
+    else
+        # echo -e 'starting platform from definitions in current script \n'
+        # sleep 3
+        # _jh_start_service microservicesregistry
+        echo 'nothing deployed'
+    fi
+
+    cdkj_s
+    
+    __uxt_end=$( date +'%s' )
+    let '__uxt_diff=__uxt_end-__uxt_ini' '__proc_min=__uxt_diff/60' '__proc_sec=__uxt_diff%60' 
+    echo 'WM local deployment completed'
+    echo 'start: '$( date -d '@'${__uxt_ini} )
+    echo 'end:   '$( date -d '@'${__uxt_end} )
+    echo 'total execution time (min:sec) -- '${__proc_min}':'${__proc_sec}
+
+}
+
+
+
+function _jh_remove_logs_platform {
+    cdk_s
+    command cd log
+
+    for _vn_microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _vn_fq_jar_regex='__JH_WM_'$( echo -n ${_vn_microservice} | awk '{ print toupper($0) }' )'_JAR_REGEX__'
+        echo '${_vn_fq_jar_regex}: '${_vn_fq_jar_regex}' ; ${!_vn_fq_jar_regex}: '${!_vn_fq_jar_regex}
+        command rm -v ${!_vn_fq_jar_regex}*.jar.log
+    done;
+
+    clear ; echo 'refreshing...' ; sleep 1 ; clear ;
+    alias _0rlp
+    pwd
+    ll
+    cdkj_s
+    echo
+}
+
+
+
+function _jh_remove_log_service {
+    cdk_s
+    command cd log
+    command rm -v ${1}*.jar.log
+    # clear ; echo 'refreshing...' ; sleep 1 ; clear ;
+    # alias _0rls
+    # pwd
+    # ll
+    cdkj_s
+    echo
+}
+
+
+
+function _jh_truncate_logs_platform {
+    cdk_s
+    command cd log
+
+    for _vn_microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _vn_fq_jar_regex='__JH_WM_'$( echo -n ${_vn_microservice} | awk '{ print toupper($0) }' )'_JAR_REGEX__'
+        echo '${_vn_fq_jar_regex}: '${_vn_fq_jar_regex}' ; ${!_vn_fq_jar_regex}: '${!_vn_fq_jar_regex}
+        command echo -n > ${!_vn_fq_jar_regex}*.jar.log
+    done;
+
+    clear ; echo 'refreshing...' ; sleep 1 ; clear ;
+    alias _0tlp
+    pwd
+    ll
+    cdkj_s
+    echo
+}
+
+
+function _jh_kill_service {
+    alias _0ks
+    cdkj_s
+    command cd ${1}
+    pwd
+    tk
+    echo
+}
+
+
+
+function _jh_kill_platform {
+    alias _0kp
+    cdkj_s
+
+    for _vn_microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _vn_fq_folder='__JH_WM_'$( echo -n ${_vn_microservice} | awk '{ print toupper($0) }' )'_FOLDER__'
+        echo '${_vn_fq_folder}: '${_vn_fq_folder}' ; ${!_vn_fq_folder}: '${!_vn_fq_folder}
+        _jh_kill_service ${!_vn_fq_folder}
+    done;
+
+    cdkj_s
+}
+
+
+
+function _jh_start_service {
+    cdkj_s
+
+    if [ -z ${1} ] ; then
+        echo 'parameter ${1} empty, should be valid springboot project dir'
+        return 1
+    fi
+
+    if [ ! -d "${1}" ] ; then
+        echo 'directory '${1}' not available, exit'
+        echo
+        cdkj_s
+        return 1
+    fi
+    command cd ${1}
+    pwd
+
+    _vn_fq_xmx='__JH_WM_'$( echo -n ${1} | awk '{ print toupper($0) }' )'_XMX__'
+    __JH_XMX__=$( echo -n ${!_vn_fq_xmx} )
+    echo 'init --> __JH_XMX_DEFAULT__, __JH_XMX__: '${__JH_XMX_DEFAULT__}', '${__JH_XMX__} # TODO disable, troubleshooting
+
+    jjr
+    command cd ..
+
+    __JH_XMX__=${__JH_XMX_DEFAULT__}
+
+    echo
+    _jh_check_service_started ${1}
+
+    echo 'end --> __JH_XMX_DEFAULT__, __JH_XMX__: '${__JH_XMX_DEFAULT__}', '${__JH_XMX__}
+    echo
+}
+
+
+
+function _jh_check_service_started {
+    cdkj_s
+    command cd ${1}
+    pwd
+    while true ; do
+	echo -n 'check '\'"${1}"\'' is started... '
+        jjrg 'tomcat started' > /dev/null
+	__check_ss__=${?}
+	if [ ${__check_ss__} -eq '0' ] ; then
+	    echo 'yes, wait '${__JH_TIMEOUT_CONTINUE_SEC__}' sec to continue... '
+	    sleep ${__JH_TIMEOUT_CONTINUE_SEC__}
+	    command cd ..
+	    break
+        else
+	    echo 'no, retry in '${__JH_TIMEOUT_RETRY_SEC__}' sec'
+	    sleep ${__JH_TIMEOUT_RETRY_SEC__}
+	fi
+    done
+}
+
+
+
+function _jh_restart_service {
+
+    alias _0rs
+    
+    cdkj_s
+    
+    if [ -z ${1} ] ; then
+        echo '${arg1} is empty, should be valid directory/microservice; exit'
+        return 1
+    elif [ ! -d ${1}  ] ; then
+        echo '${arg1} is not valid directory/microservice; exit'
+        return 1
+    fi
+    
+    echo
+    sj8
+    echo
+    
+    cdkj_s
+    _jh_remove_log_service ${1}
+    
+    cdkj_s
+    _jh_kill_service ${1}
+    
+    cdkj_s
+    _jh_start_service ${1}
+    
+    cdkj_s
+}
+
+
+
+### auxiliar / testing functions
+
+
+function _jh_backup_alberto_service {
+    cdkj_s
+    if [ ! -d "${1}" ] ; then
+        echo 'directory '${1}' not available, exit'
+        echo
+        cdkj_s
+        return 1
+    fi
+    command cd ${1}
+    
+    echo '--> backup alberto files from '\'$( pwd  )\'
+    find . -iname '*alberto*' | grep -v '/target/' | grep -v "/${__JH_RESTORE_DIR__}/" | xargs -I % cp -v % '../zalberto/z'${1}'/'
+    # find ./src -name '*alberto*' | while read myfile; do command cp -v ${myfile} '../zalberto/z'${1}'/'; done; # defunct
+    # if [ "${1}" = 'marketplaceebay' ] ; then # defunct
+    #    command git restore --source=dev pom.xml # defunct
+    # fi # defunct
+    command cd ..
+    echo
+}
+
+
+function _jh_backup_alberto_platform {
+    cdkj_s
+    echo -e '--> backup alberto files, whole platform\n'
+
+    for _microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _jh_backup_alberto_service ${_microservice}
+    done;
+}
+
+
+function _jh_restore_alberto_service {
+    cdkj_s
+    command cd ${1}
+    command rm -vfR ./${__JH_RESTORE_DIR__}
+    command mkdir -v ./${__JH_RESTORE_DIR__}
+    echo '--> restore alberto files to folder '\'$( pwd  )'/'${__JH_RESTORE_DIR__}\'
+    # command cp -v '../zalberto/z'${1}'/pom.xml.alberto' ./  # deprecated
+    # command cp -v ./pom.xml.alberto ./pom.xml  # deprecated
+    # command cp -v '../zalberto/z'${1}'/log4j2-alberto.xml' ./src/main/resources/  # deprecated
+    # command cp -v '../zalberto/z'${1}'/application-alberto.yml' ./src/main/resources/ # deprecated
+    # command cp -v '../zalberto/z'${1}'/CLR_alberto.java' ./ # deprecated
+    command cp -v '../zalberto/z'${1}'/'* ./${__JH_RESTORE_DIR__}
+
+    command cd ..
+    echo
+}
+
+
+
+function _jh_restore_alberto_platform {
+
+    _jh_clean_restore_dir_alberto_platform
+    echo 'existing restore dirs were eliminated, now re-create them and do restore'
+    sleep ${__JH_TIMEOUT_CONTINUE_SEC__}
+
+    cdkj_s
+    echo -e '--> restore alberto files, whole platform\n'
+    echo
+
+    for _microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _jh_restore_alberto_service ${_microservice}
+    done;
+}
+
+
+
+function _jh_clean_restore_dir_alberto_service {
+    cdkj_s
+    command cd ${1}
+    command rm -vfR ./${__JH_RESTORE_DIR__}
+    command cd ..
+    echo
+}
+
+
+
+function _jh_clean_restore_dir_alberto_platform {
+    cdkj_s
+    echo -e '--> clean restore dirs for alberto files, whole platform\n'
+    echo
+
+    for _microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _jh_clean_restore_dir_alberto_service ${_microservice}
+    done;
+}
+
+
+
+function _jh_mysqldump_alberto_service {
+    cdkj_s
+    __jh_db_prefix__='local_'
+    __jh_db_file_ext__='.sql'
+    command mysqldump -u root --password=1234 -h localhost -P 3306 --add-drop-database --add-drop-table --skip-extended-insert --databases ${__jh_db_prefix__}${1} > './zalberto/zsql/'${__jh_db_prefix__}${1}${__jh_db_file_ext__}
+    unset  __jh_db_prefix__  __jh_db_file_ext__
+    echo
+}
+
+
+
+function _jh_mysqldump_alberto_platform {
+    cdkj_s
+    echo -e '--> mysqldump, whole platform\n'
+    echo
+    # some services like 'microservicesregistry' and 'ui' do not have DB thus show warning, that's ok
+    for _microservice in ${__JH_ALL_MICROSERVICES__} ; do
+        _jh_mysqldump_alberto_service ${_microservice}
+    done;
+}
+
+
+
+# experimental, deprecate?
+function _jh_EXP_compile_service {
+    cdkj_s
+    command cd ${1}
+    echo '--> compile service in '\'$( pwd  )\'
+    tk
+    command cp -v ./pom.xml.alberto ./pom.xml
+    echo -n 'compiling...'
+    command mvn clean package -Dmaven.test.skip=true &> /dev/null
+    _tmp_ec=${?}
+    if [ ${_tmp_ec} -ne '0' ]; then
+        echo $(basename $(pwd)) >> ../${__JH_GIT_COMPILE_FAIL_FILE__}
+    fi
+    echo 'exit code from mvn: '${_tmp_ec}
+
+    
+    command cd ..
+    echo
+}
+
+
+
+
+# experimental, deprecate?
+function _jh_EXP_git_fetch_service {
+    cdkj_s
+    command cd ${1}
+    echo '--> git fetch service in '\'$( pwd  )\'
+    command git fetch
+    echo 'exit code from git fetch: '${?}
+    command cd ..
+    echo
+}
+
+
+
+
+# experimental, deprecate?
+function _jh_EXP_git_checkout_pull_dev_service { 
+    cdkj_s
+    command cd ${1}
+    echo '--> git checkout pull dev service in '\'$( pwd  )\'
+
+    command git checkout dev
+    _tmp_ec=${?}
+    if [ ${_tmp_ec} -ne '0' ]; then
+        echo $(basename $(pwd)) >> ../${__JH_GIT_CHECKOUT_PULL_DEV_FAIL_FILE__}
+        echo 'exit code from git fetch: '${_tmp_ec}
+        return ${_tmp_ec}
+    fi
+    echo 'exit code from git fetch: '${_tmp_ec}
+    
+    command git pull
+    _tmp_ec=${?}
+    if [ ${_tmp_ec} -ne '0' ]; then
+        echo $(basename $(pwd)) >> ../$${__JH_GIT_CHECKOUT_PULL_DEV_FAIL_FILE__}
+        echo 'exit code from git pull: '${_tmp_ec}
+        return ${_tmp_ec}
+    fi
+    echo 'exit code from git pull: '${_tmp_ec}
+
+    command cd ..
+    echo
+}
+
+
+
+function _jh_update_repo {
+    gch dev
+    __check_gcd__=${?}
+
+    if [ ${__check_gcd__} -eq '0' ] ; then
+        echo
+        gf
+        gpl
+        gf
+        echo
+        mcp
+        echo
+        gtt
+        echo
+        gb
+    else
+        echo '--> changes pending, aborting repo update'
+    fi
+    
+    unset ${__check_gcd__}
+}
+
+
+
+
+function __jh_zerohelper_init {
+    # cdkj_s
+    command source ./${__JH_WMP_THIS_FILE__}
+    if [ -e ${__JH_WMP_START_LIST_FILE__} ]
+    then
+        command source ./${__JH_WMP_START_LIST_FILE__}
+    else
+        __JH_WMP_START_LIST_UPDATED__='(file not available)'
+    fi
+    echo "updated, main:" ${__JH_WMP_UPDATED__}
+    echo "updated, list:" ${__JH_WMP_START_LIST_UPDATED__}
+    echo 'alias 0z: '$( alias 0z ) # alias overriding test
+    echo
+    __jh_zerohelper_menu
+}
+
+
+
+
+### aliases
+
+ZH_ZEROHELPER_INIT='__jh_zerohelper_init'
+
+alias __jh_zerohelper_menu='alias 3b 3r 3c 3s 4u ; echo ; echo $(alias 7) "# restart service" ; echo $(alias 8) "# kill platform" ; echo $(alias 9) "# restart platform " ; echo ; '
+
+alias 0z='echo "alias overriding: jh-wm-zerohelper"'
+
+alias _0s='sleep ${__JH_TIMEOUT_CONTINUE_SEC__}'
+
+alias _0kp='_jh_kill_platform'
+alias _0sp='_jh_start_platform'
+alias _0ks='_jh_kill_service'
+alias _0rs='_jh_restart_service'
+
+alias _0tlp='_jh_truncate_logs_platform'
+alias _0rlp='_jh_remove_logs_platform'
+
+alias 3b='_jh_backup_alberto_platform'
+alias 3r='_jh_restore_alberto_platform'
+alias 3c='_jh_clean_restore_dir_alberto_platform'
+alias 3s='_jh_mysqldump_alberto_platform'
+
+alias 4u='_jh_update_repo'
+
+alias 7='_0rs '
+alias 8='_0kp ; _0rlp ;'
+alias 9='_0kp ; _0rlp ; _0s; _0sp ;'
+
+

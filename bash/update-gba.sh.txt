@@ -1,6 +1,6 @@
 #!/bin/bash
 # SCRIPT UPDATE GIT-BASH-ALIASES
-# updated: 2025-04-06 06:01
+# updated: 2025-04-06 09:38
 # execute 'source update-gba.sh.txt'
 
 
@@ -29,8 +29,8 @@ command cp -v ./kh-zerohelper-v1.sh.txt ${HOME}/Desktop/dm-git-aux/kubeconfig ;
 
 echo ;
 
-command cp -v ./jh-wm-zerohelper-v1.sh.txt ${HOME}/Desktop/dm-git-java/ ; 
-# echo 'WARNING, REM: update on jh-wm-zero-helper.sh.txt disabled!'
+command cp -v ./jh-wm-zerohelper-v2.sh.txt ${HOME}/Desktop/dm-git-java/ ; 
+# echo 'WARNING, REM: update on jh-wm-zero-helper-v2.sh.txt disabled!'
 
-# command cp -v ./_jh-wm-start-platform-list-v1.sh.txt ${HOME}/Desktop/dm-git-java/ ; 
-echo 'WARNING, REM: update on _jh-wm-start-platform-list-v1.sh.txt disabled!'
+command cp -v ./_jh-wm-start-platform-list-v2.sh.txt ${HOME}/Desktop/dm-git-java/ ; 
+# echo 'WARNING, REM: update on _jh-wm-start-platform-list-v2.sh.txt disabled!'
