@@ -18,15 +18,16 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2025-04-04 05:55'
+__KH_UPDATED__='2025-04-06 06:39'
 
 
 # initate required vars
+__KH_THIS_FILE__='kh-zerohelper.sh.txt'
+__KH_CLEANVARS__='CLEANVARS'
+__KH_LOG_HISTORY_DIR__=${HOME}'/Desktop/loghistory'
 if [ -z ${__kubeconfig_regex} ] ; then
     __kubeconfig_regex='wm-pre'
 fi
-__KH_CLEANVARS__='CLEANVARS'
-__KH_LOG_HISTORY_DIR__=${HOME}'/Desktop/loghistory'
 
 
 # regex definitions, kubeconfig selection
@@ -905,7 +906,7 @@ alias kh='__kh_help'
 
 function __kh_zerohelper_init {
     # cdkk_s
-    command source ./kh-zerohelper.sh.txt
+    command source ./${__KH_THIS_FILE__}
     echo 'updated, main: '${__KH_UPDATED__}
     echo 'alias 0z: '$( alias 0z ) # alias overriding test
     # echo

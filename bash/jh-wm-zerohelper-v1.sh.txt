@@ -3,10 +3,11 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-03-07 16:00'
+__JH_WMP_UPDATED__='2025-04-06 06:15'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
-__JH_WMP_START_LIST_FILE__='_jh-wm-start-platform-list.sh.txt'
+__JH_WMP_THIS_FILE__='jh-wm-zerohelper-v1.sh.txt'
+__JH_WMP_START_LIST_FILE__='_jh-wm-start-platform-list-v1.sh.txt'
 __JH_GIT_CHECKOUT_PULL_DEV_FAIL_FILE__='zgit-checkout-pull-dev-fail.tmp'
 __JH_GIT_COMPILE_FAIL_FILE__='zgit-compile-fail.tmp'
 __JH_RESTORE_DIR__='__RESTORE_LOC_ALB__'
@@ -824,10 +825,10 @@ function _jh_update_repo {
 
 function __jh_zerohelper_init {
     # cdkj_s
-    command source ./jh-wm-zerohelper.sh.txt
+    command source ./${__JH_WMP_THIS_FILE__}
     if [ -e ${__JH_WMP_START_LIST_FILE__} ]
     then
-        command source ./_jh-wm-start-platform-list.sh.txt
+        command source ./${__JH_WMP_START_LIST_FILE__}
     else
         __JH_WMP_START_LIST_UPDATED__='(file not available)'
     fi
