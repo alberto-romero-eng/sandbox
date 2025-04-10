@@ -1,0 +1,127 @@
+### Pit-Pim Auditor Helper -- 2025-04-10
+
+
+###
+### sql, create / truncate table
+###
+
+use pim;
+
+CREATE TABLE tmpresult (
+parent_sku text,
+sku text,
+gtin varchar(64),
+itemId text,
+status text,
+message text,
+PRIMARY KEY (gtin)
+)
+DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+;
+
+truncate table tmpresult;
+
+
+###
+### sql, frequent queries using table tmpresult
+###
+
+use pim;
+
+select * from tmpresult;
+
+select count(1) from tmpresult;
+
+select cast((select count(1) from tmpresult) as float);
+
+select status, message, count(message), cast(count(message) as float)/cast((select count(1) from tmpresult) as float) 
+from tmpresult t 
+group by status, message 
+;
+
+select count(1) from
+(
+select tr.gtin, tr.status, tr.message, pe.gtin as pegtin, pe.data_source_id, pe.created_at 
+from tmpresult tr 
+left join product_error pe on tr.gtin = pe.gtin -- product_error may contain several times a gtin, thus left join (inner join would not make much sense)
+where true 
+and pe.gtin is null -- this filter always enabled, see comment regarding left join
+and tr.status <> 'INFO_RECOVERED_CORRECTLY' -- check with / without this filter
+-- and tr.message not like '%EAN%' -- check with / without this filter
+) as t
+;
+
+select * from product_error ; 
+
+
+
+### = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+
+###
+### csv to sql, transformations -- 2025-04-10
+###
+
+###
+### step 1, clean troublesome char sequences
+###
+
+cat source1.sql | tr '(' '[' > target1.sql ;
+mv target1.sql source1.sql ;
+
+cat source1.sql | tr ')' ']' > target1.sql ;
+mv target1.sql source1.sql ;
+
+cat source1.sql | tr \' '_' > target1.sql ;
+mv target1.sql source1.sql ;
+
+cat source1.sql | tr \' '_' > target1.sql ;
+mv target1.sql source1.sql ;
+
+cat source1.sql | tr '#' '_' > target1.sql ;
+mv target1.sql source1.sql ;
+
+cat source1.sql | tr '#' '_' > target1.sql ;
+mv target1.sql source1.sql ;
+
+sed -E '{ s/--/__/ig }' source1.sql > target1.sql ;
+mv target1.sql source1.sql ;
+
+sed -E '{ s/\/\*/__/ig }' source1.sql > target1.sql ;
+mv target1.sql source1.sql ;
+
+sed -E '{ s/\*\//__/ig }' source1.sql > target1.sql ;
+mv target1.sql source1.sql ;
+
+sed -E '{ s/\/\//__/ig }' source1.sql > target1.sql ;
+mv target1.sql source1.sql ;
+
+###
+### step 1, closure
+###
+
+cp source1.sql target1.sql ;
+cp source1.sql source2.sql ;
+
+
+###
+### step 2, do csv formatting
+###
+
+cat source2.sql | sed -E 's/\,/'\'','\''/ig' > target2.sql ;
+mv target2.sql source2.sql ;
+
+cat source2.sql | sed -E '{ s/(^.)/('\''\1/ig }' > target2.sql ;
+mv target2.sql source2.sql ;
+
+cat source2.sql | sed -E '{ s/(.$)/\1'\''),/ig }' > target2.sql ;
+mv target2.sql source2.sql ;
+
+###
+### step 2, closure
+###
+
+cp source2.sql target2.sql ;
+cp source2.sql tmpresult.sql ;
+
