@@ -1,4 +1,4 @@
-### Pit-Pim Auditor Helper -- 2025-04-10
+### Pit-Pim Auditor Helper -- 2025-04-12 13:10
 
 
 ###
@@ -7,19 +7,27 @@
 
 use pim;
 
-CREATE TABLE tmpresult (
+CREATE TABLE tmpcsvresult (
 parent_sku text,
 sku text,
 gtin varchar(64),
-itemId text,
+item_id text,
 status text,
 message text,
+msg_miravia text,
 PRIMARY KEY (gtin)
 )
 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 ;
 
-truncate table tmpresult;
+truncate table tmpcsvresult;
+
+insert into tmpcsvresult select * from tmpcsvresult_dayanaboutique_20250403 ; -- info only
+
+insert into tmpcsvresult select * from tmpcsvresult_iami_20250407 ; -- miravia publishing
+
+insert into tmpcsvresult select * from tmpcsvresult_iami_20250407_r1 ; -- miravia publishing, retry 1
+
 
 
 ###
@@ -28,30 +36,71 @@ truncate table tmpresult;
 
 use pim;
 
-select * from tmpresult;
+select * from tmpcsvresult;
 
-select count(1) from tmpresult;
+-- total
+select count(1) from tmpcsvresult;
 
-select cast((select count(1) from tmpresult) as float);
+select cast((select count(1) from tmpcsvresult) as float);
 
-select status, message, count(message), cast(count(message) as float)/cast((select count(1) from tmpresult) as float) 
-from tmpresult t 
+-- information recovery only, stats -- OK for info and miravia publish
+select status, message, 
+count(message) as count1, 
+cast(count(message) as float)/cast((select count(1) from tmpcsvresult) as float) as ratio1
+from tmpcsvresult t 
 group by status, message 
 ;
 
+-- miravia product publishing stats -- OK for info and miravia publish
+select status, message, msg_miravia, 
+count(msg_miravia) as count2, 
+cast(count(msg_miravia) as float)/cast((select count(1) from tmpcsvresult) as float) as ratio2
+from tmpcsvresult t 
+where true 
+and msg_miravia not like '%THD_IC_ERR_F_DOMAIN_IMAGE_00_01_003%' -- '%duplicate image%' 
+group by status, message, msg_miravia
+union
+select status, message, 'THD_IC_ERR_F_DOMAIN_IMAGE_00_01_003', -- 'duplicate image'
+count(msg_miravia) as count2, 
+cast(count(msg_miravia) as float)/cast((select count(1) from tmpcsvresult) as float) as ratio2
+from tmpcsvresult t 
+where true 
+and msg_miravia like '%THD_IC_ERR_F_DOMAIN_IMAGE_00_01_003%' -- '%duplicate image%' 
+group by status, message
+;
+
+
+-- information recovery only, audit -- OK for info only, not miravia publish
 select count(1) from
 (
-select tr.gtin, tr.status, tr.message, pe.gtin as pegtin, pe.data_source_id, pe.created_at 
-from tmpresult tr 
-left join product_error pe on tr.gtin = pe.gtin -- product_error may contain several times a gtin, thus left join (inner join would not make much sense)
+select tcr.gtin, tcr.status, tcr.message, 
+pe.gtin as pegtin, pe.data_source_id, pe.created_at 
+from tmpcsvresult tcr 
+left join product_error pe on tcr.gtin = pe.gtin -- product_error may contain several times a gtin, thus left join (inner join would not make much sense)
 where true 
 and pe.gtin is null -- this filter always enabled, see comment regarding left join
-and tr.status <> 'INFO_RECOVERED_CORRECTLY' -- check with / without this filter
--- and tr.message not like '%EAN%' -- check with / without this filter
+and tcr.status <> 'INFO_RECOVERED_CORRECTLY' -- check with / without this filter
+and tcr.message not like '%EAN%' -- check with / without this filter
 ) as t
 ;
 
 select * from product_error ; 
+
+-- miravia product publishing stats -- OK for miravia publish only, not info
+select count(1) from
+(
+select tcr.gtin, tcr.status, tcr.message, tcr.msg_miravia, 
+pe.gtin as pegtin, pe.data_source_id, pe.created_at 
+from tmpcsvresult tcr 
+left join product_error pe on tcr.gtin = pe.gtin -- product_error may contain several times a gtin, thus left join (inner join would not make much sense)
+where true 
+and pe.gtin is null -- this filter always enabled, see comment regarding left join
+and tcr.status <> 'PRODUCT_UPLOADED_TO_MARKETPLACE' -- check with / without this filter
+and tcr.status <> 'ERROR_UPLOADING_TO_MARKETPLACE' -- check with / without this filter
+and tcr.message not like '%EAN%' -- check with / without this filter
+) as t
+;
+
 
 
 
