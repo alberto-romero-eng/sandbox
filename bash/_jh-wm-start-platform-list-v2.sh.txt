@@ -1,19 +1,105 @@
-#!/bin/bash
+#! /bin/bash
 
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2025-04-06 12:14'
+__JH_WMP_START_LIST_UPDATED__='2025-04-24 17:36'
 
 
 ### list(s)
 
-__JH_DEPLOY_MICROSERVICES__='
-microservicesregistry
 
-usermanagement
-mappingmanagement
-'
+###
+### eureka list
+###
+
+_s='';
+
+_s=${_s}'microservicesregistry'' '
+
+_jh_eureka_list=${_s}
+
+
+###
+### wm list
+###
+
+_s='';
+
+_s=${_s}'usermanagement'' '
+
+_s=${_s}'marketplaceebay'' '
+_s=${_s}'marketplacemirakl'' '
+_s=${_s}'marketplacemiravia'' '
+# _s=${_s}'marketplaceamazon'' '
+# _s=${_s}'marketplacemakro'' '
+# _s=${_s}'marketplacealiexpress'' '
+
+_s=${_s}'mappingmanagement'' '
+_s=${_s}'ordermanagement'' '
+_s=${_s}'productmanagement'' '
+# _s=${_s}'ktypeprocessor'' '
+_s=${_s}'bulkfileprocessor'' '
+# _s=${_s}'apiprocessor'' '
+
+# _s=${_s}'merchantlogisfashion'' '
+# _s=${_s}'carrierseur'' '
+# _s=${_s}'carriertipsa'' '
+
+# _s=${_s}'template-generator'' '
+# _s=${_s}'mailing'' '
+# _s=${_s}'redirectionmanager'' '
+_s=${_s}'ui'' '
+
+_jh_wm_list=${_s}
+
+
+###
+### pim list
+###
+
+_s='';
+
+_s=${_s}'usermanagement'' '
+_s=${_s}'marketplaceebay'' '
+_s=${_s}'bulkfileprocessor'' '
+
+_s=${_s}'keepa'' '
+_s=${_s}'aecoc'' '
+# _s=${_s}'icecat'' '
+_s=${_s}'pim'' '
+
+_jh_pim_list=${_s}
+
+
+###
+### pit list
+###
+
+_s='';
+
+_s=${_s}'pituploadmanagement'' '
+_s=${_s}'pitsectionmanagement'' '
+_s=${_s}'pitsectionmanagement'' '
+_s=${_s}'pitresultmanagement'' '
+_s=${_s}'pitmappingmanagement'' '
+_s=${_s}'pitworker'' '
+_s=${_s}'pitcataloguemanagement'' '
+_s=${_s}'pitapi'' '
+
+_jh_pit_list=${_s}
+
+
+###
+### Select one value for ${__JH_DEPLOY_MICROSERVICES__}, or create a new one.
+### Note: include always ${_jh_eureka_list} for local development
+###
+# __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_wm_list})
+# __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pim_list}${_jh_pit_list})
+# __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pim_list})
+__JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pit_list})
+
+
 
 
 ### function(s)

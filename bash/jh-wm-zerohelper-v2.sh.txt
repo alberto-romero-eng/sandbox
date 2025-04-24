@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-04-06 12:14'
+__JH_WMP_UPDATED__='2025-04-24 17:24'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
@@ -20,7 +20,6 @@ __JH_ALL_MICROSERVICES__='
 microservicesregistry
 
 usermanagement
-mappingmanagement
 
 marketplaceebay
 marketplacemirakl
@@ -30,8 +29,9 @@ marketplacemakro
 marketplacealiexpress
 marketplaceprestashop
 
-productmanagement
+mappingmanagement
 ordermanagement
+productmanagement
 ktypeprocessor
 bulkfileprocessor
 apiprocessor
@@ -51,6 +51,14 @@ keepa
 aecoc
 icecat
 pim
+
+pituploadmanagement
+pitsectionmanagement
+pitresultmanagement
+pitmappingmanagement
+pitworker
+pitcataloguemanagement
+pitapi
 '
 
 
@@ -66,11 +74,6 @@ __JH_WM_MICROSERVICESREGISTRY_XMX__='128m'
 __JH_WM_USERMANAGEMENT_FOLDER__='usermanagement'
 __JH_WM_USERMANAGEMENT_JAR_REGEX__='usermanagement'
 __JH_WM_USERMANAGEMENT_XMX__='256m'
-
-# mappingmanagement
-__JH_WM_MAPPINGMANAGEMENT_FOLDER__='mappingmanagement'
-__JH_WM_MAPPINGMANAGEMENT_JAR_REGEX__='mapping'
-__JH_WM_MAPPINGMANAGEMENT_XMX__='256m'
 
 # marketplaceebay
 __JH_WM_MARKETPLACEEBAY_FOLDER__='marketplaceebay'
@@ -107,15 +110,20 @@ __JH_WM_MARKETPLACEPRESTASHOP_FOLDER__='marketplaceprestashop'
 __JH_WM_MARKETPLACEPRESTASHOP_JAR_REGEX__='marketplaceprestashop'
 __JH_WM_MARKETPLACEPRESTASHOP_XMX__='192m'
 
-# productmanagement
-__JH_WM_PRODUCTMANAGEMENT_FOLDER__='productmanagement'
-__JH_WM_PRODUCTMANAGEMENT_JAR_REGEX__='productmanagement'
-__JH_WM_PRODUCTMANAGEMENT_XMX__='256m'
+# mappingmanagement
+__JH_WM_MAPPINGMANAGEMENT_FOLDER__='mappingmanagement'
+__JH_WM_MAPPINGMANAGEMENT_JAR_REGEX__='mapping'
+__JH_WM_MAPPINGMANAGEMENT_XMX__='256m'
 
 # ordermanagement
 __JH_WM_ORDERMANAGEMENT_FOLDER__='ordermanagement'
 __JH_WM_ORDERMANAGEMENT_JAR_REGEX__='ordermanagement'
 __JH_WM_ORDERMANAGEMENT_XMX__='416m'
+
+# productmanagement
+__JH_WM_PRODUCTMANAGEMENT_FOLDER__='productmanagement'
+__JH_WM_PRODUCTMANAGEMENT_JAR_REGEX__='productmanagement'
+__JH_WM_PRODUCTMANAGEMENT_XMX__='256m'
 
 # ktypeprocessor
 __JH_WM_KTYPEPROCESSOR_FOLDER__='ktypeprocessor'
@@ -175,12 +183,12 @@ __JH_WM_UI_XMX__='192m'
 # keepa
 __JH_WM_KEEPA_FOLDER__='keepa'
 __JH_WM_KEEPA_JAR_REGEX__='keepa'
-__JH_WM_KEEPA_XMX__='128m'
+__JH_WM_KEEPA_XMX__='192m'
 
 # aecoc
 __JH_WM_AECOC_FOLDER__='aecoc'
 __JH_WM_AECOC_JAR_REGEX__='aecoc'
-__JH_WM_AECOC_XMX__='128m'
+__JH_WM_AECOC_XMX__='192m'
 
 # icecat
 __JH_WM_ICECAT_FOLDER__='icecat'
@@ -190,7 +198,42 @@ __JH_WM_ICECAT_XMX__='128m'
 # pim
 __JH_WM_PIM_FOLDER__='pim'
 __JH_WM_PIM_JAR_REGEX__='pim'
-__JH_WM_PIM_XMX__='128m'
+__JH_WM_PIM_XMX__='192m'
+
+# pituploadmanagement
+__JH_WM_PITUPLOADMANAGEMENT_FOLDER__='pituploadmanagement'
+__JH_WM_PITUPLOADMANAGEMENT_JAR_REGEX__='pitupload'
+__JH_WM_PITUPLOADMANAGEMENT_XMX__='256m'
+
+# pitsectionmanagement
+__JH_WM_PITSECTIONMANAGEMENT_FOLDER__='pitsectionmanagement'
+__JH_WM_PITSECTIONMANAGEMENT_JAR_REGEX__='pitsection'
+__JH_WM_PITSECTIONMANAGEMENT_XMX__='256m'
+
+# pitresultmanagement
+__JH_WM_PITRESULTMANAGEMENT_FOLDER__='pitresultmanagement'
+__JH_WM_PITRESULTMANAGEMENT_JAR_REGEX__='pitrecord'
+__JH_WM_PITRESULTMANAGEMENT_XMX__='256m'
+
+# pitmappingmanagement
+__JH_WM_PITMAPPINGMANAGEMENT_FOLDER__='pitmappingmanagement'
+__JH_WM_PITMAPPINGMANAGEMENT_JAR_REGEX__='pitmapping'
+__JH_WM_PITMAPPINGMANAGEMENT_XMX__='256m'
+
+# pitworker
+__JH_WM_PITWORKER_FOLDER__='pitworker'
+__JH_WM_PITWORKER_JAR_REGEX__='pitworker'
+__JH_WM_PITWORKER_XMX__='256m'
+
+# pitcataloguemanagement
+__JH_WM_PITCATALOGUEMANAGEMENT_FOLDER__='pitcataloguemanagement'
+__JH_WM_PITCATALOGUEMANAGEMENT_JAR_REGEX__='pitcatalogue'
+__JH_WM_PITCATALOGUEMANAGEMENT_XMX__='256m'
+
+# pitapi
+__JH_WM_PITAPI_FOLDER__='pitapi'
+__JH_WM_PITAPI_JAR_REGEX__='pitapi'
+__JH_WM_PITAPI_XMX__='256m'
 
 
 
@@ -335,7 +378,10 @@ function _jh_start_service {
 
     _vn_fq_xmx='__JH_WM_'$( echo -n ${1} | awk '{ print toupper($0) }' )'_XMX__'
     __JH_XMX__=$( echo -n ${!_vn_fq_xmx} )
-    echo 'init --> __JH_XMX_DEFAULT__, __JH_XMX__: '${__JH_XMX_DEFAULT__}', '${__JH_XMX__} # TODO disable, troubleshooting
+    if [ -z ${__JH_XMX__} ] ; then
+        __JH_XMX__='224m'
+    fi
+    echo 'init --> __JH_XMX_DEFAULT__, __JH_XMX__: '${__JH_XMX_DEFAULT__}', '${__JH_XMX__} # troubleshooting
 
     jjr
     command cd ..
