@@ -1,27 +1,31 @@
 package localhost.sandbox.jse8.A0Helper;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
- * <h1>Join Helper.
+ * <p>For two collections, <i>left</i> and <i>right</i>,
+ * this class provides a function to obtain <i>leftOuterJoin</i>,
+ * <i>innerJoin</i> and <i>rightOuterJoin</i> collections.
  * 
- * <p>For two collections, lets call them "left" and "right",
- * this class provides a function to obtain "leftOuterJoin",
- * "innerJoin" and "rightOuterJoin" element collections.
+ * <p>If <i>E</i> extends auto-boxing types (String, Boolean, Integer, 
+ * Long, Float, Double), no extra definitions are required.  
+ * For other types, it is necessary to define overriding 
+ * functions {@link Object#hashCode()} and {@link Object#equals(Object)}  
+ * for <i>E</i> objects.
  * 
- * <p>For this helper to work properly, elements in Set<T> 
- * must be unique.  This is achieved if 'T' extends auto-boxing 
- * types (String, Boolean, Integer, Long, Float, Double).
+ * <p>It is also very useful for troubleshooting if type <i>E</i> and 
+ * all of its attributes types have a convenient definition of 
+ * {@link Object#toString()}.
  * 
- * <p>For other types, it is necessary to define overriding 
- * functions {@link Object#hashCode()} and 
- * {@link Object#equals(Object)}, in order to 
- * Set<T> to contain unique elements.
+ * <p>Different implementations of {@link Collection} may be used as 
+ * parameters (e.g.: {@link List}, {@link Set}).
  * 
- * <p>It is also very useful for troubleshooting if type 'T' 
- * and all its attributes types have a convenient definition 
- * of {@link Object#toString()}.
+ * <p>Updated: 2025-05-09.
  * 
  * @author Alberto Romero
  * @since 2024-05-30
@@ -29,8 +33,36 @@ import java.util.Set;
  */
 public class JoinHelper {
 
-	public static void main() {
+	public static void main() throws Throwable {
 		System.out.println("Hello from JoinHelper!");
+		testForList();
+		testForSet();
+		testForListAndSet();
+	}
+
+	private static void testForList() throws Throwable {
+		System.out.println("Hello from testForList!");
+		// left
+		List<String> left = new ArrayList<>();
+		left.add("left00");
+		left.add("left01");
+		left.add("inner00");
+		left.add("inner01");
+		// right
+		List<String> right = new ArrayList<>();
+		right.add("inner00");
+		right.add("inner01");
+		right.add("right00");
+		right.add("right01");
+		// result
+		JoinResultPojo<String> jr = null;
+		jr = getJoinResult(left, right);
+		System.out.println("JoinResult.toString(): " + jr);
+		System.out.println("JoinResult.toStringLarge(): " + jr.toStringLarge());
+	}
+
+	private static void testForSet() throws Throwable {
+		System.out.println("Hello from testForList!");
 		// left
 		Set<String> left = new HashSet<>();
 		left.add("left00");
@@ -44,32 +76,60 @@ public class JoinHelper {
 		right.add("right00");
 		right.add("right01");
 		// result
-		JoinResultPojo<String> jr = getJoinResult(left, right);
+		JoinResultPojo<String> jr = null;
+		jr = getJoinResult(left, right);
+		System.out.println("JoinResult.toString(): " + jr);
+		System.out.println("JoinResult.toStringLarge(): " + jr.toStringLarge());
+	}
+
+	private static void testForListAndSet() throws Throwable {
+		System.out.println("Hello from testForLisAndSett!");
+		// left
+		List<String> left = new ArrayList<>();
+		left.add("left00");
+		left.add("left01");
+		left.add("inner00");
+		left.add("inner01");
+		// right
+		Set<String> right = new LinkedHashSet<>();
+		right.add("inner00");
+		right.add("inner01");
+		right.add("right00");
+		right.add("right01");
+		// result
+		JoinResultPojo<String> jr = null;
+		jr = getJoinResult(left, right);
 		System.out.println("JoinResult.toString(): " + jr);
 		System.out.println("JoinResult.toStringLarge(): " + jr.toStringLarge());
 	}
 
 
 
+
 	/**
-	 * <p>See comment regarding type 'T' on this class main description. 
+	 * <p>See main comment on this class.
+	 * 
+	 * <p>Updated: 2025-05-09.
+	 * 
+	 * @author Alberto Romero
+	 * @since 2024-05-30
 	 * 
 	 */
-	public static <T> JoinResultPojo<T> getJoinResult(Set<T> left, Set<T> right) {
+	public static <E> JoinResultPojo<E> getJoinResult(Collection<E> left, Collection<E> right) throws Throwable {
 		// vars
-		Set<T> leftOuterJoin = new HashSet<>();
-		Set<T> innerJoin = new HashSet<>();
-		Set<T> rightOuterJoin = new HashSet<>();
-		JoinResultPojo<T> joinResult = new JoinResultPojo<T>();
+		Collection<E> leftOuterJoin = new ArrayList<>();
+		Collection<E> innerJoin = new ArrayList<>();
+		Collection<E> rightOuterJoin = new ArrayList<>();
+		JoinResultPojo<E> joinResult = new JoinResultPojo<E>();
 		// innerJoin
 		innerJoin.addAll(left); 
 		innerJoin.retainAll(right);
 		// leftOuterJoin
-		for (T e : left) {
+		for (E e : left) {
 			if (!innerJoin.contains(e)) leftOuterJoin.add(e);
 		}
 		// rightOuterJoin
-		for (T e : right) {
+		for (E e : right) {
 			if (!innerJoin.contains(e)) rightOuterJoin.add(e);
 		}
 		// joinResult
@@ -81,55 +141,56 @@ public class JoinHelper {
 		return joinResult;
 	}
 
-	public static class JoinResultPojo<T> {
 
-		Set<T> left;
-		Set<T> right;
-		Set<T> leftOuterJoin;
-		Set<T> innerJoin;
-		Set<T> rightOuterJoin;
+	public static class JoinResultPojo<E> {
+
+		Collection<E> left;
+		Collection<E> right;
+		Collection<E> leftOuterJoin;
+		Collection<E> innerJoin;
+		Collection<E> rightOuterJoin;
 
 		public JoinResultPojo () {
 			super();
 		}
 
-		public Set<T> getLeft() {
+		public Collection<E> getLeft() {
 			return left;
 		}
 
-		public void setLeft(Set<T> left) {
+		public void setLeft(Collection<E> left) {
 			this.left = left;
 		}
 
-		public Set<T> getRight() {
+		public Collection<E> getRight() {
 			return right;
 		}
 
-		public void setRight(Set<T> right) {
+		public void setRight(Collection<E> right) {
 			this.right = right;
 		}
 
-		public Set<T> getLeftOuterJoin() {
+		public Collection<E> getLeftOuterJoin() {
 			return leftOuterJoin;
 		}
 
-		public void setLeftOuterJoin(Set<T> leftOuterJoin) {
+		public void setLeftOuterJoin(Collection<E> leftOuterJoin) {
 			this.leftOuterJoin = leftOuterJoin;
 		}
 
-		public Set<T> getRightOuterJoin() {
+		public Collection<E> getRightOuterJoin() {
 			return rightOuterJoin;
 		}
 
-		public void setRightOuterJoin(Set<T> rightOuterJoin) {
+		public void setRightOuterJoin(Collection<E> rightOuterJoin) {
 			this.rightOuterJoin = rightOuterJoin;
 		}
 
-		public Set<T> getInnerJoin() {
+		public Collection<E> getInnerJoin() {
 			return innerJoin;
 		}
 
-		public void setInnerJoin(Set<T> innerJoin) {
+		public void setInnerJoin(Collection<E> innerJoin) {
 			this.innerJoin = innerJoin;
 		}
 

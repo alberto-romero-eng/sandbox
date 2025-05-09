@@ -48,7 +48,7 @@ import localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic.ThreadR
 
 public class SandboxApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Throwable {
 
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
@@ -97,13 +97,13 @@ public class SandboxApplication {
 		// SynchroWaitNotifyAllHelper.main();
 		// ClassMain.main();
 		// ClassLoaderMain.main();
-		// JoinHelper.main();
+		JoinHelper.main();
 		// LinkedHashMapAndSetMain.main();
 		// AbstractClassMain.main();
 		// EnumMain.main();
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
-		RecursiveGeneratorB62Helper.main();
+		// RecursiveGeneratorB62Helper.main();
 
 
 	}

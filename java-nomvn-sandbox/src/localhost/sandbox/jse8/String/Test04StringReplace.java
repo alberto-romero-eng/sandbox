@@ -49,6 +49,7 @@ public class Test04StringReplace {
 
 
 		// test 2025-01-20
+		/*
 		String input = "{site}_{cond}_{sku}";
 		String site = "{site}";
 		String cond = "{cond}";
@@ -69,6 +70,31 @@ public class Test04StringReplace {
 		System.out.println("reSite matches: " + input.matches(".*" + reSite + ".*"));
 		System.out.println("reCond matches: " + input.matches(".*" + reCond + ".*"));
 		System.out.println("reSku matches: " + input.matches(".*" + reSku + ".*"));
+		 */
+
+
+
+		// test 2025-04-27
+		/*
+		// case 1
+		String input1 = "RABBIT_DUMMY_P01V01_PUBERRORTHISISANERROR_SLEEPSEC1234_OTHER";
+		String output1A = input1.replaceAll("(?i)^.*(SLEEPSEC[0-9]+).*$", "$1");
+		String output1B = output1A.replaceAll("(?i)SLEEPSEC", "");
+		System.out.println("input1: " + input1 + ", output1A: " + output1A + ", output1B: " + output1B);
+		// case 2
+		String input2 = "RABBIT_DUMMY_P01V01_PUBERRORTHISISANERROR_SLEEPSEC1234";
+		String output2A = input2.replaceAll("(?i)^.*(SLEEPSEC[0-9]+).*$", "$1");
+		String output2B = output2A.replaceAll("(?i)SLEEPSEC", "");
+		System.out.println("input2: " + input2 + ", output2A: " + output2A + ", output2B: " + output2B);
+		 */
+
+
+		// test 2025-05-05
+		String input = "a,b,c";
+		String output = input.replaceAll(",", "|");
+		System.out.println("input: " + input + ", output: " + output);
+
+
 
 
 	}
