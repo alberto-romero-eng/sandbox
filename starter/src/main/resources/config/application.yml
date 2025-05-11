@@ -1,0 +1,14 @@
+### REMINDER: Look at REMINDER in pom.xml!
+
+spring:
+### spring application type: servlet, reactive, none
+  application:
+    # name: ${project.name} # fails
+    name: starter
+  # config:
+    # import: optional:configserver:http://localhost:8888
+  main:
+    web-application-type: none
+  profiles:
+    active: local
+

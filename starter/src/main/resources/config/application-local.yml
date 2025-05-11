@@ -1,0 +1,31 @@
+debug: false
+
+
+### logging
+logging:
+  config: classpath:log4j2-local.xml
+  # logging.level -- values: trace, debug, info
+  level:
+    root: info
+
+
+
+### standard maven variables
+project:
+  name: '@project.name@'
+  version: '@project.version@'
+  description: '@project.description@'
+  ### customized maven variables
+  versionDate: '@project.versionDate@'
+  versionComment: '@project.versionComment@'
+  ### inner reference
+  nameInnerRef: ${project.name}
+
+
+
+### customized cron and delay for scheduled methods
+customScheduled:
+  fixedDelayString01: 5000
+  cron01: '*/15 * * * * *'
+
+  
