@@ -18,7 +18,7 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2025-04-06 06:39'
+__KH_UPDATED__='2025-05-15 05:53'
 
 
 # initate required vars
@@ -38,7 +38,7 @@ __KH_REGEX_WM4_PRO_HOEPLI__='wm4-pro-hoepli'
 __KH_REGEX_WM5_PRO_LOGISFASHION_MX__='wm5-pro-logisfashion-mx'
 __KH_REGEX_WM7_PRO_BEB__='wm7-pro-beb'
 __KH_REGEX_WM8_PRO_VEEPEE__='wm8-pro-veepee'
-__KH_REGEX_PRE_PIT__='pit'
+__KH_REGEX_PRO_PIT__='pit'
 __KH_REGEX_V2_PRO_COMMON_TOOL__='v2-pro-common-tool'
 
 
@@ -796,6 +796,26 @@ function __kh_describe_pod {
 
 
 
+function __kh_get_namespaces {
+    ${kk} get namespaces > ./tmp/get-namespaces.txt
+    cat ./tmp/get-namespaces.txt
+}
+
+
+
+
+function __kh_describe_namespace {
+    if [ -z ${__kh_namespace} ] ; then
+        echo 'variable ${__kh_namespace} must be defined -- exit'
+        return 1;
+    fi
+    ${kk} describe namespace ${__kh_namespace} > ./tmp/describe-namespace.txt
+    cat ./tmp/describe-namespace.txt
+}
+
+
+
+
 function __kh_get_services {
     ${kk} get services > ./tmp/get-services.txt
     cat ./tmp/get-services.txt
@@ -931,7 +951,7 @@ function __kh_source_kh_env_file {
 ZH_ZEROHELPER_INIT='__kh_zerohelper_init'
 
 alias __kh_zerohelper_menu='alias 00 ; echo ; alias 01 02 03 04 ; '
-alias __kh_zerohelper_menu_1='alias 1s ; echo ; alias 10 11 12 14 15 17 18 ; echo ; alias 90 92 94 '
+alias __kh_zerohelper_menu_1='alias 1s ; echo ; alias 10 11 12 14 15 17 18 19 110 ; echo ; alias 90 92 94 96'
 alias __kh_zerohelper_menu_2='alias 20 21 22 23 24 ; echo ; alias 25 26 27 28 29 ; echo ; alias 210 215 216 217 225 ; echo ; alias 256 298 299 ; echo ; alias 91 93 95 '
 alias __kh_zerohelper_menu_3='alias 30 31 33 34 3b ; echo ; alias 36 36a 36b 36c ;'
 alias __kh_zerohelper_menu_4='alias 40 41 42;'
@@ -949,14 +969,14 @@ alias 04='__kh_zerohelper_menu_4 # pod: scale'
 
 # aliases, select environment, load environment from file
 alias 1s=' __kh_source_env_file ; '
-alias 10=' __kh_load '${__KH_REGEX_WM_PRE__}' ; '
-alias 11=' __kh_load '${__KH_REGEX_WM1_PRO_GOODBUY__}' ; '
-alias 12=' __kh_load '${__KH_REGEX_WM2_PRO_GROUPELGA__}' ; '
-alias 14=' __kh_load '${__KH_REGEX_WM4_PRO_HOEPLI__}' ; '
-alias 15=' __kh_load '${__KH_REGEX_WM5_PRO_LOGISFASHION_MX__}' ; '
-alias 17=' __kh_load '${__KH_REGEX_WM7_PRO_BEB__}' ; '
-alias 18=' __kh_load '${__KH_REGEX_WM8_PRO_VEEPEE__}' ; '
-alias 19=' __kh_load '${__KH_REGEX_PRE_PIT__}' ; '
+alias 10='  __kh_load '${__KH_REGEX_WM_PRE__}' ; '
+alias 11='  __kh_load '${__KH_REGEX_WM1_PRO_GOODBUY__}' ; '
+alias 12='  __kh_load '${__KH_REGEX_WM2_PRO_GROUPELGA__}' ; '
+alias 14='  __kh_load '${__KH_REGEX_WM4_PRO_HOEPLI__}' ; '
+alias 15='  __kh_load '${__KH_REGEX_WM5_PRO_LOGISFASHION_MX__}' ; '
+alias 17='  __kh_load '${__KH_REGEX_WM7_PRO_BEB__}' ; '
+alias 18='  __kh_load '${__KH_REGEX_WM8_PRO_VEEPEE__}' ; '
+alias 19='  __kh_load '${__KH_REGEX_PRO_PIT__}' ; '
 alias 110=' __kh_load '${__KH_REGEX_V2_PRO_COMMON_TOOL__}' ; '
 
 # aliases, select service by regex
@@ -1004,12 +1024,14 @@ alias 42='__kh_rollout_restart ; '
 
 
 # aliases, kubectl-kubeconfig queries
-alias 90=' __kh_get_services ; '
+alias 90='  __kh_get_services ; '
 alias 91='  __kh_describe_service ; '
-alias 92=' __kh_get_deployments ; '
+alias 92='  __kh_get_deployments ; '
 alias 93='  __kh_describe_deployment ; '
-alias 94=' __kh_get_pods ; '
+alias 94='  __kh_get_pods ; '
 alias 95='  __kh_describe_pod ; '
+alias 96='  __kh_get_namespaces ; '
+alias 97='  __kh_describe_namespace ; '
 
 
 
