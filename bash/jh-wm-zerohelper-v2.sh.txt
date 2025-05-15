@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-04-24 17:24'
+__JH_WMP_UPDATED__='2025-05-15 10:24'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
@@ -183,12 +183,12 @@ __JH_WM_UI_XMX__='192m'
 # keepa
 __JH_WM_KEEPA_FOLDER__='keepa'
 __JH_WM_KEEPA_JAR_REGEX__='keepa'
-__JH_WM_KEEPA_XMX__='192m'
+__JH_WM_KEEPA_XMX__='256m'
 
 # aecoc
 __JH_WM_AECOC_FOLDER__='aecoc'
 __JH_WM_AECOC_JAR_REGEX__='aecoc'
-__JH_WM_AECOC_XMX__='192m'
+__JH_WM_AECOC_XMX__='256m'
 
 # icecat
 __JH_WM_ICECAT_FOLDER__='icecat'
@@ -198,7 +198,7 @@ __JH_WM_ICECAT_XMX__='128m'
 # pim
 __JH_WM_PIM_FOLDER__='pim'
 __JH_WM_PIM_JAR_REGEX__='pim'
-__JH_WM_PIM_XMX__='192m'
+__JH_WM_PIM_XMX__='256m'
 
 # pituploadmanagement
 __JH_WM_PITUPLOADMANAGEMENT_FOLDER__='pituploadmanagement'
