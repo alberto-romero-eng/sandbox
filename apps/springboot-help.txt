@@ -1,0 +1,63 @@
+SpringBoot Help -- updated: 2025-05-18 11:32
+
+
+
+
+(1) Java-17 migration:
+
+---> .gitlab-ci.yml:
+ image: maven:3.9.9-eclipse-temurin-17-focal
+ - helm pull wm-springboot/wm-springboot --version 2.1.4 --untar
+
+---> .gitlab/values.yaml:
+ javaVersion:17
+
+---> Dockerfile:
+FROM eclipse-temurin:17
+ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Dspring.profiles.active=!!PROFILE¡¡", "-Dserver.port=8000","-jar","/mailing.jar"]
+
+
+
+
+(2) SpringDoc migration:
+
+import io.swagger.annotations.Api;           ->   import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.ApiOperation;  ->   import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiResponse;   ->   import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.annotations.ApiResponses;  ->   import io.swagger.v3.oas.annotations.responses.ApiResponses;
+@Api(description = "foo")                    ->   @Tag(name = "foo")
+@ApiOperation(value = "foo")                 ->   @Operation(summary = "foo")
+@ApiResponse(code = 200, message = "ok")     ->   @ApiResponse(responseCode = "200", message = "ok")
+
+
+
+
+(3) User / Order reminder:
+
+<dependency>
+	<groupId>org.glassfish.jaxb</groupId>
+	<artifactId>jaxb-runtime</artifactId>
+</dependency>
+
+
+
+
+(4) Pim reminder:
+
+java 17 "java.lang.ClassNotFoundException: com.sun.xml.bind.v2.ContextFactory"
+
+<!-- <dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-databind</artifactId>
+</dependency> --><!-- not required -->
+
+<!-- <dependency>
+	<groupId>jakarta.xml.bind</groupId>
+	<artifactId>jakarta.xml.bind-api</artifactId>
+</dependency> --><!-- not required -->
+
+<dependency>
+	<groupId>org.glassfish.jaxb</groupId>
+	<artifactId>jaxb-runtime</artifactId>
+</dependency>
+
