@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2025-04-24 17:36'
+__JH_WMP_START_LIST_UPDATED__='2025-05-18 11:20'
 
 
 ### list(s)
@@ -110,10 +110,11 @@ function _jh_wm_start_platform_list {
     sleep 3
     
     for _microservice in ${__JH_DEPLOY_MICROSERVICES__} ; do
-        # _vn_fq_folder='__JH_WM_'$( echo -n ${_vn_microservice} | awk '{ print toupper($0) }' )'_FOLDER__'
-        # echo '${_vn_fq_folder}: '${_vn_fq_folder}' ; ${!_vn_fq_folder}: '${!_vn_fq_folder}
-        # _jh_start_service ${!_vn_fq_folder}
+        ### _vn_fq_folder='__JH_WM_'$( echo -n ${_vn_microservice} | awk '{ print toupper($0) }' )'_FOLDER__'
+        ### echo '${_vn_fq_folder}: '${_vn_fq_folder}' ; ${!_vn_fq_folder}: '${!_vn_fq_folder}
+        ### _jh_start_service ${!_vn_fq_folder}
         _jh_start_service ${_microservice}
+        sleep 20; ### TODO delete this `sleep` later; temporal measure due to over-heating (2025-05-15)
     done;
 
 }
