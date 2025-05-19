@@ -4,23 +4,58 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 
 
 public class URLHelper {
 
 	public static void main() throws Throwable {
+
 		// params
 		String inLink = null;
-		inLink = "https://alberto-romero-eng.github.io/img/test/marrón.jpg";
-		String expectedOutLink = "https://alberto-romero-eng.github.io/img/test/marr%C3%B3n.jpg"; // corrected
 		String outLink1 = null;
 		String outLink2 = null;
 		String outLink3 = null;
+		String expectedOutLink = null;
+
+		// test 1, url-encode
+		System.out.println("test1");
+		inLink = "https://alberto-romero-eng.github.io/img/test/marrón.jpg";
+		expectedOutLink = "https://alberto-romero-eng.github.io/img/test/marr%C3%B3n.jpg"; // corrected
 		// transformation
-		outLink1 = URLHelper.toASCIIString(inLink);
-		outLink2 = URLHelper.toASCIIString(outLink1);
-		outLink3 = URLHelper.toASCIIString(outLink2);
+		outLink1 = URLHelper.toAsciiByUrlEncode(inLink);
+		outLink2 = URLHelper.toAsciiByUrlEncode(outLink1);
+		outLink3 = URLHelper.toAsciiByUrlEncode(outLink2);
 		// result
+		System.out.println("inLink1: " + inLink);
+		System.out.println("outLink1: " + outLink1 + ", ok1: " + expectedOutLink.equals(outLink1));
+		System.out.println("outLink2: " + outLink2 + ", ok2: " + expectedOutLink.equals(outLink2));
+		System.out.println("outLink3: " + outLink3 + ", ok3: " + expectedOutLink.equals(outLink3));
+
+		// test 2, normalization
+		System.out.println("test2");
+		inLink = "https://alberto-romero-eng.github.io/img/test/marrón.jpg";
+		expectedOutLink = "https://alberto-romero-eng.github.io/img/test/marron.jpg"; // corrected
+		// transformation
+		outLink1 = URLHelper.toAsciiByNormalization(inLink);
+		outLink2 = URLHelper.toAsciiByNormalization(outLink1);
+		outLink3 = URLHelper.toAsciiByNormalization(outLink2);
+		// result
+		System.out.println("inLink1: " + inLink);
+		System.out.println("outLink1: " + outLink1 + ", ok1: " + expectedOutLink.equals(outLink1));
+		System.out.println("outLink2: " + outLink2 + ", ok2: " + expectedOutLink.equals(outLink2));
+		System.out.println("outLink3: " + outLink3 + ", ok3: " + expectedOutLink.equals(outLink3));
+
+		// test 3, normalization
+		System.out.println("test3");
+		inLink = "https://alberto-romero-eng.github.io/img/test/__ãéí–áá__.jpg";
+		expectedOutLink = "https://alberto-romero-eng.github.io/img/test/__aeiaa__.jpg"; // corrected
+		// transformation
+		outLink1 = URLHelper.toAsciiByNormalization(inLink);
+		outLink2 = URLHelper.toAsciiByNormalization(outLink1);
+		outLink3 = URLHelper.toAsciiByNormalization(outLink2);
+		// result
+		System.out.println("inLink1: " + inLink);
 		System.out.println("outLink1: " + outLink1 + ", ok1: " + expectedOutLink.equals(outLink1));
 		System.out.println("outLink2: " + outLink2 + ", ok2: " + expectedOutLink.equals(outLink2));
 		System.out.println("outLink3: " + outLink3 + ", ok3: " + expectedOutLink.equals(outLink3));
@@ -46,7 +81,7 @@ public class URLHelper {
 	 * @author Alberto Romero
 	 * @since 2025-05-18
 	 */
-	public static String toASCIIString(String inputLink) throws Throwable {
+	public static String toAsciiByUrlEncode(String inputLink) throws Throwable {
 		URL url = new URL(inputLink);
 		boolean isPureAscii = isPureAscii(url.getPath());
 		if (isPureAscii) {
@@ -58,7 +93,37 @@ public class URLHelper {
 	}
 
 
+	/**
+	 * <p>Supress non-ASCII characters in <i>inputLink</i>'s path.
+	 * 
+	 * <p>ASCII verification, requires further analysis (initially, only <i>path</i> is being considered).
+	 * 
+	 * @author Alberto Romero
+	 * @since 2025-05-18
+	 */
+	public static String toAsciiByNormalization(String inputLink) throws Throwable {
+		URL url = new URL(inputLink);
+		boolean isPureAscii = isPureAscii(url.getPath());
+		if (isPureAscii) {
+			return inputLink;
+		}
+		String modifiedPath = normalizeNonAsciiChars(url.getPath());
+		URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), modifiedPath, url.getQuery(), url.getRef());
+		String outLink = uri.toASCIIString();
+		return outLink;
+	}
+
+
 	private static boolean isPureAscii(String input) {
 		return StandardCharsets.US_ASCII.newEncoder().canEncode(input);
 	}
+
+
+	private static String normalizeNonAsciiChars(String input) {
+		String output = null;
+		output = Normalizer.normalize(input, Normalizer.Form.NFD);
+		output = output.replaceAll("[^\\x00-\\x7F]", "");
+		return output;
+	}
+
 }
