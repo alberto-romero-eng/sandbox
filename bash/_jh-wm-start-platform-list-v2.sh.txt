@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2025-05-18 11:20'
+__JH_WMP_START_LIST_UPDATED__='2025-05-18 22:52'
 
 
 ### list(s)
@@ -79,7 +79,6 @@ _jh_pim_list=${_s}
 _s='';
 
 _s=${_s}'pituploadmanagement'' '
-_s=${_s}'pitsectionmanagement'' '
 _s=${_s}'pitsectionmanagement'' '
 _s=${_s}'pitresultmanagement'' '
 _s=${_s}'pitmappingmanagement'' '
