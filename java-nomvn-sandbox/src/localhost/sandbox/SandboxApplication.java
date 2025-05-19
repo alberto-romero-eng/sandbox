@@ -19,6 +19,7 @@ import localhost.sandbox.jse8.A0Helper.SkuPatternHelper;
 import localhost.sandbox.jse8.A0Helper.SynchroWaitNotifyAllHelper;
 import localhost.sandbox.jse8.A0Helper.SystemPropertiesHelper;
 import localhost.sandbox.jse8.A0Helper.ThreadHelper;
+import localhost.sandbox.jse8.A0Helper.URLHelper;
 import localhost.sandbox.jse8.AbstractClass.AbstractClassMain;
 import localhost.sandbox.jse8.Annotation.AnnotationMain;
 import localhost.sandbox.jse8.Class.ClassMain;
@@ -45,6 +46,7 @@ import localhost.sandbox.jse8.Thread.ThreadMain;
 import localhost.sandbox.jse8.ThreadExecutors.ThreadExecutorsMain;
 import localhost.sandbox.jse8.ThreadGroupThreadMXBean.ThreadGroupThreadMXBeanMain;
 import localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic.ThreadRaceConditionSynchroWaitNotifyAtomicMain;
+import localhost.sandbox.jse8.URL.URLMain;
 
 public class SandboxApplication {
 
@@ -97,14 +99,14 @@ public class SandboxApplication {
 		// SynchroWaitNotifyAllHelper.main();
 		// ClassMain.main();
 		// ClassLoaderMain.main();
-		JoinHelper.main();
+		// JoinHelper.main();
 		// LinkedHashMapAndSetMain.main();
 		// AbstractClassMain.main();
 		// EnumMain.main();
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
-
+		URLHelper.main();
 
 	}
 }
