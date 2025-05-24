@@ -1,0 +1,9 @@
+logging:
+  # config: classpath:log4j2-localalberto.xml # deprecated
+  level:
+    root: info
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 0 ### debug-local-value: 0 ; original-value: 10
+
