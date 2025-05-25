@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-05-24 02:15'
+__ALIAS_LAST_UPDATE__='2025-05-25 13:10'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -546,7 +546,7 @@ alias jl='__jh_jl'
 
 
 
-function __grh_g {
+function __gwh_gw {
 
 if [ -e ./gradlew ] ; then
     echo '--> ./gradlew '${*}
@@ -558,12 +558,12 @@ fi
 
 }
 
-alias g='__grh_g'
+alias gw='__gwh_gw'
 
 
 
 
-function __jh_bootstrap_prop_for_local {
+function __jh_sb2_bootstrap_prop_for_local {
     if [ ! -e ./src/main/resources/bootstrap-alberto.properties ]
     then
         echo '--> file '\''./src/main/resources/bootstrap-alberto.properties'\'' does not exist, exit'
@@ -576,11 +576,11 @@ function __jh_bootstrap_prop_for_local {
     echo
 }
 
-alias old_bl='__jh_bootstrap_prop_for_local'
+alias _jh_sb2_bl='__jh_sb2_bootstrap_prop_for_local'
 
 
 
-function __jh_bootstrap_prop_for_commit {
+function __jh_sb2_bootstrap_prop_for_commit {
     if [ ! -e ./src/main/resources/bootstrap.properties ]
     then
         echo '--> file '\''./src/main/resources/bootstrap.properties'\'' does not exist, exit'
@@ -594,11 +594,11 @@ function __jh_bootstrap_prop_for_commit {
     echo
 }
 
-alias old_bo='__jh_bootstrap_prop_for_commit'
+alias _jh_sb2_bo='__jh_sb2_bootstrap_prop_for_commit'
 
 
 
-function __jh_application_yml_for_local {
+function __jh_sb3_application_yml_for_local {
     if [ ! -e ./src/main/resources/application-bsalberto.yml ]
     then
         echo '--> file '\''./src/main/resources/application-bsalberto.yml'\'' does not exist, exit'
@@ -610,11 +610,11 @@ function __jh_application_yml_for_local {
     echo
 }
 
-alias al='__jh_application_yml_for_local'
+alias _jh_sb3_bl='__jh_sb3_application_yml_for_local'
 
 
 
-function __jh_applicaton_yml_for_commit {
+function __jh_sb3_applicaton_yml_for_commit {
     if [ ! -e ./src/main/resources/application.yml ]
     then
         echo '--> file '\''./src/main/resources/application.yml'\'' does not exist, exit'
@@ -626,12 +626,55 @@ function __jh_applicaton_yml_for_commit {
     echo
 }
 
-alias ao='__jh_applicaton_yml_for_commit'
+alias _jh_sb3_bo='__jh_sb3_applicaton_yml_for_commit'
 
 
 
-alias bl='old_bl ; al'
-alias bo='old_bo ; ao'
+alias bl='_jh_sb2_bl ; _jh_sb3_bl'
+alias bo='_jh_sb2_bo ; _jh_sb3_bo'
+
+
+
+function __jh_java_vars_print {
+    echo '--> java vars: '
+    echo '__JH_XMS__: '${__JH_XMS__}
+    echo '__JH_XMX__: '${__JH_XMX__}
+    echo '__JH_SPRING_PROFILES_ACTIVE__: '${__JH_SPRING_PROFILES_ACTIVE__}
+    echo
+    echo '--> java vars, default: '
+    echo '__JH_XMS_DEFAULT__: '${__JH_XMS_DEFAULT__}
+    echo '__JH_XMX_DEFAULT__: '${__JH_XMX_DEFAULT__}
+    echo '__JH_SPRING_PROFILES_ACTIVE_DEFAULT__: '${__JH_SPRING_PROFILES_ACTIVE_DEFAULT__}
+}
+alias jvp='__jh_java_vars_print'
+
+
+function __jh_java_vars_set {
+    if [[ ( -z ${1} ) || ( -z ${2} ) || ( -z ${3} ) ]] ; then
+        echo 'you must provide three parameters: __JH_XMS__, __JH_XMX__, __JH_SPRING_PROFILES_ACTIVE__'
+        echo 'see default values'
+        return 1
+    fi
+    echo '--> set from ${1}, ${2}, ${3}'
+    echo
+    __JH_XMS__=${1}
+    __JH_XMX__=${2}
+    __JH_SPRING_PROFILES_ACTIVE__=${3}
+    __jh_java_vars_print
+}
+alias jvs='__jh_java_vars_set'
+
+
+function __jh_java_vars_set_from_defaults {
+    echo '--> set from defaults'
+    echo
+    __JH_XMS__=${__JH_XMS_DEFAULT__}
+    __JH_XMX__=${__JH_XMX_DEFAULT__}
+    __JH_SPRING_PROFILES_ACTIVE__=${__JH_SPRING_PROFILES_ACTIVE_DEFAULT__}
+    __jh_java_vars_print
+}
+alias jvd='__jh_java_vars_set_from_defaults'
+
 
 
 
@@ -644,6 +687,10 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	
 	  jjrg  : grep -P -i \${1} \${log_file}
 	  jjrgts: grep -P -i 'tomcat started' \${log_file}
+	
+	  jvp: __jh_java_vars_print
+	  jvs: __jh_java_vars_set
+	  jvd: __jh_java_vars_set_from_defaults
 	
 	  sj  : __jh_from_pom_set_java_version # helper function
 	
@@ -660,12 +707,10 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  mdr : mvn dependency:resolve -U
 	  mdp : mvn dependency:purge-local-repository -U
 	
-	  g   : ./gradlew
-	
 	  tk  : taskkill -- [ (mvn_folder_no_arg) | pid | jps_name ]
 	
-	  bl  : './src/main/resources/bootstrap.properties' for local
-	  bo  : './src/main/resources/bootstrap.properties' for commit
+	  bl  : sb2-bootstrap.prop / sb3-application.yml, for local
+	  bo  : sb2-bootstrap.prop / sb3-application.yml, for commit
 	HEREDOC_EOF
 alias jh='less -f <( echo -e "${_jh_help_string}")'
 
