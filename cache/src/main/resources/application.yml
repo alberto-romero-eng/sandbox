@@ -1,1 +1,11 @@
 
+spring:
+  application:
+    name: cacheservice
+  cache:
+    type: NONE # GENERIC, NONE
+
+cache:
+  person:
+    enabled: true
+

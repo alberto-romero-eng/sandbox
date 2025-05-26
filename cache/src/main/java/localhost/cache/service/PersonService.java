@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonService {
+public class PersonService implements PersonInterface {
 
 	private static Logger log = LoggerFactory.getLogger(PersonService.class);
 

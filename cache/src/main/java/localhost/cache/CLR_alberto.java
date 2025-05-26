@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import localhost.cache.service.CacheGatewayService;
 import localhost.cache.service.CacheService;
 import localhost.cache.service.CacheWrapperService;
+import localhost.cache.service.PersonService;
 import localhost.cache.service.PersonService.PersonPojo;
 
 
@@ -20,6 +22,10 @@ public class CLR_alberto implements CommandLineRunner{
 	@Autowired
 	CacheWrapperService cacheWrapperService;
 
+	@Autowired
+	CacheGatewayService cacheGatewayService;
+
+
 	private static Logger log = LoggerFactory.getLogger(CLR_alberto.class);
 
 	@Override
@@ -27,13 +33,95 @@ public class CLR_alberto implements CommandLineRunner{
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		test02();
-		// test01();
+		test03_CacheGateway();
+		// test02_CacheWrapper();
+		// test01_CacheSimple();
 
 	}
 
 
-	private void test02() {
+	/**
+	 * <p><b>Important:</br> Read {@link CacheGatewayService} javaDoc.
+	 * 
+	 * <p>This method is to be run two times, regarding {@link CacheGatewayService}
+	 * initialization, <i>personCacheEnabled</i> parameter:
+	 * <ul>
+	 * <li>once with <i>false</i>, to test {@link PersonService} implementation. 
+	 * <li>once with <i>true</i>, to test {@link CacheService} implementation.
+	 * </ul>
+	 * 
+	 * @since 2025-05-26
+	 * @see CacheGatewayService
+	 * 
+	 */
+	private void test03_CacheGateway() {
+		String name = null;
+		int age = 0;
+		float height = 0.0f;
+		boolean militaryEnabled = false;
+		PersonPojo person = null;
+
+
+		// Person name:"One" exists
+		// Thread should enter CacheService ONLY FIRST TIME, to cache value
+		name = "One";
+		person = cacheGatewayService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+
+		name = "Two";
+		person = cacheGatewayService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// Person name:"Seven" does not exist
+		name = "Seven";
+		person = cacheGatewayService.getPerson(name, 17, 1.7f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 17, 1.7f, true);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// clear cache
+		cacheService.clearPersonCache();
+
+
+		// after executing clearCache, attempt getting values again
+
+
+		// Person name:"One" exists
+		// Thread should enter CacheService ONLY FIRST TIME, to cache value
+		name = "One";
+		person = cacheGatewayService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+
+		name = "Two";
+		person = cacheGatewayService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// Person name:"Seven" does not exist
+		name = "Seven";
+		person = cacheGatewayService.getPerson(name, 17, 1.7f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheGatewayService.getPerson(name, 17, 1.7f, true);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// done
+		log.info("done!");
+	}
+
+
+
+	private void test02_CacheWrapper() {
 		String name = null;
 		int age = 0;
 		float height = 0.0f;
@@ -100,7 +188,7 @@ public class CLR_alberto implements CommandLineRunner{
 
 
 
-	private void test01() {
+	private void test01_CacheSimple() {
 		String country = null;
 		String continent = null;
 		String model = null;
