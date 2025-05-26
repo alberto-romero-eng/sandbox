@@ -40,6 +40,12 @@ package localhost.sandbox.jse8.JavaDoc;
  * <p>Look source comment: List<T> and List&lt;T&gt;.
  * 
  * 
+ * @author Alberto Romero
+ * @since 2025-05-25
+ * @see String
+ * @see Integer
+ * @see Boolean
+ * 
  */
 public class JavaDocMain {
 

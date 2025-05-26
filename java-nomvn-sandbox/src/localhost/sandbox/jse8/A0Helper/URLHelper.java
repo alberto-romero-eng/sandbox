@@ -11,6 +11,15 @@ public class URLHelper {
 
 	public static void main() throws Throwable {
 
+		String s1 = "ó";
+		String s2 = null;
+		s2 = normalizeNonAsciiChars(s1);
+
+		System.out.println("s1: " + s1 + ", s2: " + s2);
+	}
+
+	public static void testUrlEncodes() throws Throwable {
+
 		// params
 		String inLink = null;
 		String outLink1 = null;
@@ -119,7 +128,7 @@ public class URLHelper {
 	}
 
 
-	private static String normalizeNonAsciiChars(String input) {
+	public static String normalizeNonAsciiChars(String input) {
 		String output = null;
 		output = Normalizer.normalize(input, Normalizer.Form.NFD);
 		output = output.replaceAll("[^\\x00-\\x7F]", "");
