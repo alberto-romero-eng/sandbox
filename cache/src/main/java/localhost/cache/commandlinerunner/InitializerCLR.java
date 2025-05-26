@@ -17,6 +17,7 @@ public class InitializerCLR implements CommandLineRunner{
 	@Autowired
 	CacheService cacheService;
 
+
 	private static Logger log = LoggerFactory.getLogger(InitializerCLR.class);
 
 	@Override
@@ -24,6 +25,7 @@ public class InitializerCLR implements CommandLineRunner{
 		// initCacheServiceForCanada();
 		log.info("Finish run()");
 	}
+
 
 	private void initCacheServiceForCanada() {
 		String continentForCanada = null;

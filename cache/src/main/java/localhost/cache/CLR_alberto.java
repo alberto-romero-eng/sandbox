@@ -7,24 +7,98 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import localhost.cache.service.CacheService;
+import localhost.cache.service.CacheWrapperService;
+import localhost.cache.service.PersonService.PersonPojo;
 
 
 @Component
-public class alberto_CLR implements CommandLineRunner{
+public class CLR_alberto implements CommandLineRunner{
 
 	@Autowired
 	CacheService cacheService;
 
-	private static Logger log = LoggerFactory.getLogger(alberto_CLR.class);
+	@Autowired
+	CacheWrapperService cacheWrapperService;
+
+	private static Logger log = LoggerFactory.getLogger(CLR_alberto.class);
 
 	@Override
 	public void run(String... args) throws Exception {
-		log.info("Hello from albertoCLR");
+		log.info("Hello from CLR_alberto");
 
 		// tests
-		test01();
+		test02();
+		// test01();
 
 	}
+
+
+	private void test02() {
+		String name = null;
+		int age = 0;
+		float height = 0.0f;
+		boolean militaryEnabled = false;
+		PersonPojo person = null;
+
+
+		// Person name:"One" exists
+		// Thread should enter CacheService ONLY FIRST TIME, to cache value
+		name = "One";
+		person = cacheWrapperService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+
+		name = "Two";
+		person = cacheWrapperService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// Person name:"Seven" does not exist
+		name = "Seven";
+		person = cacheWrapperService.getPerson(name, 17, 1.7f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 17, 1.7f, true);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// clear cache
+		cacheService.clearPersonCache();
+
+
+		// after executing clearCache, attempt getting values again
+
+
+		// Person name:"One" exists
+		// Thread should enter CacheService ONLY FIRST TIME, to cache value
+		name = "One";
+		person = cacheWrapperService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 11, 1.1f, true);
+		log.info("name: {}, person: {}", name, person);
+
+		name = "Two";
+		person = cacheWrapperService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 12, 1.2f, false);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// Person name:"Seven" does not exist
+		name = "Seven";
+		person = cacheWrapperService.getPerson(name, 17, 1.7f, false);
+		log.info("name: {}, person: {}", name, person);
+		person = cacheWrapperService.getPerson(name, 17, 1.7f, true);
+		log.info("name: {}, person: {}", name, person);
+
+
+		// done
+		log.info("done!");
+	}
+
+
 
 	private void test01() {
 		String country = null;

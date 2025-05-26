@@ -16,7 +16,7 @@ public class CacheConfiguration implements CacheManagerCustomizer<ConcurrentMapC
 	 */
 	@Override
 	public void customize(ConcurrentMapCacheManager cacheManager) {
-		cacheManager.setCacheNames(Arrays.asList("continent", "brand"));
+		cacheManager.setCacheNames(Arrays.asList("continent", "brand", "person"));
 		cacheManager.setAllowNullValues(Boolean.TRUE);
 	}
 
