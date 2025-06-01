@@ -1,9 +1,16 @@
 package localhost.cache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.autoconfigure.cache.CacheType;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import localhost.cache.service.CacheGatewayService;
@@ -11,10 +18,17 @@ import localhost.cache.service.CacheService;
 import localhost.cache.service.CacheWrapperService;
 import localhost.cache.service.PersonService;
 import localhost.cache.service.PersonService.PersonPojo;
+import localhost.cache.service.util.SpringBootCacheHelper;
 
 
 @Component
-public class CLR_alberto implements CommandLineRunner{
+public class CLR_alberto implements CommandLineRunner {
+
+	@Autowired
+	private ApplicationContext ac;
+
+	@Autowired
+	private ConfigurableApplicationContext cac;
 
 	@Autowired
 	CacheService cacheService;
@@ -25,6 +39,9 @@ public class CLR_alberto implements CommandLineRunner{
 	@Autowired
 	CacheGatewayService cacheGatewayService;
 
+	@Autowired
+	SpringBootCacheHelper sbCacheHelper;
+
 
 	private static Logger log = LoggerFactory.getLogger(CLR_alberto.class);
 
@@ -33,10 +50,11 @@ public class CLR_alberto implements CommandLineRunner{
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		test03_CacheGateway();
-		// test02_CacheWrapper();
-		// test01_CacheSimple();
-
+		// test04_CacheGateway();
+		// test03_CacheWrapper();
+		// test02_CacheSimple();
+		test01_SpringBootCacheHelper();
+		// test00_ApplicationContext();
 	}
 
 
@@ -54,7 +72,7 @@ public class CLR_alberto implements CommandLineRunner{
 	 * @see CacheGatewayService
 	 * 
 	 */
-	private void test03_CacheGateway() {
+	private void test04_CacheGateway() {
 		String name = null;
 		int age = 0;
 		float height = 0.0f;
@@ -121,7 +139,7 @@ public class CLR_alberto implements CommandLineRunner{
 
 
 
-	private void test02_CacheWrapper() {
+	private void test03_CacheWrapper() {
 		String name = null;
 		int age = 0;
 		float height = 0.0f;
@@ -188,7 +206,7 @@ public class CLR_alberto implements CommandLineRunner{
 
 
 
-	private void test01_CacheSimple() {
+	private void test02_CacheSimple() {
 		String country = null;
 		String continent = null;
 		String model = null;
@@ -278,5 +296,26 @@ public class CLR_alberto implements CommandLineRunner{
 
 		log.info("done!");
 	}
+
+
+	private void test01_SpringBootCacheHelper() {
+		CacheProperties cacheProp = sbCacheHelper.getCachePropertiesBean();
+		CacheType cacheType = cacheProp.getType();
+		log.info("CacheType: {}", cacheType);
+	}
+
+
+
+	private void test00_ApplicationContext() {
+		int count = ac.getBeanDefinitionCount();
+		String[] names = ac.getBeanDefinitionNames();
+		log.info("count: {}", count);
+		for (String name : names) {
+			if (name.matches("(?i)^.*cache.*$")) {
+				log.info("beanName: {}", name);
+			}
+		}
+	}
+
 
 }

@@ -3,7 +3,7 @@ spring:
   application:
     name: cacheservice
   cache:
-    type: NONE # GENERIC, NONE
+    type: SIMPLE ### SIMPLE, NONE ### GENERIC fails ### Enum type, do not 'stringify' value
 
 cache:
   person:
