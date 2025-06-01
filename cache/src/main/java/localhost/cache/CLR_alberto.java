@@ -18,7 +18,7 @@ import localhost.cache.service.CacheService;
 import localhost.cache.service.CacheWrapperService;
 import localhost.cache.service.PersonService;
 import localhost.cache.service.PersonService.PersonPojo;
-import localhost.cache.service.util.SpringBootCacheHelper;
+import localhost.cache.util.SpringBootCacheHelper;
 
 
 @Component

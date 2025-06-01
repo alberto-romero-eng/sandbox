@@ -1,4 +1,4 @@
-package localhost.cache.service.util;
+package localhost.cache.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.cache.CacheType;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 
-@Service
+@Component
 public class SpringBootCacheHelper {
 
 	private static Logger log = LoggerFactory.getLogger(SpringBootCacheHelper.class);
