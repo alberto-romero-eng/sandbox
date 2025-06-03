@@ -1,4 +1,4 @@
-SpringBoot Help -- updated: 2025-05-18 11:32
+SpringBoot Help -- updated: 2025-06-03 00:54
 
 
 
@@ -21,22 +21,50 @@ ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimi
 
 (2) SpringDoc migration:
 
-import io.swagger.annotations.Api;           ->   import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.annotations.ApiOperation;  ->   import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.annotations.ApiResponse;   ->   import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.annotations.ApiResponses;  ->   import io.swagger.v3.oas.annotations.responses.ApiResponses;
-@Api(description = "foo")                    ->   @Tag(name = "foo")
-@ApiOperation(value = "foo")                 ->   @Operation(summary = "foo")
-@ApiResponse(code = 200, message = "ok")     ->   @ApiResponse(responseCode = "200", message = "ok")
+import io.swagger.annotations.Api;             ->   import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.ApiOperation;    ->   import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.ApiResponse;     ->   import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.annotations.ApiResponses;    ->   import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.annotations.ApiModel         ->   import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModelProperty ->   import io.swagger.v3.oas.annotations.media.Schema;
+
+@Api(description = "foo")                         ->   @Tag(name = "foo")
+@ApiOperation(value = "foo")                      ->   @Operation(summary = "foo")
+@ApiResponse(code = 200, message = "ok")          ->   @ApiResponse(responseCode = "200", message = "ok")
+@ApiModel(value = "foo")                          ->   @Schema(description = "foo")
+@ApiModelProperty(required = true, value = "foo") ->   @Schema(requiredMode = RequiredMode.REQUIRED, description = "foo")
 
 
 
 
 (3) User / Order reminder:
 
+<!-- SpringSecurity/OAuth processing -->
 <dependency>
 	<groupId>org.glassfish.jaxb</groupId>
 	<artifactId>jaxb-runtime</artifactId>
+</dependency>
+
+<!-- SpringWebServices / eBay SDK / XML processing -->
+<dependency>
+	<groupId>com.sun.xml.ws</groupId>
+	<artifactId>rt</artifactId>
+	<version>2.3.7</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.xml.messaging.saaj</groupId>
+	<artifactId>saaj-impl</artifactId>
+	<!-- <version>1.5.3</version> -->
+</dependency><!-- redundant, imported transitively -->
+<dependency>
+	<groupId>xalan</groupId>
+	<artifactId>xalan</artifactId>
+	<version>2.7.3</version>
+</dependency>
+<dependency>
+	<groupId>xalan</groupId>
+	<artifactId>serializer</artifactId>
+	<version>2.7.3</version>
 </dependency>
 
 
