@@ -1,0 +1,60 @@
+envName: ALBERTODEFAULT
+
+alberto:
+  check: a00
+
+debug: false
+
+logging:
+  level:
+    root: info
+
+spring:
+  jackson:
+    default-property-inclusion: non-empty
+  task:
+    scheduling:
+      pool:
+         size: 20
+  cloud:
+    kubernetes:
+      enabled: false
+      config:
+        enabled: false
+    config: # springboot-3.0
+      enabled: false # springboot-3.0
+  config: # springboot-3.0
+    import: 'optional:configserver:http://configserver:8888' # springboot-3.0
+
+server:
+  port: 4002
+
+eureka:
+  client:
+    enabled: true
+
+feign:
+  client:
+    config:
+      default: 
+        connectTimeout: 20000
+        readTimeout: 60000
+
+springdoc:
+  swagger-ui:
+    filter: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    displayRequestDuration: true
+    docExpansion: full
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
