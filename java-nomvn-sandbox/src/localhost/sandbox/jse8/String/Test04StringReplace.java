@@ -8,6 +8,13 @@ public class Test04StringReplace {
 		System.out.println("Hello from stringReplace!");
 
 
+		// test 2025-06-19
+		String input = "ROLE_ADMIN";
+		String output = input.replaceAll("(?i)ROLE_", "");
+		System.out.println("input: " + input + ", output: " + output);
+
+
+
 		// test 2024-06-12
 		/*
 		String input = "UPDATE my_table SET date = #{order.date} , address = #{order.address}, marketplace = ${order.marketplace} WHERE true AND id = #{order.id}";
@@ -90,11 +97,9 @@ public class Test04StringReplace {
 
 
 		// test 2025-05-05
-		String input = "a,b,c";
+		/* String input = "a,b,c";
 		String output = input.replaceAll(",", "|");
-		System.out.println("input: " + input + ", output: " + output);
-
-
+		System.out.println("input: " + input + ", output: " + output); */
 
 
 	}

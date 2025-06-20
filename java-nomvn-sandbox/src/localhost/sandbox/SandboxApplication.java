@@ -55,7 +55,7 @@ public class SandboxApplication {
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
 		// JavaLangScratchPadMain.main();
-		// StringMain.main();
+		StringMain.main();
 		// ObjectMain.main();
 		// InheritancePolymorphismMain.main();
 		// SystemPropertiesMain.main();
@@ -106,7 +106,7 @@ public class SandboxApplication {
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
-		URLHelper.main();
+		// URLHelper.main();
 
 	}
 }
