@@ -55,7 +55,7 @@ public class SandboxApplication {
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
 		// JavaLangScratchPadMain.main();
-		StringMain.main();
+		// StringMain.main();
 		// ObjectMain.main();
 		// InheritancePolymorphismMain.main();
 		// SystemPropertiesMain.main();
@@ -91,7 +91,7 @@ public class SandboxApplication {
 		// FileHelper.main();
 		// LargeStringHelper.main();
 		// ReflectionMain.main();
-		// ExecTimeSecsHelper.main();
+		ExecTimeSecsHelper.main();
 		// ReflectionFieldHelper.main();
 		// BooleanHelper.main();
 		// CompareSortMain.main();

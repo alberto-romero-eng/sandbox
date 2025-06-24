@@ -5,7 +5,8 @@ package localhost.sandbox.jse8.A0Helper;
  * 
  * <p>Update(s):
  * <ul>
- * <li> 2024-12-09 added attribute endTimeMs, method getLast(), class ETSH.
+ * <li> 2024-12-09 added attribute {@link #endTimeMs}, method {@link #getPrevious()}, class {@link ETSH}.
+ * <li> 2025-06-24 added method {@link #getInstance()}, disable <i>abstract</i>, to ease backwards compatibility.
  * </ul>
  *  
  * 
@@ -13,7 +14,7 @@ package localhost.sandbox.jse8.A0Helper;
  * @since 2024-03-12
  *
  */
-public abstract class ExecTimeSecsHelper {
+public /* abstract */ class ExecTimeSecsHelper {
 
 	protected long initTimeMs;
 	protected long endTimeMs;
@@ -44,7 +45,7 @@ public abstract class ExecTimeSecsHelper {
 			System.err.println("sleep, error: " + e);
 		}
 		float ets01 = eth01.get();
-		System.out.println("test01, instance with no argument, get() --  ets01: " + ets01);
+		System.out.println("test01, instance with no argument -- ets01.get(): " + ets01);
 
 		// test 02, instance with argument
 		ETSH eth02 = ETSH.init(System.currentTimeMillis());
@@ -54,7 +55,16 @@ public abstract class ExecTimeSecsHelper {
 			System.err.println("sleep, error: " + e);
 		}
 		float ets02 = eth02.get();
-		System.out.println("test01, instance with argument, get() --  ets02: " + ets02);
+		System.out.println("test02, instance with argument --  ets02.get(): " + ets02);
+
+		// test 03, backwards compatibility
+		ExecTimeSecsHelper etsh03 = ExecTimeSecsHelper.getInstance();
+		try {
+			Thread.sleep(2000L);
+		} catch (Exception e) {
+			System.err.println("sleep, error: " + e);
+		}
+		System.out.println("test03, backwards compatibility --  ets03.get(): " + etsh03.get());
 	}
 
 
@@ -77,6 +87,19 @@ public abstract class ExecTimeSecsHelper {
 	 */
 	private static float calculate(long initTimeMs, long endTimeMs) {
 		return ( (float) (endTimeMs - initTimeMs) ) / 1000.0f;
+	}
+
+	/**
+	 * <p>Method to allow backwards compatibility:
+	 * <ul>
+	 * <li>If class is <i>abstract</i>, this method should be disabled.
+	 * <li>If class is <i>not abstract</i>, this method may be enabled.
+	 * </ul>
+	 * 
+	 * <p> Get instance, initialize time using current instant. 
+	 */
+	public static ExecTimeSecsHelper getInstance() {
+		return new ExecTimeSecsHelper();
 	}
 
 	/**
