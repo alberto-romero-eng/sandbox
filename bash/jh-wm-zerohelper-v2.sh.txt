@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-05-15 10:24'
+__JH_WMP_UPDATED__='2025-07-04 05:33'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
@@ -21,13 +21,19 @@ microservicesregistry
 
 usermanagement
 
+marketplacealiexpress
+marketplaceamazon
+marketplacebackmarket
 marketplaceebay
+marketplacejoomlavirtuemart
+marketplacemakro
 marketplacemirakl
 marketplacemiravia
-marketplaceamazon
-marketplacemakro
-marketplacealiexpress
 marketplaceprestashop
+marketplacerefurbed
+marketplaceshein
+marketplacetemu
+marketplaceveepee
 
 mappingmanagement
 ordermanagement
@@ -75,10 +81,35 @@ __JH_WM_USERMANAGEMENT_FOLDER__='usermanagement'
 __JH_WM_USERMANAGEMENT_JAR_REGEX__='usermanagement'
 __JH_WM_USERMANAGEMENT_XMX__='256m'
 
+# marketplacealiexpress
+__JH_WM_MARKETPLACEALIEXPRESS_FOLDER__='marketplacealiexpress'
+__JH_WM_MARKETPLACEALIEXPRESS_JAR_REGEX__='marketplacealiexpress'
+__JH_WM_MARKETPLACEALIEXPRESS_XMX__='192m'
+
+# marketplaceamazon
+__JH_WM_MARKETPLACEAMAZON_FOLDER__='marketplaceamazon'
+__JH_WM_MARKETPLACEAMAZON_JAR_REGEX__='marketplaceamazon'
+__JH_WM_MARKETPLACEAMAZON_XMX__='192m'
+
+# marketplacebackmarket
+__JH_WM_MARKETPLACEBACKMARKET_FOLDER__='marketplacebackmarket'
+__JH_WM_MARKETPLACEBACKMARKET_JAR_REGEX__='marketplacebackmarket'
+__JH_WM_MARKETPLACEBACKMARKET_XMX__='192m'
+
 # marketplaceebay
 __JH_WM_MARKETPLACEEBAY_FOLDER__='marketplaceebay'
 __JH_WM_MARKETPLACEEBAY_JAR_REGEX__='marketplaceebay'
 __JH_WM_MARKETPLACEEBAY_XMX__='320m'
+
+# marketplacejoomlavirtuemart
+__JH_WM_MARKETPLACEJOOMLAVIRTUEMART_FOLDER__='marketplacejoomlavirtuemart'
+__JH_WM_MARKETPLACEJOOMLAVIRTUEMART_JAR_REGEX__='marketplacejoomlavirtuemart'
+__JH_WM_MARKETPLACEJOOMLAVIRTUEMART_XMX__='192m'
+
+# marketplacemakro
+__JH_WM_MARKETPLACEMAKRO_FOLDER__='marketplacemakro'
+__JH_WM_MARKETPLACEMAKRO_JAR_REGEX__='marketplacemakro'
+__JH_WM_MARKETPLACEMAKRO_XMX__='192m'
 
 # marketplacemirakl
 __JH_WM_MARKETPLACEMIRAKL_FOLDER__='marketplacemirakl'
@@ -90,25 +121,30 @@ __JH_WM_MARKETPLACEMIRAVIA_FOLDER__='marketplacemiravia'
 __JH_WM_MARKETPLACEMIRAVIA_JAR_REGEX__='marketplacemiravia'
 __JH_WM_MARKETPLACEMIRAVIA_XMX__='192m'
 
-# marketplaceamazon
-__JH_WM_MARKETPLACEAMAZON_FOLDER__='marketplaceamazon'
-__JH_WM_MARKETPLACEAMAZON_JAR_REGEX__='marketplaceamazon'
-__JH_WM_MARKETPLACEAMAZON_XMX__='192m'
-
-# marketplacemakro
-__JH_WM_MARKETPLACEMAKRO_FOLDER__='marketplacemakro'
-__JH_WM_MARKETPLACEMAKRO_JAR_REGEX__='marketplacemakro'
-__JH_WM_MARKETPLACEMAKRO_XMX__='192m'
-
-# marketplacealiexpress
-__JH_WM_MARKETPLACEALIEXPRESS_FOLDER__='marketplacealiexpress'
-__JH_WM_MARKETPLACEALIEXPRESS_JAR_REGEX__='marketplacealiexpress'
-__JH_WM_MARKETPLACEALIEXPRESS_XMX__='192m'
-
 # marketplaceprestashop
 __JH_WM_MARKETPLACEPRESTASHOP_FOLDER__='marketplaceprestashop'
 __JH_WM_MARKETPLACEPRESTASHOP_JAR_REGEX__='marketplaceprestashop'
 __JH_WM_MARKETPLACEPRESTASHOP_XMX__='192m'
+
+# marketplacerefurbed
+__JH_WM_MARKETPLACEREFURBED_FOLDER__='marketplacerefurbed'
+__JH_WM_MARKETPLACEREFURBED_JAR_REGEX__='marketplacerefurbed'
+__JH_WM_MARKETPLACEREFURBED_XMX__='192m'
+
+# marketplaceshein
+__JH_WM_MARKETPLACESHEIN_FOLDER__='marketplaceshein'
+__JH_WM_MARKETPLACESHEIN_JAR_REGEX__='marketplaceshein'
+__JH_WM_MARKETPLACESHEIN_XMX__='192m'
+
+# marketplacetemu
+__JH_WM_MARKETPLACETEMU_FOLDER__='marketplacetemu'
+__JH_WM_MARKETPLACETEMU_JAR_REGEX__='marketplacetemu'
+__JH_WM_MARKETPLACETEMU_XMX__='192m'
+
+# marketplaceveepee
+__JH_WM_MARKETPLACEVEEPEE_FOLDER__='marketplaceveepee'
+__JH_WM_MARKETPLACEVEEPEE_JAR_REGEX__='marketplaceveepee'
+__JH_WM_MARKETPLACEVEEPEE_XMX__='192m'
 
 # mappingmanagement
 __JH_WM_MAPPINGMANAGEMENT_FOLDER__='mappingmanagement'

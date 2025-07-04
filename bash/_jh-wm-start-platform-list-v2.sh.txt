@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2025-05-18 22:52'
+__JH_WMP_START_LIST_UPDATED__='2025-07-04 05:20'
 
 
 ### list(s)
@@ -28,12 +28,19 @@ _s='';
 
 _s=${_s}'usermanagement'' '
 
+# _s=${_s}'marketplacealiexpress'' '
+# _s=${_s}'marketplaceamazon'' '
+# _s=${_s}'marketplacebackmarket'' '
 _s=${_s}'marketplaceebay'' '
+# _s=${_s}'marketplacejoomlavirtuemart'' '
+# _s=${_s}'marketplacemakro'' '
 _s=${_s}'marketplacemirakl'' '
 _s=${_s}'marketplacemiravia'' '
-# _s=${_s}'marketplaceamazon'' '
-# _s=${_s}'marketplacemakro'' '
-# _s=${_s}'marketplacealiexpress'' '
+# _s=${_s}'marketplaceprestashop'' '
+# _s=${_s}'marketplacerefurbed'' '
+# _s=${_s}'marketplaceshein'' '
+# _s=${_s}'marketplacetemu'' '
+# _s=${_s}'marketplaceveepee'' '
 
 _s=${_s}'mappingmanagement'' '
 _s=${_s}'ordermanagement'' '
@@ -93,10 +100,10 @@ _jh_pit_list=${_s}
 ### Select one value for ${__JH_DEPLOY_MICROSERVICES__}, or create a new one.
 ### Note: include always ${_jh_eureka_list} for local development
 ###
-# __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_wm_list})
+__JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_wm_list})
 # __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pim_list}${_jh_pit_list})
 # __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pim_list})
-__JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pit_list})
+# __JH_DEPLOY_MICROSERVICES__=$(echo ${_jh_eureka_list}${_jh_pit_list})
 
 
 
