@@ -33,6 +33,7 @@ import localhost.sandbox.jse8.File.FileMain;
 import localhost.sandbox.jse8.Generics.GenericsMain;
 import localhost.sandbox.jse8.InheritancePolymorphismInterface.AbstractMain;
 import localhost.sandbox.jse8.InheritancePolymorphismInterface.InterfaceMain;
+import localhost.sandbox.jse8.JavaLang.Miscelaneous.JavaLangMiscelaneousMain;
 import localhost.sandbox.jse8.JavaLang.ScratchPad.JavaLangScratchPadMain;
 import localhost.sandbox.jse8.LinkedHashMapAndSet.LinkedHashMapAndSetMain;
 import localhost.sandbox.jse8.Object.ObjectMain;
@@ -52,10 +53,11 @@ public class SandboxApplication {
 
 	public static void main(String[] args) throws Throwable {
 
-		// SystemPropertiesHelper.main();
-		// EncodingMain.main();
+		JavaLangMiscelaneousMain.main();
 		// JavaLangScratchPadMain.main();
 		// StringMain.main();
+		// SystemPropertiesHelper.main();
+		// EncodingMain.main();
 		// ObjectMain.main();
 		// InheritancePolymorphismMain.main();
 		// SystemPropertiesMain.main();
@@ -91,7 +93,7 @@ public class SandboxApplication {
 		// FileHelper.main();
 		// LargeStringHelper.main();
 		// ReflectionMain.main();
-		ExecTimeSecsHelper.main();
+		// ExecTimeSecsHelper.main();
 		// ReflectionFieldHelper.main();
 		// BooleanHelper.main();
 		// CompareSortMain.main();
