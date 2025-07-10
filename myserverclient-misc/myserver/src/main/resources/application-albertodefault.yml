@@ -1,0 +1,34 @@
+envName: ALBERTODEFAULT
+
+debug: false
+
+logging:
+  level:
+    root: info
+
+spring:
+  jackson:
+    default-property-inclusion: non-empty
+  task:
+    scheduling:
+      pool:
+         size: 20
+  config: # springboot-3.0
+    import: 'optional:configserver:http://configserver:8888' # springboot-3.0
+
+server:
+  port: 4000
+  error:
+    include-message: always # always, never, on_param
+
+springdoc:
+  swagger-ui:
+    filter: true # default false
+    operationsSorter: alpha # ["alpha", "method", other]
+    tagsSorter: alpha # ["alpha", other]
+    displayRequestDuration: true # default false
+    docExpansion: list # default "list"" # ["none", "list", "full"]
+    # default-support-form-data: true # default false, maybe with ApiRocessor, oauth endpoints
+    # show-oauth2-endpoints: true # default false, maybe with ApiRocessor, oauth endpoints
+    # defaultModelRendering: model # ["example"*, "model"}   # https://github.com/springdoc/springdoc-openapi/issues/2548   # https://github.com/springdoc/springdoc-openapi/issues/1482 
+

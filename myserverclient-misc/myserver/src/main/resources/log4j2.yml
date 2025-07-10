@@ -1,0 +1,30 @@
+Configuration:
+  name: Default
+  # packages: com.microsoft.applicationinsights.log4j.v2
+  Properties:
+    Property:
+      name: LOG_PATTERN
+      value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [$${bundle:bootstrap:spring.application.name}] [%thread] [%level] [%logger{1.}] [%method:%line] -- %msg -%xEx{full} %n"
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${LOG_PATTERN}
+
+  Loggers:
+    Root:
+      - level: info
+        AppenderRef:
+          ref: Console
+    Logger:
+      - level: info
+        # name: com.example.myserver
+        name: INFO
+        AppenderRef:
+          ref: Console
+      - level: error
+        name: ERROR
+        AppenderRef:
+          ref: Console
