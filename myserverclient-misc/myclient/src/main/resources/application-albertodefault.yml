@@ -1,0 +1,71 @@
+envName: ALBERTODEFAULT
+
+alberto:
+  check: a00
+
+debug: false
+
+logging:
+  level:
+    root: info
+
+spring:
+  jackson:
+    default-property-inclusion: non-empty
+  config:
+    import: 'optional:configserver:http://configserver:8888' # springboot-3.0
+
+server:
+  port: 4001
+  error:
+    include-message: always # always, never, on_param
+
+feign:
+  client:
+    config:
+      myserver:
+        connectTimeout: 5000
+        readTimeout: 10000
+      default: 
+        connectTimeout: 20000
+        readTimeout: 60000
+
+# https://resilience4j.readme.io/docs/circuitbreaker
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        failureRateThreshold: 50        # default 50, percentage
+        slidingWindowType: TIME_BASED   # default COUNT_BASED, also TIME_BASED available
+        minimumNumberOfCalls: 3   # default 100, per window
+        slidingWindowSize: 20     # default 100, calls if COUNT_BASED, seconds if TIME_BASED
+        waitDurationInOpenState: 10000             # default 60000, millisecs
+        permittedNumberOfCallsInHalfOpenState: 1   # default 10
+        slowCallRateThreshold: 100         # default 100, percentage
+        slowCallDurationThreshold: 7000   # default 60000, millisecs # test: set feign and circuitbreker timeouts at 12s, this to 7000
+        # other
+        registerHealthIndicator: true
+        ignoreExceptions:
+          - java.lang.Throwable
+          - java.lang.Exception
+    # instances:
+      # HttpBinClient_getBinWithDelayInSeconds_int:
+        # minimumNumberOfCalls: 10
+        # failureRateThreshold: 50
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 12s # tests 12s, 7s # see feign.client.readTimeout
+
+springdoc:
+  swagger-ui:
+    filter: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    displayRequestDuration: true
+    docExpansion: list
+
+myserver:
+  url: 'http://localhost:4000'
+
+
