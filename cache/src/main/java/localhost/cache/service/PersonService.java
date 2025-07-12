@@ -14,20 +14,18 @@ public class PersonService implements PersonInterface {
 	private static LinkedHashSet<PersonPojo> personSet = new LinkedHashSet<>();
 
 	static {
-		// PersonPojos
+		// person
 		PersonPojo p1 = new PersonPojo("One", 11, 1.1f, true);
 		PersonPojo p2 = new PersonPojo("Two", 12, 1.2f, false);
 		PersonPojo p3 = new PersonPojo("Three", 13, 1.3f, true);
 		PersonPojo p4 = new PersonPojo("Four", 14, 1.4f, false);
-
-		// populate personSet
 		personSet.add(p1);
 		personSet.add(p2);
 		personSet.add(p3);
 		personSet.add(p4);
 	}
 
-	public PersonPojo getPerson(String name, int age, float height, boolean militaryEnabled) {
+	public PersonPojo getPersonCacheSyncFalseUnlessResultNull(String name, int age, float height, boolean militaryEnabled) {
 		PersonPojo resPerson = null;
 		if (name == null || name.isEmpty()) {
 			return null;

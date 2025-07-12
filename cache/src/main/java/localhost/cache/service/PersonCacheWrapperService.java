@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import localhost.cache.service.PersonService.PersonPojo;
 
+
 /**
  * <p>Class to contain wrapper methods for {@link Cacheable} and {@link CacheEvict} annotated ones, 
  * since if both of them belong to the same class, the cache mechanism does not work.
@@ -16,26 +17,26 @@ import localhost.cache.service.PersonService.PersonPojo;
  * <p>This Wrapping is useful for logging references, verify inner working of cache mechanism, 
  * troubleshooting.
  * 
- * @see CacheService
+ * @see InfoCacheService
  * @author Alberto Romero
  * @since 2025-05-25
  * 
  */
 
 @Service
-public class CacheWrapperService {
+public class PersonCacheWrapperService {
 
-	private static Logger log = LoggerFactory.getLogger(CacheWrapperService.class);
+	private static Logger log = LoggerFactory.getLogger(PersonCacheWrapperService.class);
 
 	@Autowired
-	private CacheService cacheService;
+	private PersonCacheService personCacheService;
 
 
 	/**
-	 * <p>Wrapper for {@link CacheService#getPerson(String, int, float, boolean)}.
+	 * <p>Wrapper for {@link PersonCacheService#getPersonCacheSyncFalseUnlessResultNull(String, int, float, boolean)}.
 	 * 
-	 * @see CacheWrapperService
-	 * @see CacheService
+	 * @see PersonCacheWrapperService
+	 * @see InfoCacheService
 	 * @author Alberto Romero
 	 * @since 2025-05-25
 	 * 
@@ -43,8 +44,8 @@ public class CacheWrapperService {
 	public PersonPojo getPerson(String name, int age, float height, boolean militaryEnabled) {
 		// waitForInitialization();
 		PersonPojo resPerson = null;
-		resPerson = cacheService.getPerson(name, age, height, militaryEnabled);
-		log.info("Finish getPerson() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- resPerson: {}", name, age, height, militaryEnabled, resPerson);
+		resPerson = personCacheService.getPersonCacheSyncFalseUnlessResultNull(name, age, height, militaryEnabled);
+		log.info("Finish getPerson() -- params -- name: {}, age: {}, height: {}, militryEnabled: {} -- results -- resPerson: {}", name, age, height, militaryEnabled, resPerson);
 		return resPerson;
 	}
 

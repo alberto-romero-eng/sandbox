@@ -10,8 +10,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 
-import localhost.cache.service.CacheGatewayService;
-import localhost.cache.service.CacheService;
+import localhost.cache.service.PersonCacheGatewayService;
+import localhost.cache.service.InfoCacheService;
 
 
 @Order(1)
@@ -19,13 +19,13 @@ import localhost.cache.service.CacheService;
 public class InitializerCLR implements CommandLineRunner{
 
 	@Autowired
-	CacheService cacheService;
+	InfoCacheService infoCacheService;
 
 	@Autowired
-	CacheGatewayService cacheGatewayService;
+	PersonCacheGatewayService personCacheGatewayService;
 
 	/**
-	 * Whether {@link CacheGatewayService} uses {@link Cacheable} implementation or not.
+	 * Whether {@link PersonCacheGatewayService} uses {@link Cacheable} implementation or not.
 	 */
 	@Value("${cache.person.enabled}")
 	private boolean cachePersonEnabled;
@@ -34,22 +34,22 @@ public class InitializerCLR implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		initCacheGatewayService();
-		// initCacheServiceForCanada();
+		initPersonCacheGatewayService();
+		initInfoCacheServiceForCanada();
 		log.info("Finish run()");
 	}
 
 
-	private void initCacheGatewayService() {
-		cacheGatewayService.initialize(cachePersonEnabled, true);
-		log.info("Finish initCacheGatewayService()");
+	private void initPersonCacheGatewayService() {
+		personCacheGatewayService.initialize(cachePersonEnabled, true);
+		log.info("Finish initPersonCacheGatewayService()");
 	}
 
 
-	private void initCacheServiceForCanada() {
+	private void initInfoCacheServiceForCanada() {
 		String continentForCanada = null;
-		continentForCanada = cacheService.getContinentByCountryCacheWithUnlessIsNull("Canada");
-		log.info("Finish initCacheService() -- results -- continentForCanada: {}", continentForCanada);
+		continentForCanada = infoCacheService.getContinentByCountryCacheSyncFalseUnlessResultNull("Canada");
+		log.info("Finish initInfoCacheServiceForCanada() -- results -- continentForCanada: {}", continentForCanada);
 	}
 
 }
