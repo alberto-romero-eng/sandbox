@@ -7,5 +7,5 @@ spring:
 
 cache:
   person:
-    enabled: true
+    cacheForGetPersonDefault: SYNC_TRUE
 

@@ -1,8 +1,5 @@
 package localhost.cache;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +12,9 @@ import org.springframework.stereotype.Component;
 
 import localhost.cache.service.PersonCacheGatewayService;
 import localhost.cache.service.PersonCacheService;
-import localhost.cache.service.PersonCacheWrapperService;
 import localhost.cache.service.PersonService.PersonPojo;
 import localhost.cache.service.InfoCacheService;
-import localhost.cache.service.InfoCacheWrapperService;
+import localhost.cache.service.InfoCacheGatewayService;
 import localhost.cache.util.SpringBootCacheHelper;
 
 
@@ -35,17 +31,13 @@ public class CLR_alberto implements CommandLineRunner {
 	InfoCacheService infoCacheService;
 
 	@Autowired
-	InfoCacheWrapperService infoCacheWrapperService;
+	InfoCacheGatewayService infoCacheGatewayService;
 
 	@Autowired
 	PersonCacheService personCacheService;
 
 	@Autowired
-	PersonCacheWrapperService personCacheWrapperService;
-
-
-	@Autowired
-	PersonCacheGatewayService cacheGatewayService;
+	PersonCacheGatewayService personCacheGatewayService;
 
 	@Autowired
 	SpringBootCacheHelper sbCacheHelper;
@@ -58,11 +50,11 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		// test04_CacheGateway();
-		// test03_CacheWrapper();
+		test04_CacheGateway_B(); // TODO: re-organize this method, possible collisions with A
+		test03_CacheGateway_A(); // TODO: re-organize this method, possible collisions with B
 		test02_CacheSimple();
-		// test01_SpringBootCacheHelper();
-		// test00_ApplicationContext();
+		test01_SpringBootCacheHelper();
+		test00_ApplicationContext();
 	}
 
 
@@ -80,7 +72,7 @@ public class CLR_alberto implements CommandLineRunner {
 	 * @see PersonCacheGatewayService
 	 * 
 	 */
-	private void test04_CacheGateway() {
+	private void test04_CacheGateway_B() {
 		String name = null;
 		int age = 0;
 		float height = 0.0f;
@@ -91,23 +83,23 @@ public class CLR_alberto implements CommandLineRunner {
 		// Person name:"One" exists
 		// Thread should enter CacheService ONLY FIRST TIME, to cache value
 		name = "One";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
 
 		name = "Two";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
 
 
 		// Person name:"Seven" does not exist
 		name = "Seven";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 17, 1.7f, false);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 17, 1.7f, true);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, true);
 		log.info("name: {}, person: {}", name, person);
 
 
@@ -121,23 +113,23 @@ public class CLR_alberto implements CommandLineRunner {
 		// Person name:"One" exists
 		// Thread should enter CacheService ONLY FIRST TIME, to cache value
 		name = "One";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
 
 		name = "Two";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
 
 
 		// Person name:"Seven" does not exist
 		name = "Seven";
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 17, 1.7f, false);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = cacheGatewayService.getPersonCacheSyncFalseUnlessResultNull(name, 17, 1.7f, true);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, true);
 		log.info("name: {}, person: {}", name, person);
 
 
@@ -147,7 +139,7 @@ public class CLR_alberto implements CommandLineRunner {
 
 
 
-	private void test03_CacheWrapper() {
+	private void test03_CacheGateway_A() {
 		String name = null;
 		int age = 0;
 		float height = 0.0f;
@@ -158,23 +150,23 @@ public class CLR_alberto implements CommandLineRunner {
 		// Person name:"One" exists
 		// Thread should enter CacheService ONLY FIRST TIME, to cache value
 		name = "One";
-		person = personCacheWrapperService.getPerson(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
 
 		name = "Two";
-		person = personCacheWrapperService.getPerson(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
 
 
 		// Person name:"Seven" does not exist
 		name = "Seven";
-		person = personCacheWrapperService.getPerson(name, 17, 1.7f, false);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 17, 1.7f, true);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, true);
 		log.info("name: {}, person: {}", name, person);
 
 
@@ -188,23 +180,23 @@ public class CLR_alberto implements CommandLineRunner {
 		// Person name:"One" exists
 		// Thread should enter CacheService ONLY FIRST TIME, to cache value
 		name = "One";
-		person = personCacheWrapperService.getPerson(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 11, 1.1f, true);
+		person = personCacheGatewayService.getPerson(name, 11, 1.1f, true);
 		log.info("name: {}, person: {}", name, person);
 
 		name = "Two";
-		person = personCacheWrapperService.getPerson(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 12, 1.2f, false);
+		person = personCacheGatewayService.getPerson(name, 12, 1.2f, false);
 		log.info("name: {}, person: {}", name, person);
 
 
 		// Person name:"Seven" does not exist
 		name = "Seven";
-		person = personCacheWrapperService.getPerson(name, 17, 1.7f, false);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, false);
 		log.info("name: {}, person: {}", name, person);
-		person = personCacheWrapperService.getPerson(name, 17, 1.7f, true);
+		person = personCacheGatewayService.getPerson(name, 17, 1.7f, true);
 		log.info("name: {}, person: {}", name, person);
 
 
@@ -244,21 +236,21 @@ public class CLR_alberto implements CommandLineRunner {
 		// Neon exists in InfoService
 		// Thread should enter CacheService class ONLY FIRST TIME, to cache value
 		model = "Neon";
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
 
 		// Beetle does NOT exist in InfoService
 		// Thread should ALWAYS enter CacheService class if 'unless = "#result == null"' (veto) is set into @Cacheable
 		model = "Beetle";
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
 
 
@@ -283,11 +275,11 @@ public class CLR_alberto implements CommandLineRunner {
 		// Neon exists in InfoService
 		// Thread should enter CacheService class ONLY FIRST TIME, to cache value AGAIN
 		model = "Neon";
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
-		brand = infoCacheService.getBrandByModelCacheSyncFalseUnlessResultNull(model);
+		brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
 		log.info("model: {}, brand: {}", model, brand);
 
 

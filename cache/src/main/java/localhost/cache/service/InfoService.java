@@ -31,16 +31,49 @@ public class InfoService {
 		brandMap.put("Accent", "Hyundai");
 	}
 
+	/**
+	 * <p>For methods to have annotation {@link Cacheable}, it is convenient not to throw exception.
+	 * 
+	 * @see PersonInterface
+	 */
 	public String getContinentByCountry(String country) {
+		if (country == null) {
+			return null;
+		}
 		String continent = null;
-		continent = continentMap.get(country);
+		try {
+			if ("exception".equalsIgnoreCase(country)) {
+				throw new Exception("country is Exception");
+			}
+			continent = continentMap.get(country);
+		} catch (Throwable ex) {
+			log.error("Finish getContinentByCountry() -- params -- country: {} -- results -- exception:  ", country, ex);
+		}
 		log.info("Finish getContinentByCountry() -- params -- country: {} -- results -- continent: {}", country, continent);
 		return continent;
 	}
 
-	public String getBrandByModel(String model) {
+
+
+	/**
+	 * <p>For methods to have annotation {@link Cacheable}, it is convenient not to throw exception.
+	 * 
+	 * @see PersonInterface
+	 */
+	public String getBrandByModel(String model) throws Throwable {
+		if (model == null) {
+			return null;
+		}
 		String brand = null;
-		brand = brandMap.get(model);
+		try {
+			if ("exception".equalsIgnoreCase(model)) {
+				throw new Exception("country is Exception");
+			}
+			brand = brandMap.get(model);
+		} catch (Throwable ex) {
+			log.error("Finish getBrandByModel() -- params -- model: {} -- results -- exception: ", model, ex);
+			return null;
+		}
 		log.info("Finish getBrandByModel() -- params -- model: {} -- results -- brand: {}", model, brand);
 		return brand;
 	}

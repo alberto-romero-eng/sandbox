@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import localhost.cache.configuration.Constant.CacheName;
 import localhost.cache.service.PersonService.PersonPojo;
 
 
@@ -21,13 +22,13 @@ import localhost.cache.service.PersonService.PersonPojo;
  * <p>Wrapper methods, to ease logging or troubleshooting, should not be in this class.
  *
  * @see CacheType
- * @see InfoCacheWrapperService
+ * @see InfoCacheGatewayService
  * @author Alberto Romero
  * @since 2025-05-25
  * 
  */
 @Service
-public class PersonCacheService implements PersonInterface {
+public class PersonCacheService {
 
 	private static Logger log = LoggerFactory.getLogger(PersonCacheService.class);
 
@@ -36,22 +37,33 @@ public class PersonCacheService implements PersonInterface {
 
 
 
-	@CacheEvict(cacheNames = {"person"}, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.PERSON_SYNC_FALSE, CacheName.PERSON_SYNC_TRUE }, allEntries = true)
 	public void clearPersonCache() {
 		log.info("Finish clearPersonCache()");
 	}
 
-
-
-
-	/**
-	 * <p> See {@link #getContinentByCountryCacheSyncFalseUnlessResultNull(String)} comment.
-	 */
-	@Cacheable(value = "person", sync = false, unless = "#result == null")
-	public PersonPojo getPersonCacheSyncFalseUnlessResultNull(String name, int age, float height, boolean militaryEnabled) {
+	@Cacheable(value = CacheName.PERSON_SYNC_FALSE, sync = false, unless = "#result == null")
+	public PersonPojo getPersonCacheSyncFalseUnlessResultNull (String name, int age, float height, boolean militaryEnabled) {
 		PersonPojo resPerson = null;
-		resPerson = personService.getPersonCacheSyncFalseUnlessResultNull(name, age, height, militaryEnabled);
+		try {
+			resPerson = personService.getPerson(name, age, height, militaryEnabled);
+		} catch (Throwable ex) {
+			log.error("Finish getPersonCacheSyncFalseUnlessResultNull() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- exception: ", name, age, height, militaryEnabled, ex);
+		}
 		log.info("Finish getPersonCacheSyncFalseUnlessResultNull() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- resPerson: {}", name, age, height, militaryEnabled, resPerson);
+		return resPerson;
+	}
+
+
+	@Cacheable(value = CacheName.PERSON_SYNC_TRUE, sync = true)
+	public PersonPojo getPersonCacheSyncTrue(String name, int age, float height, boolean militaryEnabled) {
+		PersonPojo resPerson = null;
+		try {
+			resPerson = personService.getPerson(name, age, height, militaryEnabled);
+		} catch (Throwable ex) {
+			log.error("Finish getPersonCacheSyncTrue() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- exception: ", name, age, height, militaryEnabled, ex);
+		}
+		log.info("Finish getPersonCacheSyncTrue() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- resPerson: {}", name, age, height, militaryEnabled, resPerson);
 		return resPerson;
 	}
 

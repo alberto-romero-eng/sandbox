@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import localhost.cache.configuration.Constant.CacheName;
 
 
 
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
  * <p>Wrapper methods, to ease logging or troubleshooting, should not be in this class.
  *
  * @see CacheType
- * @see InfoCacheWrapperService
+ * @see InfoCacheGatewayService
  * @author Alberto Romero
  * @since 2025-05-25
  * 
@@ -35,12 +36,12 @@ public class InfoCacheService {
 
 
 
-	@CacheEvict(cacheNames = {"continent"}, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.CONTINENT }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
 	public void clearContinentCache() {
 		log.info("Finish clearContinentCache()");
 	}
 
-	@CacheEvict(cacheNames = {"brand"}, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.BRAND }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
 	public void clearBrandCache() {
 		log.info("Finish clearBrandCache()");
 	}
@@ -55,10 +56,15 @@ public class InfoCacheService {
 	 * <p>See {@link Cacheable} reference.
 	 * 
 	 */
-	@Cacheable(value = "continent", sync = false, unless = "#result == null")
+	@Cacheable(value = CacheName.CONTINENT, sync = false, unless = "#result == null")
 	public String getContinentByCountryCacheSyncFalseUnlessResultNull(String country) {
 		String continent = null;
-		continent = infoService.getContinentByCountry(country);
+		try {
+			continent = infoService.getContinentByCountry(country);
+		} catch (Throwable ex) {
+			log.error("Finish getContinentByCountryCacheSyncFalseUnlessResultNull() -- params -- country: {} -- results -- exception: ", country, ex);
+			return null;
+		}
 		log.info("Finish getContinentByCountryCacheSyncFalseUnlessResultNull() -- params -- country: {} -- results -- continent: {}", country, continent);
 		return continent;
 	}
@@ -66,11 +72,16 @@ public class InfoCacheService {
 	/**
 	 * <p> See {@link #getContinentByCountryCacheSyncFalseUnlessResultNull(String)} comment.
 	 */
-	@Cacheable(value = "brand", sync = false, unless = "#result == null")
-	public String getBrandByModelCacheSyncFalseUnlessResultNull(String model) {
+	@Cacheable(value = CacheName.BRAND, sync = true)
+	public String getBrandByModelCacheSyncTrue(String model) {
 		String brand = null;
-		brand = infoService.getBrandByModel(model);
-		log.info("Finish getBrandByModelCacheSyncFalseUnlessResultNull() -- params -- country: {} -- results -- continent: {}", model, brand);
+		try {
+			brand = infoService.getBrandByModel(model);
+		} catch (Throwable ex) {
+			log.error("Finish getBrandByModelCacheSyncTrue() -- params -- country: {} -- results -- exception: ", model, ex);
+			return null;
+		}
+		log.info("Finish getBrandByModelCacheSyncTrue() -- params -- country: {} -- results -- continent: {}", model, brand);
 		return brand;
 	}
 

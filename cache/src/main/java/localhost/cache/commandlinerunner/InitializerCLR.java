@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 
 import localhost.cache.service.PersonCacheGatewayService;
+import localhost.cache.service.PersonCacheGatewayService.CacheForGetPerson;
 import localhost.cache.service.InfoCacheService;
 
 
@@ -27,8 +28,8 @@ public class InitializerCLR implements CommandLineRunner{
 	/**
 	 * Whether {@link PersonCacheGatewayService} uses {@link Cacheable} implementation or not.
 	 */
-	@Value("${cache.person.enabled}")
-	private boolean cachePersonEnabled;
+	@Value("${cache.person.cacheForGetPersonDefault}")
+	private CacheForGetPerson cacheForGetPersonDefault;
 
 	private static Logger log = LoggerFactory.getLogger(InitializerCLR.class);
 
@@ -41,7 +42,7 @@ public class InitializerCLR implements CommandLineRunner{
 
 
 	private void initPersonCacheGatewayService() {
-		personCacheGatewayService.initialize(cachePersonEnabled, true);
+		personCacheGatewayService.initialize(cacheForGetPersonDefault, true);
 		log.info("Finish initPersonCacheGatewayService()");
 	}
 

@@ -25,21 +25,29 @@ public class PersonService implements PersonInterface {
 		personSet.add(p4);
 	}
 
-	public PersonPojo getPersonCacheSyncFalseUnlessResultNull(String name, int age, float height, boolean militaryEnabled) {
+	public PersonPojo getPerson(String name, int age, float height, boolean militaryEnabled) {
 		PersonPojo resPerson = null;
 		if (name == null || name.isEmpty()) {
 			return null;
 		}
-		for (PersonPojo p : personSet) {
-			if (true
-					&& name.equals(p.name)
-					&& age == p.age
-					&& height == p.height
-					&& militaryEnabled == p.militaryEnabled
-					&& true ) {
-				resPerson = p;
-				break;
+		try {
+			if ("exception".equalsIgnoreCase(name)) {
+				throw new Exception("name cannot be 'exception'");
 			}
+			for (PersonPojo p : personSet) {
+				if (true
+						&& name.equals(p.name)
+						&& age == p.age
+						&& height == p.height
+						&& militaryEnabled == p.militaryEnabled
+						&& true ) {
+					resPerson = p;
+					break;
+				}
+			}
+		} catch (Throwable ex) {
+			log.error("Finish getPerson() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- exception: ", name, age, height, militaryEnabled, ex);
+			return null;
 		}
 		log.info("Finish getPerson() -- params -- name: {}, age: {}, height: {}, militaryEnabled: {} -- results -- resPerson: {}", name, age, height, militaryEnabled, resPerson);
 		return resPerson;
