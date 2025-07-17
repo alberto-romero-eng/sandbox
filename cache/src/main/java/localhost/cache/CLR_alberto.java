@@ -50,11 +50,115 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		test04_CacheGateway_B(); // TODO: re-organize this method, possible collisions with A
-		test03_CacheGateway_A(); // TODO: re-organize this method, possible collisions with B
-		test02_CacheSimple();
-		test01_SpringBootCacheHelper();
-		test00_ApplicationContext();
+		test05_ConcurrenceSyncFalse();
+		test05_ConcurrenceSyncTrue();
+		// test04_CacheGateway_B(); // TODO: re-organize this method, possible collisions with A
+		// test03_CacheGateway_A(); // TODO: re-organize this method, possible collisions with B
+		// test02_CacheSimple();
+		// test01_SpringBootCacheHelper();
+		// test00_ApplicationContext();
+	}
+
+	/**
+	 * <p>All threads can access cached method, even with all of them having the same <i>key</i> used for
+	 * <i>ConcurrentMap</i> / cache.
+	 * 
+	 * <p>In other words, no synchronization whatsoever is implemented.
+	 * 
+	 */
+	private void test05_ConcurrenceSyncFalse() {
+
+		Runnable runnableSF = () -> {
+			String country = null;
+			String continent = null;
+
+			country = "Spain";
+			continent = infoCacheService.getContinentByCountryCacheSyncFalseUnlessResultNull(country);
+			log.info("country: {}, continent: {}", country, continent);
+
+		};
+
+		Thread t1 = new Thread(runnableSF, "t1");
+		Thread t2 = new Thread(runnableSF, "t2");
+		Thread t3 = new Thread(runnableSF, "t3");
+
+		t1.start();
+		t2.start();
+		t3.start();
+
+		log.info("done!");
+
+	}
+
+	/**
+	 * <p>For threads attempting to access cached method, concurrently, and having the same <i>key</i> used for
+	 * <i>ConcurrentMap</i> / cache, such access is managed <i>synchronously</i>.
+	 * 
+	 * <p>In other words, synchronization applies on <i>ConcurrentMap$Node</i>, or pair <i>key / value</i>.
+	 * 
+	 */
+	private void test05_ConcurrenceSyncTrue() {
+		Runnable runnableST1 = () -> {
+			String model = null;
+			String brand = null;
+
+			model = "Neon";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Fiesta";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Beetle";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+		};
+
+		Runnable runnableST2 = () -> {
+			String model = null;
+			String brand = null;
+
+			model = "Fiesta";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Neon";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Beetle";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+		};
+
+		Runnable runnableST3 = () -> {
+			String model = null;
+			String brand = null;
+
+			model = "Beetle";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Neon";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+
+			model = "Fiesta";
+			brand = infoCacheService.getBrandByModelCacheSyncTrue(model);
+			log.info("model: {}, brand: {}", model, brand);
+		};
+
+
+		Thread t1 = new Thread(runnableST1, "t1");
+		Thread t2 = new Thread(runnableST2, "t2");
+		Thread t3 = new Thread(runnableST3, "t3");
+
+		t1.start();
+		t2.start();
+		t3.start();
+
+		log.info("done!");
 	}
 
 
