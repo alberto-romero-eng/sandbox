@@ -1,5 +1,5 @@
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-MariaDB, MySQL binaries install - updated: 2025-01-14 09:40
+MariaDB, MySQL binaries install - updated: 2025-07-22 06:16
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
@@ -487,4 +487,57 @@ SELECT COALESCE('1','2','3','7') >= '0';
 REPLACE INTO ...
 
 INSERT IGNORE ...
+
+
+
+(20) DATETIME, TIMESTAMP, TimeZone, time_zone
+
+--
+-- GLOBAL VARIABLES: time_zone, system_time_zone
+--
+
+SHOW GLOBAL VARIABLES LIKE '%time_zone%' ;
+
+SHOW SESSION VARIABLES LIKE '%time_zone%' ;
+
+SELECT @@GLOBAL.system_time_zone;
+
+SELECT @@GLOBAL.time_zone, @@SESSION.time_zone;
+
+SET @@SESSION.time_zone = 'system';
+
+SET @@SESSION.time_zone = '+00:00';
+
+SET @@SESSION.time_zone = 'UTC'; -- fails if 'UTC' not preloaded in mysql timezone table
+
+--
+-- NOW(): depends on time_zone
+--
+
+select NOW();
+
+select DATE( DATE_ADD(NOW(), INTERVAL 5 DAY ) );
+
+select TIMESTAMP(NOW());
+
+select TIMESTAMP( DATE_ADD( NOW(), INTERVAL 1 MINUTE ) );
+
+--
+-- UTC_TIMESTAMP(): independent from time_zone
+--
+
+select UTC_TIMESTAMP();
+
+select TIMESTAMP( DATE_ADD( UTC_TIMESTAMP(), INTERVAL 1 MINUTE ) );
+
+--
+-- Observations:
+--
+
+-- DATE and DATETIME do not suffer conversion by server timezone.
+
+-- TIMESTAMP does suffer conversion by server timezone difference.
+
+-- Thus, regarding TIMESTAMP: if server-connection-timezone-difference at insert, is different from server-connection-timezone-difference at select, resulting timestamps will be different.
+
 
