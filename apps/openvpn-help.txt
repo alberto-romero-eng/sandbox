@@ -1,0 +1,17 @@
+# openvpn bash help -- updated: 2025-03-15 15:02 GMT-04:00
+
+# bash, root account:
+
+apt-get install openvpn
+
+dpkg -s openvpn
+
+type openvpn
+
+cd /sbin
+
+openvpn --config /home/{user}/Desktop/{openvpnConfigFile}.ovpn
+
+# in file, change line:
+# key-direction bidirectional # original
+key-direction 1 # adjusted

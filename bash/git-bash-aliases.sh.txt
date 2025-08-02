@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-05-25 13:10'
+__ALIAS_LAST_UPDATE__='2025-08-02 04:03'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -730,6 +730,7 @@ git config --system color.interactive 'true'
 git config --system help.format 'web'
 git config --system web.browser 'chrome'
 git config --system core.pager 'less -x1,5'
+git config --system core.editor 'vi'
 
 
 
