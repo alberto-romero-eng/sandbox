@@ -52,12 +52,12 @@ import java.util.Locale;
  * 
  * @author Alberto Romero
  * @since 2023-10-21
- * @version 2024-04-05
+ * @version 2025-07-21
  * 
  */
 public class SimpleDateFormatHelper {
 
-	private static final Pattern defaultPattern = Pattern.ISO_8601_SECONDS;
+	public static final Pattern DEFAULT_PATTERN = Pattern.ISO_8601_SECONDS;
 
 	private SimpleDateFormat sdf;
 
@@ -89,7 +89,7 @@ public class SimpleDateFormatHelper {
 
 
 		// arg Pattern in constructor:
-		SimpleDateFormatHelper pSdfh = new SimpleDateFormatHelper(defaultPattern, TimeZone.UTC);
+		SimpleDateFormatHelper pSdfh = new SimpleDateFormatHelper(DEFAULT_PATTERN, TimeZone.UTC);
 		String pOut = pSdfh.format(date);
 		Date pDate = null;
 		try {
@@ -104,7 +104,7 @@ public class SimpleDateFormatHelper {
 
 
 		// args Pattern, TimeZone in constructor:
-		SimpleDateFormatHelper ptzSdfh = new SimpleDateFormatHelper(defaultPattern, TimeZone.UTC);
+		SimpleDateFormatHelper ptzSdfh = new SimpleDateFormatHelper(DEFAULT_PATTERN, TimeZone.UTC);
 		String ptzOut = ptzSdfh.format(date);
 		Date ptzDate = null;
 		try {
@@ -184,7 +184,7 @@ public class SimpleDateFormatHelper {
 
 
 	public SimpleDateFormatHelper () {
-		sdf = new SimpleDateFormat(defaultPattern.strPattern(), Locale.US);
+		sdf = new SimpleDateFormat(DEFAULT_PATTERN.strPattern(), Locale.US);
 		sdf.setTimeZone(java.util.TimeZone.getTimeZone(TimeZone.UTC.strTimeZone()));
 	}
 
@@ -242,7 +242,8 @@ public class SimpleDateFormatHelper {
 		RFC_822_EMAIL("EEE, d MMM yyyy HH:mm:ss Z"), // maybe two "d" (digit for day)
 		// human, more formats
 		HUMAN_HOUR_ONLY("h:mm a, z"),
-		HUMAN_LETTER("EEE, MMM d, ''yy")
+		HUMAN_LETTER("EEE, MMM d, ''yy"),
+		CUSTOM_HUMAN_01("yyyy-MMM-dd' ('EEE')'")
 		;
 
 		private String strPattern;
