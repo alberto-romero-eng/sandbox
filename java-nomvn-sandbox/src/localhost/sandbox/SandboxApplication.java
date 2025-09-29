@@ -3,6 +3,7 @@ package localhost.sandbox;
 import localhost.sandbox.jse8.A0Helper.BooleanHelper;
 import localhost.sandbox.jse8.A0Helper.CipherAesCbcPkcs5Helper;
 import localhost.sandbox.jse8.A0Helper.CipherAesEcbPkcs5Helper;
+import localhost.sandbox.jse8.A0Helper.CipherAesGcmNoPaddingHelper;
 import localhost.sandbox.jse8.A0Helper.CustomSkuHelper;
 import localhost.sandbox.jse8.A0Helper.ExecTimeSecsHelper;
 import localhost.sandbox.jse8.A0Helper.FileHelper;
@@ -82,6 +83,7 @@ public class SandboxApplication {
 		// StreamMain.main();
 		// CipherAesEcbPkcs5Helper.main();
 		// CipherAesCbcPkcs5Helper.main();
+		CipherAesGcmNoPaddingHelper.main();
 		// ObjectCopyHelper.main();
 		// AnnotationMain.main();
 		// LogHelper.main();
@@ -111,7 +113,7 @@ public class SandboxApplication {
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
 		// URLHelper.main();
-		UrlParamHelper.main();
+		// UrlParamHelper.main();
 		// TokenGeneratorHelper.main();
 
 	}
