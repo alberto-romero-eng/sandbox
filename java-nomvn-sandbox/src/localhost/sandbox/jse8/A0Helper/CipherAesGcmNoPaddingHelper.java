@@ -1,6 +1,7 @@
 package localhost.sandbox.jse8.A0Helper;
 
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -11,21 +12,39 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * <p>Cipher "AES/GCM/NoPadding" example.
  *  
- * <p>This cipher does use intialization vector (iv).
+ * <p>This cipher does use intialization vector (iv), generated with each encrypted.
  * 
- * <p>(Each encryptedHex generates an ivHex).
+ * <p>Convention regarding encoding:
+ * <ul>
+ * <li>{@link SecretKeyH#keyBytesHex}, B16/Hex (preferred).
+ * <li>iv, B64 (fixed).
+ * <li>encrypted, B64 (fixed).
+ * </ul>
+ * 
+ * <p>Pending:
+ * <ul>
+ * <li>Add attribute <i>SecreKeyH.encoding</i>.
+ * <li>Finer control of attribute {@link SecretKeyH#keyBytesHex}, along 
+ * with mentioned created attribute.
+ * </ul>
  * 
  * @author Alberto Romero
  * @since 2025-09-29
  */
 public class CipherAesGcmNoPaddingHelper {
 
-	private static final String algorithmShort = "AES";
-	private static final String algorithmFull = "AES/GCM/NoPadding";
-	private static final int keyBytesSize = 16; // 16, 32
-	private static final int authenticationTagBits = 128;
-	private static String keyBytesHex = null;
+	private static enum Encoding { BASE_16, BASE_64 };
+
+	private static final String CIPHER_ALGORITHM = "AES/GCM/NoPadding";
+	private static final int AUTHENTICATION_TAG_BITS = 128;
 	private static boolean initialized = false;
+
+	private static class SecretKeyH {
+		private static final String ALGORITHM = "AES";
+		private static final int KEY_BYTES_SIZE = 16; // 16, 32
+		private static final Encoding DEFAULT_ENCODING = Encoding.BASE_16;
+		private static String keyBytesHex = null;
+	}
 
 
 
@@ -34,38 +53,44 @@ public class CipherAesGcmNoPaddingHelper {
 		System.out.println("Hello from Cipher AesGcmNoPadding Helper!");
 
 		// input message
-		String inputStr = "Hello World";
-		System.out.println("--> inputStr: " + inputStr);
+		String unencrypted = "Hello World";
+		System.out.println("--> unencrypted: " + unencrypted);
 
 		// initialize -- generate and/or assign byte array for symmetric key
 		// keyBytesHex example, 128 bit (16 bytes): "983791D130AE8AC39E6BF5FD31C2768A"
-		String initialKeyBytesHex = generateKeyBytesHelper(keyBytesSize); // method for example and key generation
+		String initialKeyBytesHex = generateSecretKeyBytesHelper(SecretKeyH.KEY_BYTES_SIZE, SecretKeyH.DEFAULT_ENCODING); // method for example and key generation
 		initialize(initialKeyBytesHex); // argument must be defined as constant in production environment
-		System.out.println("--> keyBytesHex: " + keyBytesHex  + " (do not print this on production!!!)");
+		System.out.println("--> secretKey.keyBytesHex: " + SecretKeyH.keyBytesHex  + " (do not print this on production!!!)");
 
 		// generate iv and encrypted text
-		String ivHexDotEncryptedHex = encrypt(inputStr);
-		System.out.println("--> ivHexDotEncryptedHex: " + ivHexDotEncryptedHex);
+		// String ivHexDotEncryptedHex = encrypt(inputStr);
+		String ivB64DotEncryptedB64 = encrypt(unencrypted);
+		System.out.println("--> ivB64.encryptedB64: " + ivB64DotEncryptedB64);
 
 		// generate decrypted text
-		String[] auxStrArr = ivHexDotEncryptedHex.split("\\.");
-		String ivHex = auxStrArr[0];
-		String encryptedHex = auxStrArr[1];
-		String decryptedStr = decrypt(ivHex, encryptedHex);
-		System.out.println("--> decryptedStr: " + decryptedStr);
+		String decrypted = decrypt(ivB64DotEncryptedB64);
+		System.out.println("--> decrypted: " + decrypted);
 
 	}
 
 
 
-	public static String generateKeyBytesHelper(int keyBytesSize) {
+	public static String generateSecretKeyBytesHelper(int keyBytesSize, Encoding outputEncoding) {
 		// keyBytesSize must be 16 or 32 for AES symmetric encryption
 		Random rd = new Random();
-		byte[] keyBytes = new byte[keyBytesSize];
-		rd.nextBytes(keyBytes);
-		String keyHex = ByteHexHelper.byteArrayToHexString(keyBytes);
-		// System.out.println("keyHex: " + keyHex);
-		return keyHex;
+		byte[] secretKeyBytes = new byte[keyBytesSize];
+		rd.nextBytes(secretKeyBytes);
+		String secretKeyEncodedStr = null;
+		switch (outputEncoding) {
+		case BASE_16:
+			secretKeyEncodedStr = ByteHexHelper.byteArrayToHexString(secretKeyBytes);
+			break;
+		case BASE_64:
+			secretKeyEncodedStr = Base64.getEncoder().encodeToString(secretKeyBytes);
+			break;
+		}
+		// System.out.println("secretKeyEncodedStr: " + secretKeyEncodedStr);
+		return secretKeyEncodedStr;
 	}
 
 
@@ -73,11 +98,11 @@ public class CipherAesGcmNoPaddingHelper {
 	public static String generateIvBytes() {
 		try {
 			SecureRandom secureRandom = SecureRandom.getInstanceStrong();
-			int blockSize = Cipher.getInstance(algorithmFull).getBlockSize();
+			int blockSize = Cipher.getInstance(CIPHER_ALGORITHM).getBlockSize();
 			byte[] iv = new byte[blockSize];
 			secureRandom.nextBytes(iv);
-			String ivHex = ByteHexHelper.byteArrayToHexString(iv);
-			return ivHex;
+			String ivB64 = Base64.getEncoder().encodeToString(iv);
+			return ivB64;
 		} catch (Exception e) {
 			System.err.println("e.getMessage(): " + e.getMessage() +  " -- e.getClass(): " + e.getClass());
 			return null;
@@ -86,34 +111,31 @@ public class CipherAesGcmNoPaddingHelper {
 
 
 
-	public static String encrypt(String inputString) {
+	public static String encrypt(String unencrypted) {
 		try {
-			// input
-			// System.out.println("inString: " + inString);
-			byte [] inputBytes = inputString.getBytes();
-			String inputHex = ByteHexHelper.byteArrayToHexString(inputBytes);
-			// System.out.println("inputHex: " + inputHex);
+			// input, unencrypted
+			// System.out.println("unencrypted: " + unencrypted);
+			byte [] inputBytes = unencrypted.getBytes();
 
 			// secret key
-			byte[] keyBytes = ByteHexHelper.hexStringToByteArray(keyBytesHex);
-			SecretKey secretKey = new SecretKeySpec(keyBytes, algorithmShort);
+			byte[] keyBytes = ByteHexHelper.hexStringToByteArray(SecretKeyH.keyBytesHex);
+			SecretKey secretKey = new SecretKeySpec(keyBytes, SecretKeyH.ALGORITHM);
 
 			// initialization vector
-			String ivHex = generateIvBytes();
-			byte[] ivBytes = ByteHexHelper.hexStringToByteArray(ivHex);
-			GCMParameterSpec gcmParamSpec = new GCMParameterSpec(authenticationTagBits, ivBytes);
+			String ivB64 = generateIvBytes();
+			byte[] ivBytes = Base64.getDecoder().decode(ivB64);
+			GCMParameterSpec gcmParamSpec = new GCMParameterSpec(AUTHENTICATION_TAG_BITS, ivBytes);
 
 			// cipher instance, initialization
-			Cipher cipher = Cipher.getInstance(algorithmFull);
+			Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 			cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmParamSpec);
 
 			// do encrypt
 			byte[] encryptedBytes = cipher.doFinal(inputBytes);
-			String encryptedHex = ByteHexHelper.byteArrayToHexString(encryptedBytes);
+			String encryptedB64 = Base64.getEncoder().encodeToString(encryptedBytes);
 
 			// output
-			// System.out.println("encryptedHex: " + encryptedHex);
-			return ivHex + "." + encryptedHex;
+			return ivB64 + "." + encryptedB64;
 
 		} catch (Exception e) {
 			System.err.println("e.getMessage(): " + e.getMessage() +  " -- e.getClass(): " + e.getClass());
@@ -123,22 +145,23 @@ public class CipherAesGcmNoPaddingHelper {
 
 
 
-	public static String decrypt(String ivHex, String encryptedHex) {
+	public static String decrypt(String ivB64, String encryptedB64) {
 		try {
-			// input
-			// System.out.println("inHex: " + inHex);
-			byte [] encryptedBytes = ByteHexHelper.hexStringToByteArray(encryptedHex);
+			// System.out.println("ivB64: " + ivB64 + ", encryptedB64: " + encryptedB64);
+
+			// input, initialization vector
+			byte[] ivBytes = Base64.getDecoder().decode(ivB64);
+			GCMParameterSpec gcmParamSpec = new GCMParameterSpec(AUTHENTICATION_TAG_BITS, ivBytes);
+
+			// input, encrypted
+			byte [] encryptedBytes = Base64.getDecoder().decode(encryptedB64);
 
 			// secret key
-			byte[] keyBytes = ByteHexHelper.hexStringToByteArray(keyBytesHex);
-			SecretKey secretKey = new SecretKeySpec(keyBytes, algorithmShort);
-
-			// initialization vector
-			byte[] ivBytes = ByteHexHelper.hexStringToByteArray(ivHex);
-			GCMParameterSpec gcmParamSpec = new GCMParameterSpec(authenticationTagBits, ivBytes);
+			byte[] keyBytes = ByteHexHelper.hexStringToByteArray(SecretKeyH.keyBytesHex);
+			SecretKey secretKey = new SecretKeySpec(keyBytes, SecretKeyH.ALGORITHM);
 
 			// cipher instance, initialization
-			Cipher cipher = Cipher.getInstance(algorithmFull);
+			Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmParamSpec);
 
 			// do decrypt
@@ -157,12 +180,27 @@ public class CipherAesGcmNoPaddingHelper {
 
 
 
-	public static void initialize(String inKeyBytesHex) {
-		keyBytesHex = inKeyBytesHex;
+	public static String decrypt(String ivB64DotEncryptedB64) {
+		try {
+			String[] auxStrArr = ivB64DotEncryptedB64.split("\\.");
+			String ivB64 = auxStrArr[0];
+			String encryptedB64 = auxStrArr[1];
+			String decrypted = decrypt(ivB64, encryptedB64);
+			return decrypted;
+		} catch (Exception e) {
+			System.err.println("e.getMessage(): " + e.getMessage() +  " -- e.getClass(): " + e.getClass());
+			return null;
+		}
+	}
+
+
+
+	public static void initialize(String keyBytesHex) {
+		SecretKeyH.keyBytesHex = keyBytesHex;
 		try {
 			// secret key
-			byte[] keyBytes = ByteHexHelper.hexStringToByteArray(keyBytesHex);
-			SecretKey secretKey = new SecretKeySpec(keyBytes, algorithmShort);
+			byte[] secretKeyBytes = ByteHexHelper.hexStringToByteArray(keyBytesHex);
+			SecretKey secretKey = new SecretKeySpec(secretKeyBytes, SecretKeyH.ALGORITHM);
 			initialized = true;
 		} catch (Exception e) {
 			System.err.println("e.getMessage(): " + e.getMessage() +  " -- e.getClass(): " + e.getClass());
