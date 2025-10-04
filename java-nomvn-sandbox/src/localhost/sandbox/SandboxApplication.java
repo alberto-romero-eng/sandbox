@@ -4,6 +4,7 @@ import localhost.sandbox.jse8.A0Helper.BooleanHelper;
 import localhost.sandbox.jse8.A0Helper.CipherAesCbcPkcs5Helper;
 import localhost.sandbox.jse8.A0Helper.CipherAesEcbPkcs5Helper;
 import localhost.sandbox.jse8.A0Helper.CipherAesGcmNoPaddingHelper;
+import localhost.sandbox.jse8.A0Helper.ClassLoaderHelper;
 import localhost.sandbox.jse8.A0Helper.CustomSkuHelper;
 import localhost.sandbox.jse8.A0Helper.ExecTimeSecsHelper;
 import localhost.sandbox.jse8.A0Helper.FileHelper;
@@ -83,7 +84,7 @@ public class SandboxApplication {
 		// StreamMain.main();
 		// CipherAesEcbPkcs5Helper.main();
 		// CipherAesCbcPkcs5Helper.main();
-		CipherAesGcmNoPaddingHelper.main();
+		// CipherAesGcmNoPaddingHelper.main();
 		// ObjectCopyHelper.main();
 		// AnnotationMain.main();
 		// LogHelper.main();
@@ -115,6 +116,7 @@ public class SandboxApplication {
 		// URLHelper.main();
 		// UrlParamHelper.main();
 		// TokenGeneratorHelper.main();
+		ClassLoaderHelper.main();
 
 	}
 }
