@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-08-02 04:03'
+__ALIAS_LAST_UPDATE__='2025-10-04 06:21'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -269,15 +269,15 @@ function __bh_h_greeting {
 # ------------------------------------------------------
 
 alias mc='echo "--> mvn clean"; sleep ${__ALIAS_TIMEOUT__}; mvn clean'
-alias mci='echo "--> mvn clean install -U -Dmaven.test.skip=true"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn clean install -U -Dmaven.test.skip=true'
-alias mcc='echo "--> mvn -T 1C clean compile -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn -T 1C clean compile -Dmaven.test.skip=true --offline'
-alias mcp='echo "--> mvn -T 1C clean package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn -T 1C clean package -Dmaven.test.skip=true --offline'
-alias mp='echo "--> mvn -T 1C package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn -T 1C package -Dmaven.test.skip=true --offline'
-alias mrjr='echo "--> mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline'
-alias mrr='echo "--> mvn resources:resources"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn resources:resources'
-alias mec='echo "--> mvn clean eclipse:clean"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn clean eclipse:clean'
-alias mdt='echo "--> mvn dependency:tree"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn dependency:tree'
-alias mdr='echo "--> mvn dependency:resolve -U"; sleep ${__ALIAS_TIMEOUT__}; sj; mvn dependency:resolve -U'
+alias mci='echo "--> mvn clean install -U -Dmaven.test.skip=true"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn clean install -U -Dmaven.test.skip=true'
+alias mcc='echo "--> mvn -T 1C clean compile -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C clean compile -Dmaven.test.skip=true --offline'
+alias mcp='echo "--> mvn -T 1C clean package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C clean package -Dmaven.test.skip=true --offline'
+alias mp='echo "--> mvn -T 1C package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C package -Dmaven.test.skip=true --offline'
+alias mrjr='echo "--> mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline'
+alias mrr='echo "--> mvn resources:resources"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn resources:resources'
+alias mec='echo "--> mvn clean eclipse:clean"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn clean eclipse:clean'
+alias mdr='echo "--> mvn dependency:resolve -U"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn dependency:resolve -U'
+alias mdt='echo "--> mvn dependency:tree"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn dependency:tree'
 alias mdp='echo "--> mvn dependency:purge-local-repository"; sleep ${__ALIAS_TIMEOUT__}; echo "# just as reminder, execute manually"'
 
 
@@ -304,6 +304,9 @@ function __jh_set_java_version {
 			;;
 		'21' )
 			command cd ${JAVA_21_HOME}
+			;;
+		'25' )
+			command cd ${JAVA_25_HOME}
 			;;
 		'NONE' | * )
 			echo 'param ${1} invalid; accepted values: 8, 11, 17, 21'
@@ -341,6 +344,7 @@ alias sj8=' __jh_set_java_version 8 '
 alias sj11='__jh_set_java_version 11'
 alias sj17='__jh_set_java_version 17'
 alias sj21='__jh_set_java_version 21'
+alias sj25='__jh_set_java_version 25'
 
 
 
@@ -394,7 +398,7 @@ function __jh_from_pom_set_java_version {
 
     unset _p_java_version
 }
-alias sj='__jh_from_pom_set_java_version'
+alias sjp='__jh_from_pom_set_java_version'
 
 
 
@@ -692,7 +696,8 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  jvs: __jh_java_vars_set
 	  jvd: __jh_java_vars_set_from_defaults
 	
-	  sj  : __jh_from_pom_set_java_version # helper function
+	  sjp  : __jh_from_pom_set_java_version    # helper function
+	  sj17 : __jh_from_number_set_java_version # helper function
 	
 	  mc  : mvn clean
 	  mci : mvn clean install -U -Dmaven.test.skip=true
@@ -702,9 +707,9 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  mrjr: mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline
 	  mrr : mvn resources:resources
 	  mec : mvn clean eclipse:clean
-	
-	  mdt : mvn dependency:tree
+
 	  mdr : mvn dependency:resolve -U
+	  mdt : mvn dependency:tree
 	  mdp : mvn dependency:purge-local-repository -U
 	
 	  tk  : taskkill -- [ (mvn_folder_no_arg) | pid | jps_name ]
