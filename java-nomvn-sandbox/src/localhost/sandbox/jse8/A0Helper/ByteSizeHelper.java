@@ -13,6 +13,43 @@ public class ByteSizeHelper {
 	private static long ONE_EB = 1024 * ONE_PB;
 	private static DecimalFormat DEC_FORMAT = new DecimalFormat("0.00"); // use "#.##" to supress unnecessary zeroes
 
+
+
+	public static void main() {
+
+		System.out.println("Hello from ByteSizeHelper main!");
+
+		long sizeBytes = 0;
+		String sizeHuman = null;
+
+		sizeBytes = 1L;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.out.println("sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+		sizeBytes = 2L * 1024L;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.out.println("sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+		sizeBytes = 3L * 1024L * 1024L;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.out.println("sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+		sizeBytes = 4L * 1024L * 1024L * 1024L;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.out.println("sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+		sizeBytes = 5L * 1024L * 1024L * 1024L * 1024L;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.out.println("sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+		sizeBytes = 5 * 1024 * 1024 * 1024 * 1024;
+		sizeHuman = writeHumanReadableByteSize(sizeBytes);
+		System.err.println("error, int overflow -- sizeBytes: " + sizeBytes + ", sizeHuman: " + sizeHuman);
+
+	} 
+
+
+
 	public static String writeHumanReadableByteSize(long inSize) {
 
 		String outSize = null;
