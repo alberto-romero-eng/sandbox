@@ -1,6 +1,8 @@
 package localhost.sandbox;
 
 import localhost.sandbox.jse8.A0Helper.BooleanHelper;
+import localhost.sandbox.jse8.A0Helper.ByteHexHelper;
+import localhost.sandbox.jse8.A0Helper.ByteSizeHelper;
 import localhost.sandbox.jse8.A0Helper.CipherAesCbcPkcs5Helper;
 import localhost.sandbox.jse8.A0Helper.CipherAesEcbPkcs5Helper;
 import localhost.sandbox.jse8.A0Helper.CipherAesGcmNoPaddingHelper;
@@ -8,6 +10,7 @@ import localhost.sandbox.jse8.A0Helper.ClassLoaderHelper;
 import localhost.sandbox.jse8.A0Helper.CustomSkuHelper;
 import localhost.sandbox.jse8.A0Helper.ExecTimeSecsHelper;
 import localhost.sandbox.jse8.A0Helper.FileHelper;
+import localhost.sandbox.jse8.A0Helper.HttpClientHelper;
 import localhost.sandbox.jse8.A0Helper.JoinHelper;
 import localhost.sandbox.jse8.A0Helper.JvmMemoryHelper;
 import localhost.sandbox.jse8.A0Helper.LargeStringHelper;
@@ -116,7 +119,10 @@ public class SandboxApplication {
 		// URLHelper.main();
 		// UrlParamHelper.main();
 		// TokenGeneratorHelper.main();
-		ClassLoaderHelper.main();
+		// ClassLoaderHelper.main();
+		HttpClientHelper.main();
+		// ByteSizeHelper.main();
+		// ByteHexHelper.main();
 
 	}
 }
