@@ -1,49 +1,59 @@
 package localhost.sandbox.jse8.A0Helper;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
+// import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
-// import java.util.zip.GZIPInputStream;
+import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class HttpClientHelper {
 
 	public static void main() {
-
 		System.out.println("Hello from HttpClientHelper main!");
+
+		// test 01
+		LinkedHashMap<String, String> paramsMap = new LinkedHashMap<>();
+		String query = getQueryString(paramsMap);
+		String path = "";
+		String urlStr = "https://example.com" + "/" + path + "?" + "&" + query;
+		processRequest(urlStr, true, ByteProcessingMethod.BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER, null);
+	}
+
+
+	public static enum ByteProcessingMethod {
+		BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER,
+		BUFFERED_READER
+	}
+
+
+	public static void processRequest(String urlStr, boolean gzipEncodeEnabled, ByteProcessingMethod byteProcessingMethod, String postData) {
+
+		System.out.println("Hello from processRequest!");
+
+		// params
+		// boolean gzipEncodeEnabled = false;
+		// ByteProcessingMethod byteProcessingMethod = ByteProcessingMethod.BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER;
+		// String postData = null; // GET
+		// postData = "key1=value1" + "&" + "key2=value2"; // POST
 
 		int connectTimeoutMs = 30 * 1000;
 		int readTimeoutMs = 120 * 1000;
 
+		// process
 		String userAgent = "Java-HttpClientHelper";
 
-		LinkedHashMap<String,String> paramsMap = new LinkedHashMap<>();
-
-		String query = paramsMap.entrySet().stream()
-				.map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
-				.reduce((p1, p2) -> p1 + "&" + p2)
-				.orElse("");
-
-		String path = "";
-
-		String urlStr = "https://example.com" + "/" + path + "?" + "&" + query;
-
-		String postData = null; // GET
-		// postData = "key1=value1" + "&" + "key2=value2"; // POST
-
 		int responseCode = -1;
-		String fullResponseContent1 = null;
-		String fullResponseContent2 = null;
+		String fullResponseContent = null;
 
 		try {
 			URL url = new URL(urlStr);
@@ -51,7 +61,9 @@ public class HttpClientHelper {
 			conn.setUseCaches(false);
 			conn.setRequestProperty("User-Agent", userAgent);
 			conn.setRequestProperty("Connection", "keep-alive");
-			// conn.setRequestProperty("Accept-Encoding", "gzip");
+			if (gzipEncodeEnabled) {
+				conn.setRequestProperty("Accept-Encoding", "gzip");
+			}
 			conn.setConnectTimeout(connectTimeoutMs);
 			conn.setReadTimeout(readTimeoutMs);
 			if (postData != null) {
@@ -67,56 +79,44 @@ public class HttpClientHelper {
 
 			responseCode = conn.getResponseCode();
 
-			/* if (responseCode == 200) {
-				try (InputStream is = con.getInputStream();
+			if (gzipEncodeEnabled) {
+				try (InputStream is = conn.getInputStream() ; // conn.getErrorStream()
 						GZIPInputStream gis = new GZIPInputStream(is)) {
-					JsonReader reader = new JsonReader(new InputStreamReader(gis, "UTF-8"));
-					response = gson.fromJson(reader, Response.class);
-					response.status = ResponseStatus.OK;
+					switch (byteProcessingMethod) {
+					case BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER:
+						fullResponseContent = getFullResponseContentByBufferedByteArrayOutputStream(gis);
+						break;
+					case BUFFERED_READER:
+						fullResponseContent = getFullResposeContentByBufferedReader(gis);
+						break;
+					}
 				} catch (Exception ex) {
-					response = new Response();
-					response.status = ResponseStatus.FAIL;
-					response.exception = ex;
+					System.err.println("ex.class: " + ex.getClass() + ", ex.message: " + ex.getMessage() + ", ex.cause: " + ex.getCause());
 				}
-
 			} else {
-				try (InputStream is = con.getErrorStream();
-						GZIPInputStream gis = new GZIPInputStream(is)) {
-					JsonReader reader = new JsonReader(new InputStreamReader(gis, "UTF-8"));
-					response = gson.fromJson(reader, Response.class);
-				} catch (Exception e) {
-					response = new Response();
-					response.status = ResponseStatus.FAIL;
-					response.exception = e;
-				} 
-			} */
-
-			try (InputStream is = conn.getInputStream()) {
-
-				/*BufferedInputStream bis = new BufferedInputStream(is);
-				int available = bis.available();
-				int readInt = 65;
-				byte[] bArray = null;
-				String s = new String(bArray, StandardCharsets.UTF_8);
-				System.out.println("s: " + s);*/
-
-				// fullResponseContent1 = getFullResponseContentByBufferedByteArrayOutputStream(is);
-				fullResponseContent2 = getFullResposeContentByBufferedReader(is);
-
-
-			} catch (Exception ex) {
-				System.err.println("ex.class: " + ex.getClass() + ", ex.message: " + ex.getMessage() + ", ex.cause: " + ex.getCause());
+				try (InputStream is = conn.getInputStream()) { // conn.getErrorStream()
+					switch (byteProcessingMethod) {
+					case BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER:
+						fullResponseContent = getFullResponseContentByBufferedByteArrayOutputStream(is);
+						break;
+					case BUFFERED_READER:
+						fullResponseContent = getFullResposeContentByBufferedReader(is);
+						break;
+					}
+				} catch (Exception ex) {
+					System.err.println("ex.class: " + ex.getClass() + ", ex.message: " + ex.getMessage() + ", ex.cause: " + ex.getCause());
+				}
 			}
 
 		} catch (Exception ex) {
 			System.err.println("ex.class: " + ex.getClass() + ", ex.message: " + ex.getMessage() + ", ex.cause: " + ex.getCause());
 		}
 
+		System.out.println("byteProcessingMethod: " + byteProcessingMethod);
+		System.out.println("gzipEnabled: " + gzipEncodeEnabled);
 		System.out.println("responseCode: " + responseCode);
-		System.out.println("fullResponseContent1: ");
-		System.out.println(fullResponseContent1);
-		System.out.println("fullResponseContent2: ");
-		System.out.println(fullResponseContent2);
+		System.out.println("fullResponseContent: ");
+		System.out.println(fullResponseContent);
 	}
 
 
@@ -133,13 +133,14 @@ public class HttpClientHelper {
 		String fullResponseContent = null;
 		// InputStream is = new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5, 6 }); // not really known
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		int readByte;
-		while ((readByte = is.read()) != -1) {
-			buffer.write(readByte);
+		int nRead;
+		byte[] data = new byte[4];
+		while ((nRead = is.read(data, 0, data.length)) != -1) { // ((nRead = is.read()) != -1)
+			buffer.write(data, 0, nRead); // buffer.write(nRead);
 		}
 		buffer.flush();
-		byte[] targetArray = buffer.toByteArray();
-		fullResponseContent = new String(targetArray, StandardCharsets.UTF_8);
+		byte[] targeBytetArray = buffer.toByteArray();
+		fullResponseContent = new String(targeBytetArray, StandardCharsets.UTF_8);
 		return fullResponseContent;
 	}
 
@@ -157,5 +158,13 @@ public class HttpClientHelper {
 		} else {
 			return fullResponseContent;
 		}
+	}
+
+	private static String getQueryString(Map<String,String> paramsMap) {
+		String query = paramsMap.entrySet().stream()
+				.map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
+				.reduce((p1, p2) -> p1 + "&" + p2)
+				.orElse("");
+		return query;
 	}
 }
