@@ -121,9 +121,9 @@ public class SandboxApplication {
 		// UrlParamHelper.main();
 		// TokenGeneratorHelper.main();
 		// ClassLoaderHelper.main();
-		HttpClientHelper.main();
 		// ByteSizeHelper.main();
 		// ByteHexHelper.main();
+		HttpClientHelper.main();
 		// IOStreamHelper.main();
 
 	}

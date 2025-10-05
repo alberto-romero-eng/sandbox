@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 // import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,6 +18,9 @@ import java.util.zip.GZIPInputStream;
 import javax.net.ssl.HttpsURLConnection;
 
 public class HttpClientHelper {
+
+	public static final Charset CHARSET_DEFAULT = StandardCharsets.UTF_8;
+
 
 
 	public static void main() {
@@ -27,13 +31,13 @@ public class HttpClientHelper {
 		String query = getQueryString(paramsMap);
 		String path = "";
 		String urlStr = "https://example.com" + "/" + path + "?" + "&" + query;
-		processRequest(urlStr, true, InputStreamProcessingMethod.GET_BYTE_ARRAY, null);
+		processRequest(urlStr, true, InputStreamProcessingMethod.READ_ALL_BYTES_BAOS, null);
 	}
 
 
 
 	public static enum InputStreamProcessingMethod {
-		GET_BYTE_ARRAY,
+		READ_ALL_BYTES_BAOS,
 		READ_LINE_BY_LINE
 	}
 
@@ -74,7 +78,7 @@ public class HttpClientHelper {
 				conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 				conn.setDoOutput(true);
 				try (OutputStream os = conn.getOutputStream()) {
-					os.write(postData.getBytes(StandardCharsets.UTF_8));
+					os.write(postData.getBytes(CHARSET_DEFAULT));
 				}
 			} else {
 				conn.setRequestMethod("GET");
@@ -86,9 +90,9 @@ public class HttpClientHelper {
 				try (InputStream is = conn.getInputStream() ; // conn.getErrorStream()
 						GZIPInputStream gis = new GZIPInputStream(is)) {
 					switch (inputStreamProcessingMethod) {
-					case GET_BYTE_ARRAY:
-						byte[] targetByteArray = getByteArray(gis);
-						fullResponseContent = new String(targetByteArray, StandardCharsets.UTF_8);
+					case READ_ALL_BYTES_BAOS:
+						byte[] targetByteArray = readAllBytesBaos(gis);
+						fullResponseContent = new String(targetByteArray, CHARSET_DEFAULT);
 						break;
 					case READ_LINE_BY_LINE:
 						fullResponseContent = readLineByLine(gis);
@@ -100,9 +104,9 @@ public class HttpClientHelper {
 			} else {
 				try (InputStream is = conn.getInputStream()) { // conn.getErrorStream()
 					switch (inputStreamProcessingMethod) {
-					case GET_BYTE_ARRAY:
-						byte[] targetByteArray = getByteArray(is);
-						fullResponseContent = new String(targetByteArray, StandardCharsets.UTF_8);
+					case READ_ALL_BYTES_BAOS:
+						byte[] targetByteArray = readAllBytesBaos(is);
+						fullResponseContent = new String(targetByteArray, CHARSET_DEFAULT);
 						break;
 					case READ_LINE_BY_LINE:
 						fullResponseContent = readLineByLine(is);
@@ -136,7 +140,7 @@ public class HttpClientHelper {
 
 
 
-	private static byte[] getByteArray(InputStream is) throws Exception {
+	private static byte[] readAllBytesBaos(InputStream is) throws Exception {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		int nRead;
 		byte[] data = new byte[4];
@@ -152,7 +156,7 @@ public class HttpClientHelper {
 
 	private static String readLineByLine(InputStream is) throws Exception {
 		String fullResponseContent = "";
-		BufferedReader bReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+		BufferedReader bReader = new BufferedReader(new InputStreamReader(is, CHARSET_DEFAULT));
 		String line = bReader.readLine();
 		while (line != null) {
 			fullResponseContent += line + "\n";
