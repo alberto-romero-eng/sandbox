@@ -18,6 +18,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class HttpClientHelper {
 
+
 	public static void main() {
 		System.out.println("Hello from HttpClientHelper main!");
 
@@ -26,17 +27,19 @@ public class HttpClientHelper {
 		String query = getQueryString(paramsMap);
 		String path = "";
 		String urlStr = "https://example.com" + "/" + path + "?" + "&" + query;
-		processRequest(urlStr, true, ByteProcessingMethod.BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER, null);
+		processRequest(urlStr, true, InputStreamProcessingMethod.GET_BYTE_ARRAY, null);
 	}
 
 
-	public static enum ByteProcessingMethod {
-		BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER,
-		BUFFERED_READER
+
+	public static enum InputStreamProcessingMethod {
+		GET_BYTE_ARRAY,
+		READ_LINE_BY_LINE
 	}
 
 
-	public static void processRequest(String urlStr, boolean gzipEncodeEnabled, ByteProcessingMethod byteProcessingMethod, String postData) {
+
+	public static void processRequest(String urlStr, boolean gzipEncodeEnabled, InputStreamProcessingMethod inputStreamProcessingMethod, String postData) {
 
 		System.out.println("Hello from processRequest!");
 
@@ -82,12 +85,13 @@ public class HttpClientHelper {
 			if (gzipEncodeEnabled) {
 				try (InputStream is = conn.getInputStream() ; // conn.getErrorStream()
 						GZIPInputStream gis = new GZIPInputStream(is)) {
-					switch (byteProcessingMethod) {
-					case BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER:
-						fullResponseContent = getFullResponseContentByBufferedByteArrayOutputStream(gis);
+					switch (inputStreamProcessingMethod) {
+					case GET_BYTE_ARRAY:
+						byte[] targetByteArray = getByteArray(gis);
+						fullResponseContent = new String(targetByteArray, StandardCharsets.UTF_8);
 						break;
-					case BUFFERED_READER:
-						fullResponseContent = getFullResposeContentByBufferedReader(gis);
+					case READ_LINE_BY_LINE:
+						fullResponseContent = readLineByLine(gis);
 						break;
 					}
 				} catch (Exception ex) {
@@ -95,12 +99,13 @@ public class HttpClientHelper {
 				}
 			} else {
 				try (InputStream is = conn.getInputStream()) { // conn.getErrorStream()
-					switch (byteProcessingMethod) {
-					case BYTE_ARRAY_OUTPUT_STREAM_AS_BUFFER:
-						fullResponseContent = getFullResponseContentByBufferedByteArrayOutputStream(is);
+					switch (inputStreamProcessingMethod) {
+					case GET_BYTE_ARRAY:
+						byte[] targetByteArray = getByteArray(is);
+						fullResponseContent = new String(targetByteArray, StandardCharsets.UTF_8);
 						break;
-					case BUFFERED_READER:
-						fullResponseContent = getFullResposeContentByBufferedReader(is);
+					case READ_LINE_BY_LINE:
+						fullResponseContent = readLineByLine(is);
 						break;
 					}
 				} catch (Exception ex) {
@@ -112,8 +117,9 @@ public class HttpClientHelper {
 			System.err.println("ex.class: " + ex.getClass() + ", ex.message: " + ex.getMessage() + ", ex.cause: " + ex.getCause());
 		}
 
-		System.out.println("byteProcessingMethod: " + byteProcessingMethod);
+		System.out.println("inputStreamProcessingMethod: " + inputStreamProcessingMethod);
 		System.out.println("gzipEnabled: " + gzipEncodeEnabled);
+		System.out.println("postData: " + postData);
 		System.out.println("responseCode: " + responseCode);
 		System.out.println("fullResponseContent: ");
 		System.out.println(fullResponseContent);
@@ -129,9 +135,8 @@ public class HttpClientHelper {
 	}
 
 
-	private static String getFullResponseContentByBufferedByteArrayOutputStream(InputStream is) throws Exception {
-		String fullResponseContent = null;
-		// InputStream is = new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5, 6 }); // not really known
+
+	private static byte[] getByteArray(InputStream is) throws Exception {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		int nRead;
 		byte[] data = new byte[4];
@@ -139,13 +144,13 @@ public class HttpClientHelper {
 			buffer.write(data, 0, nRead); // buffer.write(nRead);
 		}
 		buffer.flush();
-		byte[] targeBytetArray = buffer.toByteArray();
-		fullResponseContent = new String(targeBytetArray, StandardCharsets.UTF_8);
-		return fullResponseContent;
+		byte[] targetByteArray = buffer.toByteArray();
+		return targetByteArray;
 	}
 
 
-	private static String getFullResposeContentByBufferedReader(InputStream is) throws Exception {
+
+	private static String readLineByLine(InputStream is) throws Exception {
 		String fullResponseContent = "";
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 		String line = bReader.readLine();
@@ -160,6 +165,8 @@ public class HttpClientHelper {
 		}
 	}
 
+
+
 	private static String getQueryString(Map<String,String> paramsMap) {
 		String query = paramsMap.entrySet().stream()
 				.map(p -> urlEncodeUTF8(p.getKey()) + "=" + urlEncodeUTF8(p.getValue()))
@@ -167,4 +174,5 @@ public class HttpClientHelper {
 				.orElse("");
 		return query;
 	}
+
 }

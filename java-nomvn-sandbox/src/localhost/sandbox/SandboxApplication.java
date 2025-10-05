@@ -11,6 +11,7 @@ import localhost.sandbox.jse8.A0Helper.CustomSkuHelper;
 import localhost.sandbox.jse8.A0Helper.ExecTimeSecsHelper;
 import localhost.sandbox.jse8.A0Helper.FileHelper;
 import localhost.sandbox.jse8.A0Helper.HttpClientHelper;
+import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
 import localhost.sandbox.jse8.A0Helper.JoinHelper;
 import localhost.sandbox.jse8.A0Helper.JvmMemoryHelper;
 import localhost.sandbox.jse8.A0Helper.LargeStringHelper;
@@ -123,6 +124,7 @@ public class SandboxApplication {
 		HttpClientHelper.main();
 		// ByteSizeHelper.main();
 		// ByteHexHelper.main();
+		// IOStreamHelper.main();
 
 	}
 }
