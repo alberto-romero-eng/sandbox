@@ -96,6 +96,37 @@ public class IOStreamHelper {
 
 
 	/**
+	 * <p>Read available bytes, using {@link ByteArrayOutputStream} at internal implementation.
+	 * 
+	 * <p>Java-17 may already have a built-in method of this kind.
+	 * 
+	 * @author Alberto Romero
+	 * @since 2025-10-05
+	 */
+	public static byte[] readAvailableBytes(InputStream is, int available) throws Exception {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		int consumed = 0;
+		int nRead;
+		while (consumed < available) {
+			consumed++;
+			nRead = is.read();
+			if (nRead == -1) {
+				break;
+			} else {
+				buffer.write(nRead);
+			}
+		}
+		if (available == 0) {
+			is.read();
+		}
+		buffer.flush();
+		byte[] targetByteArray = buffer.toByteArray();
+		return targetByteArray;
+	}
+
+
+
+	/**
 	 * <p>Read all bytes, using {@link ByteArrayOutputStream} at internal implementation.
 	 * 
 	 * <p>Java-17 may already have a built-in method of this kind.
