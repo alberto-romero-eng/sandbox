@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IOStreamHelper {
 
@@ -35,6 +37,7 @@ public class IOStreamHelper {
 		byte[] srcByteArray = srcText.getBytes(StandardCharsets.UTF_8); // new byte[] { 0, 1, 2, 3, 4, 5, 6 }
 		InputStream is;
 		byte[] targetByteArray = null;
+		List<String> targetStrList = null;
 
 		// test 01, readAllBytesBaos
 		System.out.println("test01, readAllBytesBaos");
@@ -64,17 +67,21 @@ public class IOStreamHelper {
 		System.out.println(targetStringRabDis);
 		System.out.println();
 
-		// test03, readLineByLine
-		System.out.println("test03, readLineByLine");
+		// test03, readAllLines
+		System.out.println("test03, readAllLines");
 		is = new ByteArrayInputStream(srcByteArray);
-		String targetStringFromRLBL = null;
+		String targetStringFromRal = "";
+		targetStrList = new ArrayList<>();
 		try {
-			targetStringFromRLBL = readLineByLine(is);
+			targetStrList = readAllLines(is);
 		} catch (Exception ex) {
 			System.err.println("");
 		}
-		System.out.println("targetStringFromRLBL:");
-		System.out.println(targetStringFromRLBL);
+		for (String line : targetStrList) {
+			targetStringFromRal += line + "\n";
+		}
+		System.out.println("targetStringFromRal:");
+		System.out.println(targetStringFromRal);
 		System.out.println();
 	}
 
@@ -83,7 +90,7 @@ public class IOStreamHelper {
 	public static enum InputStreamProcessingMethod {
 		READ_ALL_BYTES_BAOS,
 		READ_ALL_BYTES_DIS,
-		READ_LINE_BY_LINE
+		READ_ALL_LINES
 	}
 
 
@@ -96,7 +103,7 @@ public class IOStreamHelper {
 	 * @author Alberto Romero
 	 * @since 2025-10-05
 	 */
-	private static byte[] readAllBytesBaos(InputStream is) throws Exception {
+	public static byte[] readAllBytesBaos(InputStream is) throws Exception {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		int nRead;
 		byte[] data = new byte[4];
@@ -118,7 +125,7 @@ public class IOStreamHelper {
 	 * @author Alberto Romero
 	 * @since 2025-10-05
 	 */
-	private static byte[] readAllBytesDis(InputStream is) throws Exception {
+	public static byte[] readAllBytesDis(InputStream is) throws Exception {
 		is.reset();
 		byte[] targetByteArray = new byte[is.available()];
 		DataInputStream dis = new DataInputStream(is);
@@ -134,19 +141,15 @@ public class IOStreamHelper {
 	 * @author Alberto Romero
 	 * @since 2025-10-05
 	 */
-	private static String readLineByLine(InputStream is) throws Exception {
-		String targetString = "";
+	public static List<String> readAllLines(InputStream is) throws Exception {
+		ArrayList<String> targetStrList = new ArrayList<>();
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(is, CHARSET_DEFAULT));
 		String line = bReader.readLine();
 		while (line != null) {
-			targetString += line + "\n";
+			targetStrList.add(line);
 			line = bReader.readLine();
 		}
-		if (targetString.isEmpty()) {
-			return null;
-		} else {
-			return targetString;
-		}
+		return targetStrList;
 	}
 
 }

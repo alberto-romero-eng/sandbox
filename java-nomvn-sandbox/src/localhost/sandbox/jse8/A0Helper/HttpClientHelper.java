@@ -11,7 +11,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -38,7 +40,7 @@ public class HttpClientHelper {
 
 	public static enum InputStreamProcessingMethod {
 		READ_ALL_BYTES_BAOS,
-		READ_LINE_BY_LINE
+		READ_ALL_LINES
 	}
 
 
@@ -94,8 +96,12 @@ public class HttpClientHelper {
 						byte[] targetByteArray = readAllBytesBaos(gis);
 						fullResponseContent = new String(targetByteArray, CHARSET_DEFAULT);
 						break;
-					case READ_LINE_BY_LINE:
-						fullResponseContent = readLineByLine(gis);
+					case READ_ALL_LINES:
+						List<String> targetStrList = readAllLines(gis);
+						fullResponseContent = "";
+						for (String line : targetStrList) {
+							fullResponseContent += line + "\n";
+						}
 						break;
 					}
 				} catch (Exception ex) {
@@ -108,8 +114,12 @@ public class HttpClientHelper {
 						byte[] targetByteArray = readAllBytesBaos(is);
 						fullResponseContent = new String(targetByteArray, CHARSET_DEFAULT);
 						break;
-					case READ_LINE_BY_LINE:
-						fullResponseContent = readLineByLine(is);
+					case READ_ALL_LINES:
+						List<String> targetStrList = readAllLines(is);
+						fullResponseContent = "";
+						for (String line : targetStrList) {
+							fullResponseContent += line + "\n";
+						}
 						break;
 					}
 				} catch (Exception ex) {
@@ -154,19 +164,15 @@ public class HttpClientHelper {
 
 
 
-	private static String readLineByLine(InputStream is) throws Exception {
-		String fullResponseContent = "";
+	private static List<String> readAllLines(InputStream is) throws Exception {
+		ArrayList<String> targetStrList = new ArrayList<>();
 		BufferedReader bReader = new BufferedReader(new InputStreamReader(is, CHARSET_DEFAULT));
 		String line = bReader.readLine();
 		while (line != null) {
-			fullResponseContent += line + "\n";
+			targetStrList.add(line);
 			line = bReader.readLine();
 		}
-		if (fullResponseContent.isEmpty()) {
-			return null;
-		} else {
-			return fullResponseContent;
-		}
+		return targetStrList;
 	}
 
 
