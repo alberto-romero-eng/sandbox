@@ -1,5 +1,5 @@
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-MariaDB, MySQL binaries install - updated: 2025-07-22 06:16
+MariaDB, MySQL binaries install - updated: 2025-10-08 16:52
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
@@ -539,5 +539,11 @@ select TIMESTAMP( DATE_ADD( UTC_TIMESTAMP(), INTERVAL 1 MINUTE ) );
 -- TIMESTAMP does suffer conversion by server timezone difference.
 
 -- Thus, regarding TIMESTAMP: if server-connection-timezone-difference at insert, is different from server-connection-timezone-difference at select, resulting timestamps will be different.
+
+
+
+(21) Auto Increment
+
+ALTER TABLE `my_table` AUTO_INCREMENT = 19;
 
 
