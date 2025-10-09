@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2025-10-04 06:21'
+__ALIAS_LAST_UPDATE__='2025-10-09 17:14'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -639,6 +639,33 @@ alias bo='_jh_sb2_bo ; _jh_sb3_bo'
 
 
 
+function __jh_bl_tk_mcp {
+    echo -e '--> bl ; tk ; mcp ; \n'
+    bl ; tk ; mcp
+}
+
+alias lc='__jh_bl_tk_mcp'
+
+
+
+function __jh_bl_tk_mrr {
+    echo -e '--> bl ; tk ; mrr ; \n'
+    bl ; tk ; mrr
+}
+
+alias lr='__jh_bl_tk_mrr'
+
+
+
+function __jh_bl_tk_mrjr {
+    echo -e '--> bl ; tk ; mrjr ; \n'
+    bl ; tk ; mrjr
+}
+
+alias lrj='__jh_bl_tk_mrjr'
+
+
+
 function __jh_java_vars_print {
     echo '--> java vars: '
     echo '__JH_XMS__: '${__JH_XMS__}
@@ -688,17 +715,17 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  jl  : jps -l
 	  jj  : javaw -jar \${jar_file}
 	  jjr : javaw -jar \${jar_file} > ${log_file}
-	
+
 	  jjrg  : grep -P -i \${1} \${log_file}
 	  jjrgts: grep -P -i 'tomcat started' \${log_file}
-	
+
 	  jvp: __jh_java_vars_print
 	  jvs: __jh_java_vars_set
 	  jvd: __jh_java_vars_set_from_defaults
-	
+
 	  sjp  : __jh_from_pom_set_java_version    # helper function
 	  sj17 : __jh_from_number_set_java_version # helper function
-	
+
 	  mc  : mvn clean
 	  mci : mvn clean install -U -Dmaven.test.skip=true
 	  mcc : mvn -T 1C clean compile -Dmaven.test.skip=true --offline
@@ -711,11 +738,14 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  mdr : mvn dependency:resolve -U
 	  mdt : mvn dependency:tree
 	  mdp : mvn dependency:purge-local-repository -U
-	
+
 	  tk  : taskkill -- [ (mvn_folder_no_arg) | pid | jps_name ]
-	
 	  bl  : sb2-bootstrap.prop / sb3-application.yml, for local
 	  bo  : sb2-bootstrap.prop / sb3-application.yml, for commit
+
+	  lc  : bl ; tk ; mcp ;
+	  lr  : bl ; tk ; mrr ;
+	  lrj : bl ; tk ; mrjr ;
 	HEREDOC_EOF
 alias jh='less -f <( echo -e "${_jh_help_string}")'
 
