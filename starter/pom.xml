@@ -10,16 +10,15 @@ REMINDER:
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
- 
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.6</version>
+		<version>3.5.6</version>
 	</parent>
-	
+
 	<groupId>localhost.starter</groupId>
 	<artifactId>starter</artifactId>
 	<version>0.0.0</version>
@@ -35,7 +34,7 @@ REMINDER:
 	</properties>
 
 	<dependencies>
-				
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -47,16 +46,21 @@ REMINDER:
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
-        
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency><!-- added to enable log4j2.yml processing -->
+
 	</dependencies>
 
 	<build>
-		
+
 		<plugins>
 
 			<plugin>
@@ -65,9 +69,9 @@ REMINDER:
 			</plugin>
 
 		</plugins>
-		
+
 		<resources>
-		
+
 			<!-- binary files should not receive injected variables -->
 			<resource>
 				<directory>src/main/resources</directory>
@@ -86,7 +90,7 @@ REMINDER:
 			</resource>
 
 		</resources>
-				
+
 	</build>
 
 </project>

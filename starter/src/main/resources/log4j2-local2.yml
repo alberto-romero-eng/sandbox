@@ -1,0 +1,34 @@
+Configuration:
+
+  name: Default
+
+  Properties:
+    Property:
+      - name: PROJECT_NAME
+        value: '@project.name@'
+      - name: SPRING_APPLICATION_NAME
+        value: ${spring:spring.application.name}
+      - name: BUNDLE_BOOTSTRAP_NAME
+        value: $${bundle:bootstrap:spring.application.name}
+      - name: LOG_PATTERN_ORIGINAL
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [${BUNDLE_BOOTSTRAP_NAME}] [TraceId: %X{traceId}] [%thread] [%level] [%logger{1.}] [%method:%line] [RequestId: %X{requestId}] [Authorization: %X{auth}] [Session: %X{session}] [User: %X{user}] [StoreId: %X{storeId}] [MerchantId: %X{merchantId}] -- %msg -%xEx{full} %n"
+      - name: LOG_PATTERN_LOG_TEST
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} [${PROJECT_NAME}_${SPRING_APPLICATION_NAME}_${BUNDLE_BOOTSTRAP_NAME}] [TraceId: %X{traceId}] [%thread] [%level] [%logger{1.}] [%method:%line] [RequestId: %X{requestId}] [Authorization: %X{auth}] [Session: %X{session}] [User: %X{user}] [StoreId: %X{storeId}] [MerchantId: %X{merchantId}] -- %msg -%xEx{full} %n"
+      - name: LOG_PATTERN_CONSOLE_MONO
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} %p @project.name@ %tn %c{1.} %M %L %m%n"
+      - name: LOG_PATTERN_CONSOLE_COLOR
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%p} %magenta{@project.name@} %tn %cyan{%c{1.}} %green{%M} %yellow{%L} %m%n"
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: ${LOG_PATTERN_LOG_TEST}
+        # disableAnsi: false
+
+  Loggers:
+    Root:
+      - level: info
+        AppenderRef:
+          ref: Console
