@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
+import localhost.sandbox.jse8.A0Helper.SleepHelper.SH;
 
 
 /**
@@ -67,7 +70,7 @@ public class SynchroWaitNotifyAllHelper {
 		swnah.doNotifyAll();
 
 		// threads state
-		SleepHelper.sleep(1L*1000L);
+		SH.sleep(1L, TimeUnit.SECONDS);
 		System.out.println("thread states, after notifyAll() -- t00: " + t00.getState() + " ; t01: " + t01.getState() + " ; t02: " + t02.getState() +  " ; t03: " + t03.getState());
 
 	}
