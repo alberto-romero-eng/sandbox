@@ -1,4 +1,4 @@
-SpringBoot Help -- updated: 2025-06-03 00:54
+SpringBoot Help -- updated: 2025-10-22 15:41
 
 
 
@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiModelProperty ->   import io.swagger.v3.oas.ann
 
 @Api(description = "foo")                         ->   @Tag(name = "foo")
 @ApiOperation(value = "foo")                      ->   @Operation(summary = "foo")
-@ApiResponse(code = 200, message = "ok")          ->   @ApiResponse(responseCode = "200", message = "ok")
+@ApiResponse(code = 200, message = "ok")          ->   @ApiResponse(responseCode = "200", description = "ok")
 @ApiModel(value = "foo")                          ->   @Schema(description = "foo")
 @ApiModelProperty(required = true, value = "foo") ->   @Schema(requiredMode = RequiredMode.REQUIRED, description = "foo")
 

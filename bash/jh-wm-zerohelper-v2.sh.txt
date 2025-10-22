@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-07-04 05:33'
+__JH_WMP_UPDATED__='2025-10-22 16:08'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
@@ -43,6 +43,7 @@ bulkfileprocessor
 apiprocessor
 
 merchantlogisfashion
+groupelgaprocessor
 
 carrierseur
 carriertipsa
@@ -180,6 +181,11 @@ __JH_WM_APIPROCESSOR_XMX__='192m'
 __JH_WM_MERCHANTLOGISFASHION_FOLDER__='merchantlogisfashion'
 __JH_WM_MERCHANTLOGISFASHION_JAR_REGEX__='merchantlogisfashion'
 __JH_WM_MERCHANTLOGISFASHION_XMX__='192m'
+
+# groupelgaprocessor
+__JH_WM_GROUPELGAPROCESSOR_FOLDER__='grupelgaprocessor'
+__JH_WM_GROUPELGAPROCESSOR_JAR_REGEX__='groupelgaprocessor'
+__JH_WM_GROUPELGAPROCESSOR_XMX__='192m'
 
 # carrierseur
 __JH_WM_CARRIERSEUR_FOLDER__='carrierseur'
