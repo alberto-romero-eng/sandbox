@@ -1,11 +1,17 @@
 package localhost.cache;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.autoconfigure.cache.CacheType;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
@@ -14,6 +20,8 @@ import localhost.cache.service.PersonCacheGatewayService;
 import localhost.cache.service.PersonCacheService;
 import localhost.cache.service.PersonService.PersonPojo;
 import localhost.cache.service.InfoCacheService;
+import localhost.cache.configuration.Constant;
+import localhost.cache.configuration.Constant.CacheName;
 import localhost.cache.service.InfoCacheGatewayService;
 import localhost.cache.util.SpringBootCacheHelper;
 
@@ -40,6 +48,9 @@ public class CLR_alberto implements CommandLineRunner {
 	PersonCacheGatewayService personCacheGatewayService;
 
 	@Autowired
+	CacheManager cacheManager;
+
+	@Autowired
 	SpringBootCacheHelper sbCacheHelper;
 
 
@@ -50,13 +61,47 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		test05_ConcurrenceSyncFalse();
-		test05_ConcurrenceSyncTrue();
+		test06_CacheManager();
+		// test05_ConcurrenceSyncFalse();
+		// test05_ConcurrenceSyncTrue();
 		// test04_CacheGateway_B(); // TODO: re-organize this method, possible collisions with A
 		// test03_CacheGateway_A(); // TODO: re-organize this method, possible collisions with B
 		// test02_CacheSimple();
 		// test01_SpringBootCacheHelper();
 		// test00_ApplicationContext();
+	}
+
+	private void test06_CacheManager() {
+		// load sample values
+		infoCacheService.getContinentByCountryCacheSyncFalseUnlessResultNull("Spain");
+		infoCacheService.getBrandByModelCacheSyncTrue("Neon");
+
+		// cacheNames
+		Collection<String> cacheNames = cacheManager.getCacheNames();
+		log.info("cacheNames: {}", cacheNames);
+
+		// continent-cache, value for key "Spain"
+		Cache continentCache = cacheManager.getCache(CacheName.CONTINENT);
+		ValueWrapper vwContinentForSpain = continentCache.get("Spain");
+		String continentForSpain = (String) vwContinentForSpain.get();
+		log.info("Spain, valueWrapper: {}, valueWrapper.get: {}", vwContinentForSpain, continentForSpain);
+
+		// continent-cache, native, size
+		Map<String,String> continentNativeCache = (Map<String,String>) continentCache.getNativeCache();
+		log.info("continentNativeCache -> class: {}, size: {}, keySet: {}", continentNativeCache.getClass().getSimpleName(), continentNativeCache.size(), continentNativeCache.keySet());
+
+		// brand-cache, value for key "Neon"
+		Cache brandCache = cacheManager.getCache(CacheName.BRAND);
+		ValueWrapper vwBrandForNeon = brandCache.get("Neon");
+		String brandForNeon = (String) vwBrandForNeon.get();
+		log.info("Neon, valueWrapper: {}, valueWrapper.get: {}", vwBrandForNeon, brandForNeon);
+
+		// brand-cache, native, size
+		Map<String,String>  brandNativeCache = (Map<String,String> ) brandCache.getNativeCache();
+		log.info("brandNativeCache -> class: {}, size: {}, keySet: {}", brandNativeCache.getClass().getSimpleName(), brandNativeCache.size(), brandNativeCache.keySet());
+
+		// end
+		log.info("done!");
 	}
 
 	/**

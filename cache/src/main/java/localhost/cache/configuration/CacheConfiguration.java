@@ -9,6 +9,7 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Configuration;
 
 import localhost.cache.configuration.Constant.CacheName;
+import localhost.cache.configuration.Constant.CacheNameEnum;
 
 @Configuration
 public class CacheConfiguration implements CacheManagerCustomizer<ConcurrentMapCacheManager> {
@@ -24,7 +25,7 @@ public class CacheConfiguration implements CacheManagerCustomizer<ConcurrentMapC
 		cacheManager.setCacheNames( Arrays.asList( CacheName.CONTINENT, 
 				CacheName.BRAND, 
 				CacheName.PERSON_SYNC_FALSE, 
-				CacheName.PERSON_SYNC_TRUE ));
+				CacheNameEnum.PERSON_SYNC_TRUE.name() ));
 		cacheManager.setAllowNullValues(Boolean.FALSE);
 	}
 

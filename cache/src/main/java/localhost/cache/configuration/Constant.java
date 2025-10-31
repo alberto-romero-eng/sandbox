@@ -10,7 +10,23 @@ public class Constant {
 
 		public static final String PERSON_SYNC_FALSE = "personSyncFalse";
 
-		public static final String PERSON_SYNC_TRUE = "personSyncTrue";
+		public static final String PERSON_SYNC_TRUE = "PERSON_SYNC_TRUE";
+
+	}
+
+	public static enum CacheNameEnum {
+
+		PERSON_SYNC_TRUE("personSyncTrue");
+
+		private String cacheName;
+
+		CacheNameEnum(String cacheName) {
+			this.cacheName = cacheName;
+		}
+
+		public String cacheName() {
+			return this.cacheName;
+		}
 
 	}
 

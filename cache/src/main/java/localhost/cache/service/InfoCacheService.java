@@ -81,7 +81,7 @@ public class InfoCacheService {
 			log.error("Finish getBrandByModelCacheSyncTrue() -- params -- country: {} -- results -- exception: ", model, ex);
 			return null;
 		}
-		log.info("Finish getBrandByModelCacheSyncTrue() -- params -- country: {} -- results -- continent: {}", model, brand);
+		log.info("Finish getBrandByModelCacheSyncTrue() -- params -- model: {} -- results -- continent: {}", model, brand);
 		return brand;
 	}
 
