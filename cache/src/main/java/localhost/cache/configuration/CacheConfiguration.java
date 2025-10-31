@@ -8,8 +8,8 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 // import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import localhost.cache.configuration.Constant.CacheName;
-import localhost.cache.configuration.Constant.CacheNameEnum;
+import localhost.cache.configuration.CacheConstant.CacheNameStr;
+import localhost.cache.configuration.CacheConstant.CacheNameEnum;
 
 @Configuration
 public class CacheConfiguration implements CacheManagerCustomizer<ConcurrentMapCacheManager> {
@@ -22,10 +22,13 @@ public class CacheConfiguration implements CacheManagerCustomizer<ConcurrentMapC
 	 */
 	@Override
 	public void customize(ConcurrentMapCacheManager cacheManager) {
-		cacheManager.setCacheNames( Arrays.asList( CacheName.CONTINENT, 
-				CacheName.BRAND, 
-				CacheName.PERSON_SYNC_FALSE, 
-				CacheNameEnum.PERSON_SYNC_TRUE.name() ));
+		cacheManager.setCacheNames( Arrays.asList(
+				CacheNameStr.CONTINENT_SYNC_FALSE, 
+				CacheNameStr.BRAND_SYNC_TRUE, 
+				CacheNameStr.PERSON_SYNC_FALSE, 
+				CacheNameEnum.PERSON_SYNC_TRUE.name(), // enum allowed here, but not in Cacheable annotation
+				CacheNameEnum.SIMPLEST.name()
+				));
 		cacheManager.setAllowNullValues(Boolean.FALSE);
 	}
 

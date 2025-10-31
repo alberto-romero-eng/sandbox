@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import localhost.cache.configuration.Constant.CacheName;
+import localhost.cache.configuration.CacheConstant.CacheNameStr;
 import localhost.cache.service.PersonService.PersonPojo;
 
 
@@ -37,12 +37,12 @@ public class PersonCacheService {
 
 
 
-	@CacheEvict(cacheNames = { CacheName.PERSON_SYNC_FALSE, CacheName.PERSON_SYNC_TRUE }, allEntries = true)
+	@CacheEvict(cacheNames = { CacheNameStr.PERSON_SYNC_FALSE, CacheNameStr.PERSON_SYNC_TRUE }, allEntries = true)
 	public void clearPersonCache() {
 		log.info("Finish clearPersonCache()");
 	}
 
-	@Cacheable(value = CacheName.PERSON_SYNC_FALSE, sync = false, unless = "#result == null")
+	@Cacheable(value = CacheNameStr.PERSON_SYNC_FALSE, sync = false, unless = "#result == null")
 	public PersonPojo getPersonCacheSyncFalseUnlessResultNull (String name, int age, float height, boolean militaryEnabled) {
 		PersonPojo resPerson = null;
 		try {
@@ -55,7 +55,7 @@ public class PersonCacheService {
 	}
 
 
-	@Cacheable(value = CacheName.PERSON_SYNC_TRUE, sync = true)
+	@Cacheable(value = CacheNameStr.PERSON_SYNC_TRUE, sync = true)
 	public PersonPojo getPersonCacheSyncTrue(String name, int age, float height, boolean militaryEnabled) {
 		PersonPojo resPerson = null;
 		try {

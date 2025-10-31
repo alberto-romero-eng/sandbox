@@ -2,6 +2,8 @@ package localhost.cache;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,8 @@ import localhost.cache.service.PersonCacheGatewayService;
 import localhost.cache.service.PersonCacheService;
 import localhost.cache.service.PersonService.PersonPojo;
 import localhost.cache.service.InfoCacheService;
-import localhost.cache.configuration.Constant;
-import localhost.cache.configuration.Constant.CacheName;
+import localhost.cache.configuration.CacheConstant;
+import localhost.cache.configuration.CacheConstant.CacheNameStr;
 import localhost.cache.service.InfoCacheGatewayService;
 import localhost.cache.util.SpringBootCacheHelper;
 
@@ -61,7 +63,8 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("Hello from CLR_alberto");
 
 		// tests
-		test06_CacheManager();
+		test07_testSimplest();
+		// test06_CacheManager();
 		// test05_ConcurrenceSyncFalse();
 		// test05_ConcurrenceSyncTrue();
 		// test04_CacheGateway_B(); // TODO: re-organize this method, possible collisions with A
@@ -70,6 +73,93 @@ public class CLR_alberto implements CommandLineRunner {
 		// test01_SpringBootCacheHelper();
 		// test00_ApplicationContext();
 	}
+
+
+	/**
+	 * <p>Important: {@link Cacheable}'s synchronization operates on a <b><i>key</i></b>, not on the 
+	 * whole {@link ConcurrentMap}.  Hence:
+	 * 
+	 * <ul>
+	 * 
+	 * <li>A thread entering a method annotated with {@link Cacheable} and synchronization <b>true</b>, 
+	 * establish a restriction on others threads carrying the same parameters or <b><i>key</i></b>, 
+	 * preventing them to operate on such <i>key</i> (this restriction includes methods with 
+	 * synchronization <i>false</i>, or any underlying method of {@link ConcurrentMap} on 
+	 * the <i>key</i>).
+	 * 
+	 * <li>A thread entering a method annotated with {@link Cacheable} and synchronization <b>false</b>,
+	 * do not restrict other threads as mentioned above.  Even such threads, carrying the same 
+	 * parameters or <i>key</i>, may enter enter a <i>synchronized-true</i> method, or perform a {@link ConcurrentMap}'s
+	 * operation on the <i>key</i>.
+	 * 
+	 * </ul>
+	 * 
+	 * <p>Lock mechanism is shown in debugger as {@link ConcurrentMap}'s ReservationNode, on acting thread.
+	 * 
+	 * @author Alberto Romero
+	 * @since 2025-10-31
+	 */
+	private void test07_testSimplest() throws Exception {
+
+		log.info("test07, start!");
+
+		Runnable seeMapRunnable = () -> {
+			Cache simplestCache = cacheManager.getCache(CacheNameStr.SIMPLEST);
+			log.info("done! -- {}", simplestCache);
+		};
+
+
+		Runnable getSimplestSyncTrueValueOneFirstRunnable = () -> {
+			String anyValue = "valueOne";
+			String result = infoCacheService.getSimplestSyncTrue(anyValue);
+			log.info("done! -- {}", result);
+		};
+
+		Runnable getSimplestSyncVaryingValueOneSecondRunnable = () -> {
+			String anyValue = "valueOne";
+			String result = infoCacheService.getSimplestSyncFalse(anyValue); // vary sync: true, false
+			log.info("done! -- {}", result);
+		};
+
+		Runnable getSimplestSyncFalseValueTwoFirstRunnable = () -> {
+			String anyValue = "valueTwo";
+			String result = infoCacheService.getSimplestSyncTrue(anyValue);
+			log.info("done! -- {}", result);
+		};
+
+		Runnable getSimplestSyncVaryingValueTwoSecondRunnable = () -> {
+			String anyValue = "valueTwo";
+			String result = infoCacheService.getSimplestSyncFalse(anyValue); // vary sync: true, false
+			log.info("done! -- {}", result);
+		};
+
+		Runnable clearRunnable = () -> {
+			infoCacheService.clearSimplestCache();
+			log.info("done!");
+		};
+
+		Thread tMap = new Thread(seeMapRunnable, "tMap");
+		Thread tSyncTrueOneFirst = new Thread(getSimplestSyncTrueValueOneFirstRunnable, "tSyncTrueOneFirst");
+		Thread tSyncTrueOneSecond = new Thread(getSimplestSyncVaryingValueOneSecondRunnable, "tSyncTrueOneSecond");
+		Thread tSyncFalseTwoFirst = new Thread(getSimplestSyncFalseValueTwoFirstRunnable, "tSyncFalseTwoFirst");
+		Thread tSyncFalseTwoSecond = new Thread(getSimplestSyncVaryingValueTwoSecondRunnable, "tSyncFalseTwoSecond");
+		Thread tClear = new Thread(clearRunnable, "tClear");
+
+		tMap.start();
+		TimeUnit.SECONDS.sleep(1);
+		tSyncTrueOneFirst.start();
+		TimeUnit.SECONDS.sleep(1);
+		tSyncTrueOneSecond.start();
+		TimeUnit.SECONDS.sleep(1);
+		tSyncFalseTwoFirst.start();
+		TimeUnit.SECONDS.sleep(1);
+		tSyncFalseTwoSecond.start();
+		TimeUnit.SECONDS.sleep(1);
+		tClear.start();
+
+		log.info("done!");
+	}
+
 
 	private void test06_CacheManager() {
 		// load sample values
@@ -81,7 +171,7 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("cacheNames: {}", cacheNames);
 
 		// continent-cache, value for key "Spain"
-		Cache continentCache = cacheManager.getCache(CacheName.CONTINENT);
+		Cache continentCache = cacheManager.getCache(CacheNameStr.CONTINENT_SYNC_FALSE);
 		ValueWrapper vwContinentForSpain = continentCache.get("Spain");
 		String continentForSpain = (String) vwContinentForSpain.get();
 		log.info("Spain, valueWrapper: {}, valueWrapper.get: {}", vwContinentForSpain, continentForSpain);
@@ -91,7 +181,7 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("continentNativeCache -> class: {}, size: {}, keySet: {}", continentNativeCache.getClass().getSimpleName(), continentNativeCache.size(), continentNativeCache.keySet());
 
 		// brand-cache, value for key "Neon"
-		Cache brandCache = cacheManager.getCache(CacheName.BRAND);
+		Cache brandCache = cacheManager.getCache(CacheNameStr.BRAND_SYNC_TRUE);
 		ValueWrapper vwBrandForNeon = brandCache.get("Neon");
 		String brandForNeon = (String) vwBrandForNeon.get();
 		log.info("Neon, valueWrapper: {}, valueWrapper.get: {}", vwBrandForNeon, brandForNeon);
