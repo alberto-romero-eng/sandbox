@@ -22,8 +22,8 @@ import localhost.cache.service.PersonCacheGatewayService;
 import localhost.cache.service.PersonCacheService;
 import localhost.cache.service.PersonService.PersonPojo;
 import localhost.cache.service.InfoCacheService;
-import localhost.cache.configuration.CacheConstant;
-import localhost.cache.configuration.CacheConstant.CacheNameStr;
+import localhost.cache.configuration.CacheNameDefn;
+import localhost.cache.configuration.CacheNameDefn.CacheName;
 import localhost.cache.service.InfoCacheGatewayService;
 import localhost.cache.util.SpringBootCacheHelper;
 
@@ -104,7 +104,7 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("test07, start!");
 
 		Runnable seeMapRunnable = () -> {
-			Cache simplestCache = cacheManager.getCache(CacheNameStr.SIMPLEST);
+			Cache simplestCache = cacheManager.getCache(CacheName.SIMPLEST);
 			log.info("done! -- {}", simplestCache);
 		};
 
@@ -171,7 +171,7 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("cacheNames: {}", cacheNames);
 
 		// continent-cache, value for key "Spain"
-		Cache continentCache = cacheManager.getCache(CacheNameStr.CONTINENT_SYNC_FALSE);
+		Cache continentCache = cacheManager.getCache(CacheName.CONTINENT_SYNC_FALSE);
 		ValueWrapper vwContinentForSpain = continentCache.get("Spain");
 		String continentForSpain = (String) vwContinentForSpain.get();
 		log.info("Spain, valueWrapper: {}, valueWrapper.get: {}", vwContinentForSpain, continentForSpain);
@@ -181,7 +181,7 @@ public class CLR_alberto implements CommandLineRunner {
 		log.info("continentNativeCache -> class: {}, size: {}, keySet: {}", continentNativeCache.getClass().getSimpleName(), continentNativeCache.size(), continentNativeCache.keySet());
 
 		// brand-cache, value for key "Neon"
-		Cache brandCache = cacheManager.getCache(CacheNameStr.BRAND_SYNC_TRUE);
+		Cache brandCache = cacheManager.getCache(CacheName.BRAND_SYNC_TRUE);
 		ValueWrapper vwBrandForNeon = brandCache.get("Neon");
 		String brandForNeon = (String) vwBrandForNeon.get();
 		log.info("Neon, valueWrapper: {}, valueWrapper.get: {}", vwBrandForNeon, brandForNeon);

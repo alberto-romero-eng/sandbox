@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import localhost.cache.configuration.CacheConstant.CacheNameStr;
+import localhost.cache.configuration.CacheNameDefn.CacheName;
 
 
 
@@ -36,17 +36,17 @@ public class InfoCacheService {
 
 
 
-	@CacheEvict(cacheNames = { CacheNameStr.CONTINENT_SYNC_FALSE }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.CONTINENT_SYNC_FALSE }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
 	public void clearContinentCache() {
 		log.info("Finish clearContinentCache()");
 	}
 
-	@CacheEvict(cacheNames = { CacheNameStr.BRAND_SYNC_TRUE }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.BRAND_SYNC_TRUE }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
 	public void clearBrandCache() {
 		log.info("Finish clearBrandCache()");
 	}
 
-	@CacheEvict(cacheNames = { CacheNameStr.SIMPLEST }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
+	@CacheEvict(cacheNames = { CacheName.SIMPLEST }, allEntries = true) // adding more cache-names is possible, Strings separated by comma
 	public void clearSimplestCache() {
 		log.info("Finish clearSimplestCache()");
 	}
@@ -61,7 +61,7 @@ public class InfoCacheService {
 	 * <p>See {@link Cacheable} reference.
 	 * 
 	 */
-	@Cacheable(value = CacheNameStr.CONTINENT_SYNC_FALSE, sync = false, unless = "#result == null")
+	@Cacheable(value = CacheName.CONTINENT_SYNC_FALSE, sync = false, unless = "#result == null")
 	public String getContinentByCountryCacheSyncFalseUnlessResultNull(String country) {
 		String continent = null;
 		try {
@@ -77,7 +77,7 @@ public class InfoCacheService {
 	/**
 	 * <p> See {@link #getContinentByCountryCacheSyncFalseUnlessResultNull(String)} comment.
 	 */
-	@Cacheable(value = CacheNameStr.BRAND_SYNC_TRUE, sync = true)
+	@Cacheable(value = CacheName.BRAND_SYNC_TRUE, sync = true)
 	public String getBrandByModelCacheSyncTrue(String model) {
 		String brand = null;
 		try {
@@ -91,14 +91,14 @@ public class InfoCacheService {
 	}
 
 
-	@Cacheable(value = CacheNameStr.SIMPLEST, sync = true)
+	@Cacheable(value = CacheName.SIMPLEST, sync = true)
 	public String getSimplestSyncTrue(String anyValue) {
 		log.info("Finish getSimplestSyncTrue -- params -- anyValue: {} -- results -- anyValue: {}", anyValue, anyValue);
 		return anyValue;
 	}
 
 
-	@Cacheable(value = CacheNameStr.SIMPLEST, sync = false)
+	@Cacheable(value = CacheName.SIMPLEST, sync = false)
 	public String getSimplestSyncFalse(String anyValue) {
 		log.info("Finish getSimplestSyncFalse -- params -- anyValue: {} -- results -- anyValue: {}", anyValue, anyValue);
 		return anyValue;
