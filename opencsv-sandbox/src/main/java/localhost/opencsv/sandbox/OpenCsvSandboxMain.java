@@ -5,15 +5,16 @@ package localhost.opencsv.sandbox;
 
 public class OpenCsvSandboxMain {
 
-//	private static Logger logger = Logger.getLogger(OpenCsvSandboxMain.class.toString());
+	// private static Logger logger = Logger.getLogger(OpenCsvSandboxMain.class.toString());
 
 	public static void main(String[] args) {
 
-//		logger.log(Level.INFO, "OPENCSV SANDBOX -- MAIN START");
+		// logger.log(Level.INFO, "OPENCSV SANDBOX -- MAIN START");
 
 		TestReadCsv.Test00ReadCsvSimple();
 
-//		TestWriteCsv.Test00WriteCsvSimple();
+		// TestWriteCsv.Test00WriteCsvSimple();
+		TestWriteCsv.Test01AWriteCsvBindByNameWithMappingStrategy();
 
 	}
 

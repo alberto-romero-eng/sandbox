@@ -10,6 +10,11 @@ import java.util.List;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import com.opencsv.bean.HeaderNameBaseMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 public class TestWriteCsv {
 
@@ -82,5 +87,61 @@ public class TestWriteCsv {
 		}
 
 	}
+
+
+	static public void Test01AWriteCsvBindByNameWithMappingStrategy() {
+
+		// csv target file
+		String filenameStr = null;
+		filenameStr = "out_sample01.csv";
+
+		System.out.println("Test01AWriteCsvBindByNameWithMappingStrategy start -- file target: " + filenameStr);
+
+		List<Sample00BeanBindByName> sampleBeanList = new ArrayList<Sample00BeanBindByName>();
+		sampleBeanList.add(new Sample00BeanBindByName("Z","0"));
+		sampleBeanList.add(new Sample00BeanBindByName("Y","9"));
+		sampleBeanList.add(new Sample00BeanBindByName("X","8"));
+		sampleBeanList.add(new Sample00BeanBindByName("W,WW","7,77"));
+		sampleBeanList.add(new Sample00BeanBindByName("V'VV","6'66"));
+		sampleBeanList.add(new Sample00BeanBindByName("U\"UU","5\"55"));
+
+		String folderStr = "./__csv_sample";
+		String pathStr = folderStr + "/" + filenameStr;
+		Path path = null;
+		Writer writer = null;
+		StatefulBeanToCsv<Sample00BeanBindByName> csvWriter = null;
+
+		HeaderNameBaseMappingStrategy<Sample00BeanBindByName> mappingStrategy = null;
+		mappingStrategy = new HeaderColumnNameMappingStrategy<>();
+		// mappingStrategy = new HeaderColumnNameTranslateMappingStrategy<>(); // when not using annotated Beans
+
+		try {
+			path = Paths.get(pathStr);
+			writer = Files.newBufferedWriter(path);
+			csvWriter = new StatefulBeanToCsvBuilder<Sample00BeanBindByName>(writer)
+					.withApplyQuotesToAll(true)
+					.withQuotechar('\'')
+					.withSeparator(',')
+					.withLineEnd("\r\n")
+					.withEscapechar('\\')
+					.withMappingStrategy(mappingStrategy)
+					.build();
+
+			csvWriter.write(Sample00BeanBindByName.getHeaders());
+
+			csvWriter.write(sampleBeanList);
+			writer.flush();
+			writer.close();
+
+			System.out.println("see target file: " + filenameStr);
+
+		} catch (Exception e) {
+
+			System.err.println("error: " + e);
+
+		}
+
+	}
+
 
 }

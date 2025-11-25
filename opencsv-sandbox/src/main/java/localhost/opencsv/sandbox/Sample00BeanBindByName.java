@@ -16,6 +16,16 @@ public class Sample00BeanBindByName {
 		super();
 	}
 
+	public Sample00BeanBindByName(String letter, String number) {
+		super();
+		this.letter = letter;
+		this.number = number;
+	}
+
+	public static Sample00BeanBindByName getHeaders() {
+		return new Sample00BeanBindByName("letter", "number");
+	}
+
 	public String getLetter() {
 		return letter;
 	}
