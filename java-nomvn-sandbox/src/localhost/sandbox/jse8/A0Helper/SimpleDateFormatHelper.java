@@ -25,6 +25,7 @@ import java.util.Locale;
  * <ul>
  * <li>2023-10-21: 1st release.
  * <li>2024-04-05: 2nd release: added enums Pattern, TimeZone; added method "parse".
+ * <li>2025-11-26: 3rd release: added enum Pattern TIMEZONE_ID.
  * </ul>
  * 
  * <p>Bash references:
@@ -243,7 +244,8 @@ public class SimpleDateFormatHelper {
 		// human, more formats
 		HUMAN_HOUR_ONLY("h:mm a, z"),
 		HUMAN_LETTER("EEE, MMM d, ''yy"),
-		CUSTOM_HUMAN_01("yyyy-MMM-dd' ('EEE')'")
+		CUSTOM_HUMAN_01("yyyy-MMM-dd' ('EEE')'"),
+		TIMESTAMP_ID("yyyyMMddHHmmss")
 		;
 
 		private String strPattern;

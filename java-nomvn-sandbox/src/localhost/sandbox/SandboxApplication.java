@@ -97,7 +97,7 @@ public class SandboxApplication {
 		// DatabaseEncryptionMain.main();
 		// ThreadHelper.main();
 		// RunTimeStatsHelper.main();
-		// SimpleDateFormatHelper.main();
+		SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
 		// FileMain.main();
@@ -130,7 +130,7 @@ public class SandboxApplication {
 		// ProcessMain.main();
 		// SleepHelper.main();
 		// DateInstantHelper.main();
-		ConcurrentMapMain.main();
+		// ConcurrentMapMain.main();
 
 	}
 }
