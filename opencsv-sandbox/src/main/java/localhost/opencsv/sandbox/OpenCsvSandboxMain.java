@@ -11,11 +11,12 @@ public class OpenCsvSandboxMain {
 
 		// logger.log(Level.INFO, "OPENCSV SANDBOX -- MAIN START");
 
-		TestReadCsv.Test00ReadCsvSimple();
+		// TestReadCsv.Test00ReadCsvSimple();
 
 		// TestWriteCsv.Test00WriteCsvSimple();
-		TestWriteCsv.Test01AWriteCsvBindByNameWithMappingStrategy();
+		// TestWriteCsv.Test01AWriteCsvBindByNameWithMappingStrategy();
 
+		TestReadCsvVendorOrder.readVendorOrderCsv();
 	}
 
 }
