@@ -65,7 +65,7 @@ public class SandboxApplication {
 	public static void main(String[] args) throws Throwable {
 
 		// JavaLangMiscelaneousMain.main();
-		// JavaLangScratchPadMain.main();
+		JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
@@ -97,7 +97,7 @@ public class SandboxApplication {
 		// DatabaseEncryptionMain.main();
 		// ThreadHelper.main();
 		// RunTimeStatsHelper.main();
-		SimpleDateFormatHelper.main();
+		// SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
 		// FileMain.main();

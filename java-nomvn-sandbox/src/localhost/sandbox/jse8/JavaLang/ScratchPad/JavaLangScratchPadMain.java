@@ -28,6 +28,26 @@ public class JavaLangScratchPadMain {
 		System.out.println("Hello from JavaLangScratchPadMain!");
 
 
+		// test 2025-12-01
+		String file1 = "order_20251120220216_3467597.csv";
+		String from = "20251101000000";
+
+
+		String[] file1Parts = file1.split("_");
+		System.out.println("file1Parts[1]: " + file1Parts[1]);
+
+		Long fromL = Long.parseLong(from);
+		Long file1L = Long.parseLong(file1Parts[1]);
+		boolean file1GreaterThanFrom = file1L > fromL;
+		System.out.println("file1GreaterThanFrom: " + file1GreaterThanFrom);
+
+
+
+
+
+
+
+
 		// test 2025-10-05
 		argTripleDotTest();
 		argTripleDotTest("a");
