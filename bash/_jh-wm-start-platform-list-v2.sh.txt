@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2025-07-04 05:20'
+__JH_WMP_START_LIST_UPDATED__='2026-01-08 03:30'
 
 
 ### list(s)
@@ -31,11 +31,11 @@ _s=${_s}'usermanagement'' '
 # _s=${_s}'marketplacealiexpress'' '
 # _s=${_s}'marketplaceamazon'' '
 # _s=${_s}'marketplacebackmarket'' '
-_s=${_s}'marketplaceebay'' '
+# _s=${_s}'marketplaceebay'' '
 # _s=${_s}'marketplacejoomlavirtuemart'' '
 # _s=${_s}'marketplacemakro'' '
-_s=${_s}'marketplacemirakl'' '
-_s=${_s}'marketplacemiravia'' '
+# _s=${_s}'marketplacemirakl'' '
+# _s=${_s}'marketplacemiravia'' '
 # _s=${_s}'marketplaceprestashop'' '
 # _s=${_s}'marketplacerefurbed'' '
 # _s=${_s}'marketplaceshein'' '
@@ -54,6 +54,7 @@ _s=${_s}'bulkfileprocessor'' '
 # _s=${_s}'carriertipsa'' '
 
 # _s=${_s}'template-generator'' '
+# _s=${_s}'translationservice'' '
 # _s=${_s}'mailing'' '
 # _s=${_s}'redirectionmanager'' '
 _s=${_s}'ui'' '

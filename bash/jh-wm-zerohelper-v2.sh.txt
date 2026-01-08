@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2025-10-22 16:08'
+__JH_WMP_UPDATED__='2025-11-14 08:08'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh.txt'
@@ -50,6 +50,7 @@ carriertipsa
 carriercorreosexpress
 
 templategenerator
+translationservice
 mailing
 redirectionmanager
 ui
@@ -206,6 +207,11 @@ __JH_WM_CARRIERCORREOSEXPRESS_XMX__='128m'
 __JH_WM_TEMPLATEGENERATOR_FOLDER__='templategenerator'
 __JH_WM_TEMPLATEGENERATOR_JAR_REGEX__='template'
 __JH_WM_TEMPLATEGENERATOR_XMX__='128m'
+
+# translationservice
+__JH_WM_TRANSLATIONSERVICE_FOLDER__='translationservice'
+__JH_WM_TRANSLATIONSERVICE_JAR_REGEX__='translationservice'
+__JH_WM_TRANSLATIONSERVICE_XMX__='128m'
 
 # mailing
 __JH_WM_MAILING_FOLDER__='mailing'
