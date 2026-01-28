@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2026-01-26 13:21'
+__ALIAS_LAST_UPDATE__='2026-01-27 07:18'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -791,6 +791,7 @@ git config --global alias.ra 'restore --staged'
 git config --global alias.ro 'restore --source'
 git config --global alias.ri 'rebase --interactive'
 git config --global alias.rs 'reset --soft'
+git config --global alias.cp 'cherry-pick'
 
 
 
