@@ -2,7 +2,7 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/are_java8-nomvn-sandbox/src/localhost/sandbox/jse8/SandboxJ8Application.java"/>
+        <listEntry value="/are_java8-nomvn-sandbox/src/localhost/sandbox/jse8/SdbxJ8App.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -16,7 +16,7 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="localhost.sandbox.jse8.SandboxJ8Application"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="localhost.sandbox.jse8.SdbxJ8App"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="are_java8-nomvn-sandbox"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="are_java8-nomvn-sandbox"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms1m&#13;&#10;-Xmx8m&#13;&#10;-Dspring.profiles.active=albertodefault,albertopre,albertolocal,albertodiff"/>

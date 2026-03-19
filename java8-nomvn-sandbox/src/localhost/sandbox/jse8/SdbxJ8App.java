@@ -30,7 +30,7 @@ import localhost.sandbox.jse8.A0Helper.ThreadHelper;
 import localhost.sandbox.jse8.A0Helper.TimeUnixFormatHelper;
 import localhost.sandbox.jse8.A0Helper.TokenGeneratorHelper;
 import localhost.sandbox.jse8.A0Helper.URLHelper;
-import localhost.sandbox.jse8.A0Helper.UrlParamHelper;
+import localhost.sandbox.jse8.A0Helper.UrlQueryParamsHelper;
 import localhost.sandbox.jse8.AbstractClass.AbstractClassMain;
 import localhost.sandbox.jse8.Annotation.AnnotationMain;
 import localhost.sandbox.jse8.Class.ClassMain;
@@ -61,12 +61,12 @@ import localhost.sandbox.jse8.ThreadGroupThreadMXBean.ThreadGroupThreadMXBeanMai
 import localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic.ThreadRaceConditionSynchroWaitNotifyAtomicMain;
 import localhost.sandbox.jse8.URL.URLMain;
 
-public class SandboxJ8Application {
+public class SdbxJ8App {
 
 	public static void main(String[] args) throws Throwable {
 
 		// JavaLangMiscelaneousMain.main();
-		JavaLangScratchPadMain.main();
+		// JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
@@ -121,7 +121,7 @@ public class SandboxJ8Application {
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
 		// URLHelper.main();
-		// UrlParamHelper.main();
+		UrlQueryParamsHelper.main();
 		// TokenGeneratorHelper.main();
 		// ClassLoaderHelper.main();
 		// ByteSizeHelper.main();
