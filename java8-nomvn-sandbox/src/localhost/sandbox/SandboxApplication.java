@@ -66,7 +66,7 @@ public class SandboxApplication {
 	public static void main(String[] args) throws Throwable {
 
 		// JavaLangMiscelaneousMain.main();
-		// JavaLangScratchPadMain.main();
+		JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// SystemPropertiesHelper.main();
 		// EncodingMain.main();
@@ -132,7 +132,7 @@ public class SandboxApplication {
 		// SleepHelper.main();
 		// DateInstantHelper.main();
 		// ConcurrentMapMain.main();
-		TimeUnixFormatHelper.main();
+		// TimeUnixFormatHelper.main();
 
 	}
 }
