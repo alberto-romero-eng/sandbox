@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2026-01-27 07:18'
+__ALIAS_LAST_UPDATE__='2026-03-19 11:45'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -111,6 +111,14 @@ alias k5='kill %5'
 alias k6='kill %6'
 alias k7='kill %7'
 alias k8='kill %8'
+alias k9='kill %9'
+alias k10='kill %10'
+alias k11='kill %11'
+alias k12='kill %12'
+alias k13='kill %13'
+alias k14='kill %14'
+alias k15='kill %15'
+alias k16='kill %16'
 function __bh_kill_all {
     # confirm
     echo '--> kill all running jobs'
@@ -122,8 +130,10 @@ function __bh_kill_all {
         return 1
     fi
     # execute
-    k1 2> /dev/null ; k2 2> /dev/null ; k3 2> /dev/null ; k4 2> /dev/null ;
-    k5 2> /dev/null ; k6 2> /dev/null ; k7 2> /dev/null ; k8 2> /dev/null ;
+    k1 2> /dev/null  ; k2 2> /dev/null  ; k3 2> /dev/null  ; k4 2> /dev/null  ;
+    k5 2> /dev/null  ; k6 2> /dev/null  ; k7 2> /dev/null  ; k8 2> /dev/null  ;
+    k9 2> /dev/null  ; k10 2> /dev/null ; k11 2> /dev/null ; k12 2> /dev/null ;
+    k13 2> /dev/null ; k14 2> /dev/null ; k15 2> /dev/null ; k16 2> /dev/null ;
     jb
     unset _continue
 }
