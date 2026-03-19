@@ -1,4 +1,4 @@
-package localhost.sandbox;
+package localhost.sandbox.jse8;
 
 import localhost.sandbox.jse8.A0Helper.BooleanHelper;
 import localhost.sandbox.jse8.A0Helper.ByteHexHelper;
@@ -61,7 +61,7 @@ import localhost.sandbox.jse8.ThreadGroupThreadMXBean.ThreadGroupThreadMXBeanMai
 import localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic.ThreadRaceConditionSynchroWaitNotifyAtomicMain;
 import localhost.sandbox.jse8.URL.URLMain;
 
-public class SandboxApplication {
+public class SandboxJ8Application {
 
 	public static void main(String[] args) throws Throwable {
 
