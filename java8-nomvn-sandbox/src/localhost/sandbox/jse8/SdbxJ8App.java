@@ -59,7 +59,7 @@ import localhost.sandbox.jse8.Thread.ThreadMain;
 import localhost.sandbox.jse8.ThreadExecutors.ThreadExecutorsMain;
 import localhost.sandbox.jse8.ThreadGroupThreadMXBean.ThreadGroupThreadMXBeanMain;
 import localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic.ThreadRaceConditionSynchroWaitNotifyAtomicMain;
-import localhost.sandbox.jse8.URL.URLMain;
+import localhost.sandbox.jse8.URI.UriMain;
 
 public class SdbxJ8App {
 
@@ -121,7 +121,8 @@ public class SdbxJ8App {
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
 		// URLHelper.main();
-		UrlQueryParamsHelper.main();
+		// UrlQueryParamsHelper.main();
+		UriMain.main();
 		// TokenGeneratorHelper.main();
 		// ClassLoaderHelper.main();
 		// ByteSizeHelper.main();
