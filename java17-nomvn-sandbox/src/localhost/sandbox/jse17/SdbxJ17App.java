@@ -9,7 +9,7 @@ public class SdbxJ17App {
 	public static void main(String[] args) throws Throwable {
 
 		// JavaLangScratchPadMain.main();
-		HttpClientMain.main();
-		// HttpClientHelper.main();
+		// HttpClientMain.main();
+		HttpClientHelper.main();
 	}
 }
