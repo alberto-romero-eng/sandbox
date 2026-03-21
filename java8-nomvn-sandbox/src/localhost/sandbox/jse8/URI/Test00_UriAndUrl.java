@@ -21,15 +21,15 @@ import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
  * <h2>URI</h2>
  * <p>Classification:<p>
  * <ul>
- * <li>Opaque (Absolute)</li>
- * <li>Hierarchical Absolute</li>
- * <li>Hierarchical Relative</li>
+ * <li>(Absolute) Opaque</li>
+ * <li>Absolute Hierarchical</li>
+ * <li>Relative Hierarchical</li>
  * </ul>
  * <p>Syntax, higher level:</p>
  * <pre>[scheme:]scheme-specific-part[#fragment]</pre>
  * 
  * 
- * <p><b>URI, Opaque (Absolute)</b>.  Absolute: it defines an <i>scheme</i>.  Opaque: its <i>scheme-specific-part</i> does not begin with '/', so it cannot be further parsed.</p>
+ * <p><b>URI, (Absolute) Opaque</b>.  Absolute: it defines an <i>scheme</i>.  Opaque: its <i>scheme-specific-part</i> does not begin with '/', so it cannot be further parsed.</p>
  * <p>Syntax:</p>
  * <pre>scheme:scheme-specific-part[#fragment]</pre>
  * <p>Examples:</p>
@@ -38,7 +38,7 @@ import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
  *urn:isbn:096139210x</pre>
  * 
  * 
- * <p><b>URI, Hierarchical Absolute</b>.  Absolute: it defines an <i>scheme</i>.  Hierarchical: its <i>scheme-specific-part</i> begins with '/', so it can be further parsed.</p>
+ * <p><b>URI, Absolute Hierarchical</b>.  Absolute: it defines an <i>scheme</i>.  Hierarchical: its <i>scheme-specific-part</i> begins with '/', so it can be further parsed.</p>
  * <p>Syntax:</p>
  * <pre>scheme:[//authority][/path][?query][#fragment]</pre>
  * <p>Examples:</p>
@@ -46,10 +46,13 @@ import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
  *file:///~/calendar</pre>
  * 
  * 
- * <p><b>URI, Hierarchical Relative</b>.  Does not define an <i>scheme</i>, depends on a <i>URI, Hierarchical Absolute</i>.</p>
+ * <p><b>URI, Relative Hierarchical</b>.  Does not define an <i>scheme</i>, depends on a <i>URI, Hierarchical Absolute</i>.</p>
  * <p>Examples:</p>
  * <pre>docs/guide/collections/designfaq.html#28
  *../../../demo/jfc/SwingSet2/src/SwingSet2.java</pre>
+ *
+ *
+ *<p><b>Note</b>.  Classification <i>Relative Opaque</i> does NOT exist.</p>
  *
  * 
  * 
@@ -84,7 +87,7 @@ import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
  *
  *
  *<h2>Operations</h2>
- *<p>With URI: {@link URI#relativize(URI)}, {@link URI#resolve(URI)}</p>
+ *<p>With URI: {@link URI#relativize(URI)}, {@link URI#resolve(URI)} (directory paths must have trailing slash -'/'-, in order to guarantee successful operations).</p>
  *<p>With URL: {@link URL#openStream()}, {@link URL#openConnection()}</p>
  * 
  * 
@@ -204,14 +207,33 @@ public class Test00_UriAndUrl {
 	}
 
 
-	public static void test02_UriResolveRelativize() throws Throwable {
+	public static void test02_UriRelativizeResolve() throws Throwable {
 
 		System.out.println("--- test02 ---");
 
-		// relativize SUCCESS:
+		/*
+		 * Useful initial example: obtain directory-uri from file-uri
+		 */
+		URI uri00FileAbs = new URI("http://host:80/pathVar01/pathVar02/index.html"); // uri clearly refers to file.
+		URI uri00DirRel  = new URI("./");
+		URI uri00DirAbs  = uri00FileAbs.resolve(uri00DirRel);
+		System.out.println("uri00FileAbs: " + uri00FileAbs);
+		System.out.println("uri00DirRel:  " + uri00DirRel);
+		System.out.println("uri00DirAbs:  " + uri00DirAbs);
 
-		URI uri01 = new URI("http://host:80/pathVar01/pathVar02/");
-		URI uri02 = new URI("http://host:80/pathVar01/pathVar02/images/image01.jpg");
+
+		/*
+		 * SUCCESS on relativize / resolve.
+		 * 
+		 * Conditions guaranteeing success:
+		 * -> base-uri must be clearly a directory (trailing slash present).
+		 * -> base-uri must be clearly prefix of to-relativize-uri.
+		 * 
+		 * If conditions are not met, relativize / resolve may fail or may 'succeed' returning erroneous result.
+		 */
+
+		URI uri01 = new URI("http://host:80/pathVar01/pathVar02/"); // base-uri is clearly directory (trailing slash present)
+		URI uri02 = new URI("http://host:80/pathVar01/pathVar02/images/image01.jpg"); // base-uri is clearly prefix of to-relativize-uri
 		System.out.println("uri01: " + uri01);
 		System.out.println("uri02: " + uri02);
 
@@ -222,10 +244,15 @@ public class Test00_UriAndUrl {
 		URI uri02resol = uri01.resolve(uri02relat);
 		System.out.println("uri02resol:    " + uri02resol);
 
-		// relativize FAIL:
 
-		URI uri03 = new URI("http://host:80/pathVar01/pathVar02/index.html");
-		URI uri04 = new URI("http://host:80/pathVar01/pathVar02/images/image01.jpg");
+		/*
+		 * FAIL on relativize / resolve.
+		 * 
+		 * base-uri not clearly prefix of to-relativize-uri.
+		 */
+
+		URI uri03 = new URI("http://host:80/pathVar01/pathVar02/index.html"); // base-uri is not clearly a directory (trailing slash absent)
+		URI uri04 = new URI("http://host:80/pathVar01/pathVar02/images/image01.jpg"); // base-uri not clearly prefix of to-relativize-uri
 		System.out.println("uri03: " + uri03);
 		System.out.println("uri04: " + uri04);
 
@@ -235,6 +262,25 @@ public class Test00_UriAndUrl {
 		System.out.println("uri04relatSch: " + uri04relatSch); // scheme has value, relativize not successful
 		URI uri04resol = uri03.resolve(uri04relat); // uri04relat is not relative, since uri03.path is not prefix of uri04.pah
 		System.out.println("uri04resol:    " + uri04resol);
+
+
+		/*
+		 * FAIL on relativize / resolve.
+		 * 
+		 * base-uri is not clearly a directory (trailing slash absent).
+		 */
+
+		URI uri05 = new URI("http://host:80/pathVar01/pathVar02"); // base-uri is not clearly a directory (trailing slash absent)
+		URI uri06 = new URI("http://host:80/pathVar01/pathVar02/images/image01.jpg"); // base-uri is clearly prefix of to-relativize-uri
+		System.out.println("uri05: " + uri05);
+		System.out.println("uri06: " + uri06);
+
+		URI uri06relat = uri05.relativize(uri06);
+		String uri06relatSch = uri06relat.getScheme();
+		System.out.println("uri06relat:    " + uri06relat);
+		System.out.println("uri06relatSch: " + uri06relatSch); // scheme is null, relativize successful
+		URI uri06resol = uri05.resolve(uri06relat);
+		System.out.println("uri06resol:    " + uri06resol); // resolve failed, path component "pathVar02" was removed, uri06 and uri06resol are not equal
 	}
 
 
@@ -250,12 +296,27 @@ public class Test00_UriAndUrl {
 		// url = new URL("https://postman-echo.com/get"); // fail: java.io.IOException, server returned HTTP response code 403
 		// url = new URL("file://tmp/numbers.txt"); // fail: java.net.UnknownHostException, tmp
 
+
 		/*
 		 * SUCCESS:
+		 * Initial attempts, which succeeded.
 		 */
 		// url = new URL("http://courses.baeldung.com"); // ok, but InputStream empty
 		// url = new URL("file:///tmp/numbers.txt"); // ok, using C:\tmp\numbers.txt
-		url = Test00_UriAndUrl.class.getClassLoader().getResource("tmp/numbers.txt"); // ok, "tmp" folder must be copied into project's "bin" folder, (see "classpath" in "Show Command Line", at debugger configuration)
+		// url = Test00_UriAndUrl.class.getClassLoader().getResource("tmp/numbers.txt"); // ok, "tmp" folder must be copied into project's "bin" folder, (see "classpath" in "Show Command Line", at debugger configuration)
+
+
+		/*
+		 * SUCCESS:
+		 * Final preferred strategy.
+		 */
+		URL urlJAppFile = Test00_UriAndUrl.class.getClassLoader().getResource("localhost/sandbox/jse8/SdbxJ8App.class");
+		URI uriJAppFileAbs = urlJAppFile.toURI();
+		URI uriJAppDirRel = new URI("./");
+		URI uriJAppDirAbs = uriJAppFileAbs.resolve(uriJAppDirRel);
+		URI uriNumbersTxtRel = new URI("../../../../tmp/numbers.txt"); // remember: [project-root]/bin/localhost/sandbox/jse8/
+		URI uriNumbersTxtAbs = uriJAppDirAbs.resolve(uriNumbersTxtRel);
+		url = uriNumbersTxtAbs.toURL();
 
 		try {
 			InputStream inputStream = url.openStream(); // exception thrown here, if InputStream is null

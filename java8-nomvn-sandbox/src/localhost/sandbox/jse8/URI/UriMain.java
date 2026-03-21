@@ -7,7 +7,7 @@ public class UriMain {
 		Test00_UriAndUrl.test00a_CreateUri();
 		Test00_UriAndUrl.test00b_CreateUrl();
 		Test00_UriAndUrl.test01_UrlToUriAndViceversa();
-		Test00_UriAndUrl.test02_UriResolveRelativize();
+		Test00_UriAndUrl.test02_UriRelativizeResolve();
 		Test00_UriAndUrl.test03_UrlOpenStream();
 	}
 
