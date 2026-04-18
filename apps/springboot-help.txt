@@ -1,9 +1,12 @@
-SpringBoot Help -- updated: 2025-10-22 15:41
+SpringBoot Help -- updated: 2026-04-18 18:04
 
 
 
 
-(1) Java-17 migration:
+(1) Java:
+
+
+(1.1) Java-17, migration:
 
 ---> .gitlab-ci.yml:
  image: maven:3.9.9-eclipse-temurin-17-focal
@@ -19,7 +22,10 @@ ENTRYPOINT ["java","-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimi
 
 
 
-(2) SpringDoc migration:
+(2) SpringDoc:
+
+
+(2.1) SpringDoc, migration:
 
 import io.swagger.annotations.Api;             ->   import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.annotations.ApiOperation;    ->   import io.swagger.v3.oas.annotations.Operation;
@@ -35,9 +41,26 @@ import io.swagger.annotations.ApiModelProperty ->   import io.swagger.v3.oas.ann
 @ApiModelProperty(required = true, value = "foo") ->   @Schema(requiredMode = RequiredMode.REQUIRED, description = "foo")
 
 
+(2.2) SpringDoc, application properties:
+
+springdoc:
+  swagger-ui:
+    filter: true ### default false
+    operationsSorter: alpha ### ["alpha", "method", other]
+    tagsSorter: alpha ### ["alpha", other]
+    displayRequestDuration: true ### default false
+    docExpansion: none ### default "list"" # ["none", "list", "full"]
+    # default-support-form-data: true ### default false, maybe with ApiProcessor, oauth endpoints
+    # show-oauth2-endpoints: true ### default false, maybe with ApiProcessor, oauth endpoints
+    # defaultModelRendering: model ### ["example"*, "model"}   # https://github.com/springdoc/springdoc-openapi/issues/2548   # https://github.com/springdoc/springdoc-openapi/issues/1482
 
 
-(3) User / Order reminder:
+
+
+(3) DM reminders:
+
+
+(3.1) User / Order, reminder:
 
 <!-- SpringSecurity/OAuth processing -->
 <dependency>
@@ -68,9 +91,7 @@ import io.swagger.annotations.ApiModelProperty ->   import io.swagger.v3.oas.ann
 </dependency>
 
 
-
-
-(4) Pim reminder:
+(3.2) Pim, reminder:
 
 java 17 "java.lang.ClassNotFoundException: com.sun.xml.bind.v2.ContextFactory"
 
@@ -88,4 +109,113 @@ java 17 "java.lang.ClassNotFoundException: com.sun.xml.bind.v2.ContextFactory"
 	<groupId>org.glassfish.jaxb</groupId>
 	<artifactId>jaxb-runtime</artifactId>
 </dependency>
+
+
+
+
+(4) Server, application properties:
+
+server:
+  port: 8080
+  error:
+    include-message: always ### always, never, on_param
+
+
+
+
+(5) Spring Datasource, application properties:
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: my_username
+    password: my_p4ssw0rd
+    url: jdbc:mysql://localhost:3306/my_database?allowMultiQueries=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    hikari:
+      connection-timeout: 10000 ### millisecs, minimum 250, default 30000
+      keepalive-time: 30000 ### millisecs, ping frequency, should be less than max-lifetime; minimum: 30000 (0.5 min), default: 120000 (2 min)
+      idle-timeout: 0 ### millisecs, minimum 10000, default 600000 (10 min), 0 to never remove by idleness
+      max-lifetime: 120000 ### millisecs, should be less than max-lifetime granted by DB, minimum 30000 (0.5 min), default 1800000 (30 min)
+      connection-test-query: SELECT 1
+      connection-init-sql: 'SET @@SESSION.time_zone = "+00:00"'
+      maximum-pool-size: 3 ### default 10
+      # minimum-idle: 1 ### default equal to maximum-pool-size (fixed-size pool)
+
+
+
+
+(6) Mybatis, application properties:
+
+mybatis:
+  typeHandlersPackage: com.example.persistence.typehandler
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+
+
+(7) Feign, application properties:
+
+feign:
+  circuitbreaker:
+    enabled: true ### see hystrix.enabled
+    alphanumeric-ids:
+      enabled: true
+  hystrix:
+    enabled: true ### see circuitbreaker.enabled
+  client:
+    config:
+      default:
+        connectTimeout: 10000 ### original: 60000 (60k), millisecs # test: 500
+        readTimeout: 60000 ### original: 600000  (600k) millisecs (10 minutes) # tests: 12000 , 7000 # see resilience4j.timeoutDurations
+
+
+
+
+(8) Resilience4J, application properties:
+
+# https://resilience4j.readme.io/docs/circuitbreaker
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        failureRateThreshold: 100 ### default 50, percentage # test: 50
+        slidingWindowType: TIME_BASED ### default COUNT_BASED, also TIME_BASED available
+        minimumNumberOfCalls: 400 ### default 100, per window # test: 3
+        slidingWindowSize: 20 ### default 100, calls if COUNT_BASED, seconds if TIME_BASED # test: 20
+        waitDurationInOpenState: 10000 ### default 60000, millisecs # test: 10000
+        permittedNumberOfCallsInHalfOpenState: 1 ### default 10 # test: 1
+        slowCallRateThreshold: 100 ### default 100, percentage # test: 50
+        slowCallDurationThreshold: 65000 ### default 60000, millisecs; see feign.client.readTimeout # test: set feign and circuitbreker timeouts at 12s, this to 7000
+        ### other
+        registerHealthIndicator: true
+        ignoreExceptions:
+          - java.lang.Throwable
+          - java.lang.Exception
+    # instances:
+      # HttpBinClient_getBinWithDelayInSeconds_int:
+        # minimumNumberOfCalls: 10
+        # failureRateThreshold: 50
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 65s ### see feign.client.readTimeout # tests: 12s, 7s
+
+
+
+
+(9) Hystrix, application properties:
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 65000 ### original: 600000 (600k), millisecs # test, resilience4j comparison: 7000
+  threadpool:
+    default:
+      coreSize: 1 ### original: 20
+      maximumSize: 1 ### original: 20
+      allowMaximumSizeToDivergeFromCoreSize: true
 
