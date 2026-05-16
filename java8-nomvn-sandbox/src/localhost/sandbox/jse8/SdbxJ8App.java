@@ -65,7 +65,7 @@ public class SdbxJ8App {
 
 	public static void main(String[] args) throws Throwable {
 
-		JavaLangMiscelaneousMain.main();
+		// JavaLangMiscelaneousMain.main();
 		// JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// SystemPropertiesHelper.main();
@@ -101,7 +101,7 @@ public class SdbxJ8App {
 		// SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
-		// FileMain.main();
+		FileMain.main();
 		// FileHelper.main();
 		// LargeStringHelper.main();
 		// ReflectionMain.main();
