@@ -26,8 +26,8 @@ public class JavaLangScratchPadMain {
 	public static void main() {
 
 		System.out.println("Hello from JavaLangScratchPadMain!");
-		
-		
+
+
 		// test 2026-03-12
 		String message = "The order is Already Shipped, nothing to Do";
 		String regex = "(?i).*already shipped.*";
@@ -35,9 +35,9 @@ public class JavaLangScratchPadMain {
 		System.out.println("message: " + message);
 		System.out.println("regex: " + regex);
 		System.out.println("isMatch: " + isMatch);
-		
-		
-		
+
+
+
 
 
 		// test 2025-12-01
@@ -516,9 +516,6 @@ public class JavaLangScratchPadMain {
 		public void setValues(List<String> values) {
 			this.values = values;
 		}
-
-
-
 
 	}
 

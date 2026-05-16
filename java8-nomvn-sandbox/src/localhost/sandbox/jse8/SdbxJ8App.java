@@ -65,7 +65,7 @@ public class SdbxJ8App {
 
 	public static void main(String[] args) throws Throwable {
 
-		// JavaLangMiscelaneousMain.main();
+		JavaLangMiscelaneousMain.main();
 		// JavaLangScratchPadMain.main();
 		// StringMain.main();
 		// SystemPropertiesHelper.main();
@@ -122,7 +122,7 @@ public class SdbxJ8App {
 		// RecursiveGeneratorB62Helper.main();
 		// URLHelper.main();
 		// UrlQueryParamsHelper.main();
-		UriMain.main();
+		// UriMain.main();
 		// TokenGeneratorHelper.main();
 		// ClassLoaderHelper.main();
 		// ByteSizeHelper.main();

@@ -6,7 +6,8 @@ public class JavaLangMiscelaneousMain {
 		System.out.println("Hello from JavaLangMiscellaneousMain!");
 		// Test00OverrideReplacePojoAttribute.test();
 		// Test01InnerClassesStaticNonStaticInvocation.test();
-		Test02Foreach.test01_Foreach();
+		// Test02Foreach.test01_Foreach();
+		Test03FinallyBlock.main();
 	}
 
 }	
