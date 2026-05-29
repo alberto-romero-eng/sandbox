@@ -52,7 +52,7 @@ function generate_stock_dummy_file {
 # variables
 file_name='z_stock_rabbit_dummy.csv'
 file_lines='0'
-let 'file_lines = (65 * 1000) + 4'
+let 'file_lines = (1 * 10000) + 4'
 progression_reference='0'
 let 'progression_reference = (10 * 1000)'
 

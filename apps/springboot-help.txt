@@ -1,4 +1,4 @@
-SpringBoot Help -- updated: 2026-04-18 18:04
+SpringBoot Help -- updated: 2026-05-29 11:19
 
 
 
@@ -133,12 +133,12 @@ spring:
     url: jdbc:mysql://localhost:3306/my_database?allowMultiQueries=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
     hikari:
       connection-timeout: 10000 ### millisecs, minimum 250, default 30000
-      keepalive-time: 30000 ### millisecs, ping frequency, should be less than max-lifetime; minimum: 30000 (0.5 min), default: 120000 (2 min)
-      idle-timeout: 0 ### millisecs, minimum 10000, default 600000 (10 min), 0 to never remove by idleness
-      max-lifetime: 120000 ### millisecs, should be less than max-lifetime granted by DB, minimum 30000 (0.5 min), default 1800000 (30 min)
-      connection-test-query: SELECT 1
+      keepalive-time: 60000 ### millisecs, ping frequency, should be less than max-lifetime; minimum: 30000 (0.5 min), default: 120000 (2 min)
+      idle-timeout: 45000 ### millisecs, minimum 10000, default 600000 (10 min), 0 to never remove by idleness
+      max-lifetime: 300000 ### millisecs, should be less than max-lifetime granted by DB, minimum 30000 (0.5 min), default 1800000 (30 min)
       connection-init-sql: 'SET @@SESSION.time_zone = "+00:00"'
-      maximum-pool-size: 3 ### default 10
+      connection-test-query: SELECT 1
+      maximum-pool-size: 5 ### default 10
       # minimum-idle: 1 ### default equal to maximum-pool-size (fixed-size pool)
 
 
@@ -219,3 +219,23 @@ hystrix:
       maximumSize: 1 ### original: 20
       allowMaximumSizeToDivergeFromCoreSize: true
 
+
+
+
+(10) Mail, application properties:
+
+spring:
+  mail:
+    username: __DEFINE__
+    password: __DEFINE__
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
