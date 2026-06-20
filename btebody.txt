@@ -1,0 +1,33 @@
+-- BODY, BEGIN -- updated: 2026-06-20 --
+---> General
+Concepto: PAGO
+
+
+---> Operaciones IOB
+(1)
+Fecha: 2026-01-01
+Concepto: PAGO
+Monto: +100.00 USD
+Ref: 1234
+
+
+---> Operaciones BIN
+(1)
+Fecha: 2026-01-01
+Concepto: PAGO
+Tipo: VED -> USD
+Monto inicial: 1,000.00 VED
+Tasa BIN: 1 USD = 200.00 VED (efectiva)
+Tasa BCV: 1 USD = 100.00 VED (comparación)
+Relación Tasas BIN / BCV: 2.00
+Monto final BIN: 05.00 USD (efectiva)
+Monto final BCV: 10.00 USD (comparación)
+
+
+---> Notas:
+Caracter "." (punto) es separador decimal.
+Caracter "," (coma) es separador de miles.
+
+
+A.
+-- BODY, END --
