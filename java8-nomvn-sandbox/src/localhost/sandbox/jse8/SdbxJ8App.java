@@ -16,6 +16,7 @@ import localhost.sandbox.jse8.A0Helper.IOStreamHelper;
 import localhost.sandbox.jse8.A0Helper.JoinHelper;
 import localhost.sandbox.jse8.A0Helper.JvmMemoryHelper;
 import localhost.sandbox.jse8.A0Helper.LargeStringHelper;
+import localhost.sandbox.jse8.A0Helper.ListSplitHelper;
 import localhost.sandbox.jse8.A0Helper.LogHelper;
 import localhost.sandbox.jse8.A0Helper.ObjectCopyHelper;
 import localhost.sandbox.jse8.A0Helper.RecursiveGeneratorB62Helper;
@@ -101,7 +102,7 @@ public class SdbxJ8App {
 		// SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
-		FileMain.main();
+		// FileMain.main();
 		// FileHelper.main();
 		// LargeStringHelper.main();
 		// ReflectionMain.main();
@@ -134,6 +135,7 @@ public class SdbxJ8App {
 		// DateInstantHelper.main();
 		// ConcurrentMapMain.main();
 		// TimeUnixFormatHelper.main();
+		ListSplitHelper.main();
 
 	}
 }
