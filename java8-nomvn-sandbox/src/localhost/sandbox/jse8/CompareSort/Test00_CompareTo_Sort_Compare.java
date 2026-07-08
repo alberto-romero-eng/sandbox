@@ -1,16 +1,51 @@
 package localhost.sandbox.jse8.CompareSort;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * <p>For method "objX.compareTo(objY)", see interface "Comparable".
- * <p>For method "objComparator.compare(objX,objY)", see interface "Comparator".
- * <p>Method "Collections.sort(...)" can make use of several combinations
- * of those two.
+ * <p>There are two strategies for comparison:
+ * <ul>
+ * <li>Using {@link Comparable}, as {@link String#compareTo(String)}.
+ * <li>Using {@link Comparator}, as {@link String#CASE_INSENSITIVE_ORDER}.
+ * </ul>
  * 
+ * <p>There are also two corresponding strategies for sorting:
+ * <ul>
+ * <li>Using {@link Collections#sort(java.util.List)}
+ * <li>Using {@link Collections#sort(java.util.List, Comparator)}
+ * </ul>
+ * 
+ * <p>Frequently used types contain implementations of both comparison strategies:
+ * <ul>
+ * <li>{@link Integer}: {@link Integer#compareTo(Integer)}, {@link Integer#compare(int, int)}.
+ * <li>{@link Double}: {@link Double#compareTo(Double)}, {@link Double#compare(double, double)}.
+ * <li>{@link Boolean}: {@link Boolean#compareTo(Boolean)}, {@link Boolean#compare(boolean, boolean)}.
+ * <li>{@link String}: {@link String#compareTo(String)}, {@link String#CASE_INSENSITIVE_ORDER}.
+ * </ul>
+ * 
+ * <p>There are also other built-in comparison implementations:
+ * <ul>
+ * <li>{@link Integer#compareUnsigned(int, int)}
+ * <li>{@link String#compareToIgnoreCase(String)}
+ * </ul>
+ * 
+ * <p>Explore also other frequently used types: {@link Long}, {@link Float}.
+ * 
+ * <p>For examples of {@link Comparator} using different implementations, see {@link PersonPojo}.
+ * 
+ * <p>Updates:
+ * <ul>
+ * <li>2024-04-11: initial release.
+ * <li>2026-07-08: enhance javadocs, enhance internal implementatons for comparison in {@link PersonPojo}.
+ * </ul>
+ * 
+ * 
+ * @author Alberto Romero
  * @since 2024-04-11
+ * @version 2026-07-08
  */
 public class Test00_CompareTo_Sort_Compare {
 
@@ -72,9 +107,7 @@ public class Test00_CompareTo_Sort_Compare {
 		als.add("1B");
 		als.add("1C");
 		als.add("00");
-		als.add("1A");
-		als.add("000");
-		als.add("0");
+		als.addAll(Arrays.asList("1A", "000", "0"));
 		System.out.println("String -- array, before sort: " + als);
 		Collections.sort(als);
 		System.out.println("String -- array, after sort: " + als);
@@ -82,9 +115,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// Integer
 		ArrayList<Integer> ali = new ArrayList<>();
 		ali.add(6);
-		ali.add(4);
-		ali.add(1);
-		ali.add(9);
+		ali.addAll(Arrays.asList(4, 1, 9));
 		System.out.println("Integer -- array, before sort: " + ali);
 		Collections.sort(ali);
 		System.out.println("Integer -- array, after sort: " + ali);
@@ -92,9 +123,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// Double
 		ArrayList<Double> ald = new ArrayList<>();
 		ald.add(7.19);
-		ald.add(4.33);
-		ald.add(2.45);
-		ald.add(9.03);
+		ald.addAll(Arrays.asList(4.33, 2.45, 9.03));
 		System.out.println("Double -- array, before sort: " + ald);
 		Collections.sort(ald);
 		System.out.println("Double -- array, after sort: " + ald);
@@ -102,9 +131,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// Float
 		ArrayList<Float> alf = new ArrayList<>();
 		alf.add(7.19f);
-		alf.add(4.33f);
-		alf.add(2.45f);
-		alf.add(9.03f);
+		alf.addAll(Arrays.asList(4.33f, 2.45f, 9.03f));
 		System.out.println("Float -- array, before sort: " + alf);
 		Collections.sort(alf);
 		System.out.println("Float -- array, after sort: " + alf);
@@ -120,7 +147,7 @@ public class Test00_CompareTo_Sort_Compare {
 	 * 
 	 * <p>This test proposes a way to statically define several 
 	 * "compare()" methods, then conveniently using anonymous class 
-	 * of "Comparator" interface making use of such static definitions.
+	 * of {@link Comparator} interface making use of such static definitions.
 	 * 
 	 * @since 2024-04-11
 	 */
@@ -136,9 +163,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// String, surname
 		ArrayList<PersonPojo> as = new ArrayList<>();
 		as.add(pJosefa);
-		as.add(pNena);
-		as.add(pDavid);
-		as.add(pDiego);
+		as.addAll(Arrays.asList(pNena, pDavid, pDiego));
 		System.out.println("PersonPojo -- array, before sort by surname: " + as);
 		Collections.sort(as, new Comparator<PersonPojo>() {
 			@Override
@@ -151,9 +176,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// Integer, age
 		ArrayList<PersonPojo> aa = new ArrayList<>();
 		aa.add(pJosefa);
-		aa.add(pNena);
-		aa.add(pDavid);
-		aa.add(pDiego);
+		aa.addAll(Arrays.asList(pNena, pDavid, pDiego));
 		System.out.println("PersonPojo -- array, before sort by age: " + aa);
 		Collections.sort(aa, new Comparator<PersonPojo>() {
 			@Override
@@ -166,9 +189,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// Double, height
 		ArrayList<PersonPojo> ah = new ArrayList<>();
 		ah.add(pJosefa);
-		ah.add(pNena);
-		ah.add(pDavid);
-		ah.add(pDiego);
+		ah.addAll(Arrays.asList(pNena, pDavid, pDiego));
 		System.out.println("PersonPojo -- array, before sort by height: " + ah);
 		Collections.sort(aa, new Comparator<PersonPojo>() {
 			@Override
@@ -183,9 +204,11 @@ public class Test00_CompareTo_Sort_Compare {
 
 
 	/**
-	 * <p>Implementation of "clazz.compare(objX,objY)", with method 
-	 * definition in separate class, so it can be re-used multiple
-	 * times.
+	 * <p>Example for {@link Comparator}, with implementation 
+	 * of {@link Comparator#compare(Object, Object)}, so it can be
+	 * re-used multiple times.
+	 * 
+	 * <p>See also {@link String#CASE_INSENSITIVE_ORDER}.
 	 * 
 	 * @since 2024-12-23
 	 */
@@ -195,9 +218,7 @@ public class Test00_CompareTo_Sort_Compare {
 		// String, surname
 		ArrayList<String> as = new ArrayList<>();
 		as.add("abcdefghi");
-		as.add("abc");
-		as.add("abcdef");
-		as.add("abcdefgh");
+		as.addAll(Arrays.asList("abc", "abcdef", "abcdefgh"));
 		System.out.println("Array, before sort by length: " + as);
 		Collections.sort(as, new MyStringComparatorByLength());
 		System.out.println("Array, after sort by length: " + as);
@@ -206,7 +227,16 @@ public class Test00_CompareTo_Sort_Compare {
 
 
 	/**
-	 * POJO 
+	 * <p>POJO for testing.
+	 * 
+	 * <p>Contains several comparison implementations which can be used with {@link Comparator}.
+	 * 
+	 * <p>See:
+	 * <ul>
+	 * <li>{@link Test00_CompareTo_Sort_Compare#test02_Sort_Compare_CompareTo_OnPojo_Anonymous()}
+	 * <li>{@link Test00_CompareTo_Sort_Compare#test03_Sort_Compare_Separate()}
+	 * </ul>
+	 * 
 	 */
 	private static class PersonPojo {
 
@@ -252,7 +282,41 @@ public class Test00_CompareTo_Sort_Compare {
 		}
 
 		public static int compareBySurname(PersonPojo o1, PersonPojo o2) {
-			// definitions for null values
+			// definitions for null values, main objects
+			if ((o1 == null) && (o2 == null))
+			{
+				return 0;
+			}
+			else if ((o1 == null) && (o2 != null))
+			{
+				return -1;
+			}
+			else if ((o1 != null) && (o2 == null))
+			{
+				return +1;
+			}
+			// definitions for null values, target attributes, surname
+			if ((o1.getSurname() == null) && (o2.getSurname() == null))
+			{
+				return 0;
+			}
+			else if ((o1.getSurname() == null) && (o2.getSurname() != null))
+			{
+				return -1;
+			}
+			else if ((o1.getSurname() != null) && (o2.getSurname() == null))
+			{
+				return +1;
+			}
+			// actual values definition
+			else
+			{
+				return o1.getSurname().compareTo(o2.getSurname());
+			}
+		}
+
+		public static int compareByAge(PersonPojo o1, PersonPojo o2) {
+			// definitions for null values, main objects
 			if ((o1 == null) && (o2 == null)) 
 			{
 				return 0;
@@ -265,24 +329,16 @@ public class Test00_CompareTo_Sort_Compare {
 			{
 				return +1;
 			}
-			// actual values definition
-			else
-			{
-				return o1.getSurname().compareTo(o2.getSurname());
-			}
-		}
-
-		public static int compareByAge(PersonPojo o1, PersonPojo o2) {
-			// definitions for null values
-			if ((o1 == null) && (o2 == null)) 
+			// definitions for null values, target attributes, age
+			if ((o1.getAge() == null) && (o2.getAge() == null))
 			{
 				return 0;
 			}
-			else if ((o1 == null) && (o2 != null)) 
+			else if ((o1.getAge() == null) && (o2.getAge() != null))
 			{
 				return -1;
 			}
-			else if ((o1 != null) && (o2 == null))
+			else if ((o1.getAge() != null) && (o2.getAge() == null))
 			{
 				return +1;
 			}
@@ -295,16 +351,29 @@ public class Test00_CompareTo_Sort_Compare {
 		}
 
 		public static int compareByHeight(PersonPojo o1, PersonPojo o2) {
-			// definitions for null values
-			if ((o1 == null) && (o2 == null)) 
+			// definitions for null values, main objects
+			if ((o1 == null) && (o2 == null))
 			{
 				return 0;
 			}
-			else if ((o1 == null) && (o2 != null)) 
+			else if ((o1 == null) && (o2 != null))
 			{
 				return -1;
 			}
 			else if ((o1 != null) && (o2 == null))
+			{
+				return +1;
+			}
+			// definitions for null values, target attributes, height
+			if ((o1.getHeight() == null) && (o2.getHeight() == null))
+			{
+				return 0;
+			}
+			else if ((o1.getHeight() == null) && (o2.getHeight() != null))
+			{
+				return -1;
+			}
+			else if ((o1.getHeight() != null) && (o2.getHeight() == null))
 			{
 				return +1;
 			}
@@ -321,25 +390,26 @@ public class Test00_CompareTo_Sort_Compare {
 
 
 	/**
-	 * <p> Example of Comparator implementation in separate class.
+	 * <p> Example of {@link Comparator} implementation.
 	 * 
 	 * @since 2024-12-23
 	 * 
 	 */
-	public static class MyStringComparatorByLength implements java.util.Comparator<String> {
+	public static class MyStringComparatorByLength implements Comparator<String> {
 
 		public MyStringComparatorByLength() {
 			super();
 		}
 
 		public int compare(String s1, String s2) {
+			// definitions for null values, main objects
 			if (s1 == null && s2 == null) {
 				return 0;
-			} 
-			if (s1 != null && s2 == null) {
+			}
+			else if (s1 != null && s2 == null) {
 				return 1;
-			} 
-			if (s1 == null && s2!= null) {
+			}
+			else if (s1 == null && s2!= null) {
 				return -1;
 			}
 			return s1.length() - s2.length();
