@@ -26,6 +26,7 @@ public class ListSplitHelper {
 		test02();
 		test03();
 		test04();
+		test05();
 	}
 
 
@@ -72,11 +73,19 @@ public class ListSplitHelper {
 	}
 
 
-
 	public static void test04() {
 		String testName = "test04";
 		List<Integer> inputList = null;
 		int chunkSize = 4;
+		testGeneral(testName, inputList, chunkSize);
+	}
+
+
+	public static void test05() {
+		String testName = "test05";
+		List<Integer> inputList = new ArrayList<>();
+		inputList.addAll(Arrays.asList(1,2,3,4));
+		int chunkSize = 1;
 		testGeneral(testName, inputList, chunkSize);
 	}
 
@@ -109,6 +118,9 @@ public class ListSplitHelper {
 			} else {
 				// do nothing
 			}
+		}
+		if (currentInnerList.isEmpty()) {
+			outerList.remove(outerList.size() - 1);
 		}
 		return outerList;
 	}
