@@ -23,9 +23,10 @@ import java.util.Locale;
  * 
  * <p>Versions:
  * <ul>
- * <li>2023-10-21: 1st release.
- * <li>2024-04-05: 2nd release: added enums Pattern, TimeZone; added method "parse".
- * <li>2025-11-26: 3rd release: added enum Pattern TIMEZONE_ID.
+ * <li>2023-10-21: initial release.
+ * <li>2024-04-05: added enums Pattern, TimeZone; added method "parse".
+ * <li>2025-11-26: added enum Pattern TIMEZONE_ID.
+ * <li>2026-07-07: enhance constants management.
  * </ul>
  * 
  * <p>Bash references:
@@ -53,12 +54,16 @@ import java.util.Locale;
  * 
  * @author Alberto Romero
  * @since 2023-10-21
- * @version 2025-07-21
+ * @version 2026-07-07
  * 
  */
 public class SimpleDateFormatHelper {
 
-	public static final Pattern DEFAULT_PATTERN = Pattern.ISO_8601_SECONDS;
+	public static final Pattern PATTERN_DEFAULT = Pattern.ISO_8601_SECONDS;
+
+	public static final java.util.TimeZone TIMEZONE_DEFAULT = java.util.TimeZone.getTimeZone(TimeZone.UTC.strTimeZone);
+
+	public static final Locale LOCALE_DEFAULT = Locale.US;
 
 	private SimpleDateFormat sdf;
 
@@ -90,7 +95,7 @@ public class SimpleDateFormatHelper {
 
 
 		// arg Pattern in constructor:
-		SimpleDateFormatHelper pSdfh = new SimpleDateFormatHelper(DEFAULT_PATTERN, TimeZone.UTC);
+		SimpleDateFormatHelper pSdfh = new SimpleDateFormatHelper(PATTERN_DEFAULT, TimeZone.UTC);
 		String pOut = pSdfh.format(date);
 		Date pDate = null;
 		try {
@@ -105,7 +110,7 @@ public class SimpleDateFormatHelper {
 
 
 		// args Pattern, TimeZone in constructor:
-		SimpleDateFormatHelper ptzSdfh = new SimpleDateFormatHelper(DEFAULT_PATTERN, TimeZone.UTC);
+		SimpleDateFormatHelper ptzSdfh = new SimpleDateFormatHelper(PATTERN_DEFAULT, TimeZone.UTC);
 		String ptzOut = ptzSdfh.format(date);
 		Date ptzDate = null;
 		try {
@@ -185,19 +190,19 @@ public class SimpleDateFormatHelper {
 
 
 	public SimpleDateFormatHelper () {
-		sdf = new SimpleDateFormat(DEFAULT_PATTERN.strPattern(), Locale.US);
-		sdf.setTimeZone(java.util.TimeZone.getTimeZone(TimeZone.UTC.strTimeZone()));
+		sdf = new SimpleDateFormat(PATTERN_DEFAULT.strPattern(), LOCALE_DEFAULT);
+		sdf.setTimeZone(TIMEZONE_DEFAULT);
 	}
 
 
 	public SimpleDateFormatHelper (Pattern pattern) {
-		sdf = new SimpleDateFormat(pattern.strPattern(), Locale.US);
-		sdf.setTimeZone(java.util.TimeZone.getTimeZone(TimeZone.UTC.strTimeZone));
+		sdf = new SimpleDateFormat(pattern.strPattern(), LOCALE_DEFAULT);
+		sdf.setTimeZone(TIMEZONE_DEFAULT);
 	}
 
 
 	public SimpleDateFormatHelper (Pattern pattern, TimeZone timeZone) {
-		sdf = new SimpleDateFormat(pattern.strPattern(), Locale.US);
+		sdf = new SimpleDateFormat(pattern.strPattern(), LOCALE_DEFAULT);
 		sdf.setTimeZone(java.util.TimeZone.getTimeZone(timeZone.strTimeZone()) );
 	}
 
