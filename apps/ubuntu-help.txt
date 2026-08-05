@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-06-02 08:09
+Ubuntu Help -- updated: 2026-08-05 11:30
 
 
 
@@ -77,3 +77,200 @@ download tar.xz (64 bit, linux generic), failed: problems with apparmor.service
 (1.9) mysql, install / run:
 
 sudo aptitude install mysql-server-8.0 ;
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU
+Sections added on 2026-08-05
+TODO: enhance order, descriptions
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, SpringToolSuite:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+Download tar, place into opt.
+Make soft-link for executable in /usr/local/bin.
+Add recent lombok-jar in directory.
+SpringToolSuite must be executed from its directory, in order to include mentioned lombok-jar in classpath.
+
+user@pc:~/Desktop/dm-git-java$
+OpenJDK 64-Bit Server VM warning: Ignoring option --illegal-access=permit; support was removed in 17.0
+Error opening zip file or JAR manifest missing : lombok-1.18.36.jar
+Error occurred during initialization of VM
+agent library failed Agent_OnLoad: instrument
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, JAVA:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+aptitude search openjdk.*17
+
+aptitude show openjdk-17-jdk
+
+which java
+/usr/bin/java
+
+java -version
+openjdk version "25.0.3-ea" 2026-04-21
+OpenJDK Runtime Environment (build 25.0.3-ea+7-Ubuntu-2)
+OpenJDK 64-Bit Server VM (build 25.0.3-ea+7-Ubuntu-2, mixed mode, sharing)
+
+ll /usr/bin/java
+lrwxrwxrwx 1 root root 22 Mar 30 04:37 /usr/bin/java@ -> /etc/alternatives/java
+
+ll /etc/alternatives/java
+lrwxrwxrwx 1 root root 43 Mar 30 04:37 /etc/alternatives/java@ -> /usr/lib/jvm/java-25-openjdk-amd64/bin/java
+
+update-java-alternatives -l
+java-1.11.0-openjdk-amd64      1111       /usr/lib/jvm/java-1.11.0-openjdk-amd64
+java-1.17.0-openjdk-amd64      1711       /usr/lib/jvm/java-1.17.0-openjdk-amd64
+java-1.21.0-openjdk-amd64      2111       /usr/lib/jvm/java-1.21.0-openjdk-amd64
+java-1.25.0-openjdk-amd64      2511       /usr/lib/jvm/java-1.25.0-openjdk-amd64
+java-1.8.0-openjdk-amd64       1081       /usr/lib/jvm/java-1.8.0-openjdk-amd64
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, MYSQL:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+mysql, change password, second one worked at once on xubuntu:
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'mypassw' ;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'mypassw' ;
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, VSFTPD:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+vsftpd, add to configuration /etc/vsftpd.conf, it is not originally present as commented line:
+### existing lines in default config:
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+### line added to default config:
+allow_writeable_chroot=YES
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, CURL:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+aptitude install curl
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, KUBECTL:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+https://dl.k8s.io/release/stable.txt
+### stable.txt: v1.36.3
+curl -LO https://dl.k8s.io/release/v1.36.3/bin/linux/amd64/kubectl
+make executable -- either:
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+make executable -- or:
+chmod +x kubectl
+mkdir -p ~/.local/bin
+mv ./kubectl ~/.local/bin/kubectl
+# and then append (or prepend) ~/.local/bin to $PATH
+## prefer make executable kubectl by adding soft-link to /usr/local/bin
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, GIT CREDENTIALS MANAGER (GCM):
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+https://github.com/git-ecosystem/git-credential-manager
+https://github.com/git-ecosystem/git-credential-manager/releases
+https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/install.md
+https://medium.com/@techworldthink/setting-up-github-credential-manager-on-ubuntu-013210e02652
+(1) download tarball
+(2) generate soft-link to git-credential-manager in /usr/local/bin
+(3) run `git-credential-manager config`
+(4) verify git configuration, prefer on --global (user) file.
+(4.1) check each next by by running `git fetch` from a existing remote repo, resulting message may be helpful.
+(4.2) run `git config set --global credential.credentialStore secretservice`.
+(4.3) on ~/.gitconfig, complete where needed this section:
+"""
+[credential]
+	helper = /usr/local/bin/git-credential-manager
+	credentialStore = secretservice
+"""
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, MAVEN:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+Run `aptitude install maven`.
+For testing, run `mvn -version`, then within a maven project `mvn -U`.
+Download clean plugin, run `mvn clean` within a maven project.
+Download all other necessary plugins, run `mvn clean package -Dmaven.test.skip=true` within a maven project.
+Add credentials to settings.xml, which is in: `/usr/share/maven/conf -> /etc/maven`.
+Addition sample:
+"""
+    <server>
+      <id>gitlab-maven-private</id>
+      <username>repo-maven-access</username>
+      <password>password</password>
+      <configuration>
+        <authenticationInfo>
+          <userName>repo-maven-access</userName>
+          <password>passsword</password>
+        </authenticationInfo>
+      </configuration>
+    </server>
+    <server>
+      <id>gitlab-maven-3rd-party</id>
+      <username>repo-maven-access</username>
+      <password>password</password>
+      <configuration>
+        <authenticationInfo>
+          <userName>repo-maven-access</userName>
+          <password>password</password>
+        </authenticationInfo>
+      </configuration>
+    </server>
+
+"""
+Is it necessary to install package libmaven-clean-plugin-java?
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, git-bash-aliases, specific changes:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+javaw -> java
+taskkill -> kill
+git config --system -> git config --global
+TODO -> current: set-java-version-windows (sj8, sj11, sj17...); xubuntu: update-java-alternatives
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, git-bash-aliases, notes:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+- windows, strategy to make file executable: use of PATH environment variable
+- linux, strategy to make file executable: use of soft-links in /usr/local/bin and 'x' file permission.
+- linux script files require 'x' (execution) permission; in windows thay are executable by default
+- substitute `javaw` by `java`; for legacy purposes, it has been leaved as `javaw` in java-help text.
+- substitute `git config --system` by `git config --global`
+- change repository filenames, remove txt extension, leave as sh
+- function taskkill (alias tk), adjust to manage linux's `kill`
+- SpringToolSuite, lombok jar as javaagent in .ini file, and placed in STS root folder; in order to get lombok taken into java's classpath, STS must be launched from that same folder
+
+
