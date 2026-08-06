@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-08-05 11:30
+Ubuntu Help -- updated: 2026-08-06 10:15
 
 
 
@@ -261,6 +261,7 @@ TODO -> current: set-java-version-windows (sj8, sj11, sj17...); xubuntu: update-
 
 
 
+
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 XUBUNTU, git-bash-aliases, notes:
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -273,4 +274,16 @@ XUBUNTU, git-bash-aliases, notes:
 - function taskkill (alias tk), adjust to manage linux's `kill`
 - SpringToolSuite, lombok jar as javaagent in .ini file, and placed in STS root folder; in order to get lombok taken into java's classpath, STS must be launched from that same folder
 
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, camera
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+preferred: `aptitude install guvcview`
+optional:  `aptitude install gnome-snapshot`
+from ubuntu 26-lts, package 'cheese' no longer present in standard debian repository, but in snap
+review pending: `systemctl --user restart pipewire `
+review pending: `pulseaudio -k`
+after installing package, restart pc (or find specific-systemctl-unit required to restart)
 
