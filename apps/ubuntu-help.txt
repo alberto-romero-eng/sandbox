@@ -287,3 +287,14 @@ review pending: `systemctl --user restart pipewire `
 review pending: `pulseaudio -k`
 after installing package, restart pc (or find specific-systemctl-unit required to restart)
 
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, network manager applet issue
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+restart network-manager applet, `nm-applet`
+restart xfce pannel, `xfce4-panel -r`
+StartupMenu -> Settings -> Session Startup -> Add Command -> sh -c "sleep 4 && nm-applet"
+
+
