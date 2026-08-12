@@ -18,11 +18,11 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2025-05-15 05:53'
+__KH_UPDATED__='2026-08-12 16:25'
 
 
 # initate required vars
-__KH_THIS_FILE__='kh-zerohelper.sh.txt'
+__KH_THIS_FILE__='kh-zerohelper.sh'
 __KH_CLEANVARS__='CLEANVARS'
 __KH_LOG_HISTORY_DIR__=${HOME}'/Desktop/loghistory'
 if [ -z ${__kubeconfig_regex} ] ; then
