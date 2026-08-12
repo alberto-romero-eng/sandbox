@@ -366,7 +366,8 @@ function __jh_tk {
             _pid=$( jps -l | grep -P --color=never "${jarfile}" | awk '{ print $1 }' )
             echo ${_pid}
             jps -l | grep -P --color=always "${jarfile}"
-            taskkill //f //pid "${_pid}"
+            # taskkill //f //pid "${_pid}" ### TODO adjust for both windows / linux
+            kill "${_pid}" ### TODO adjust for both windows / linux
         else 
             echo 'file ./target/*.jar must exist or PID must be provided'
         fi
@@ -382,7 +383,8 @@ function __jh_tk {
         fi
         
         echo "${_pid}"
-        taskkill //f //pid "${_pid}"
+        # taskkill //f //pid "${_pid}" ### TODO adjust for both windows / linux
+        kill "${_pid}" ### TODO adjust for both windows / linux
     fi
     unset _pid _s _n
 } 
@@ -764,18 +766,19 @@ alias jh='less -f <( echo -e "${_jh_help_string}")'
 # ------------------------------------------------------
 # Git Configuration, --system
 # ( see sample list output at the end of this file )
+# TODO changed to --global on xubuntu migration, review?
 # ------------------------------------------------------
 
-git config --system color.status 'always'
-git config --system color.branch 'always'
-git config --system color.log 'true'
-git config --system color.diff 'auto'
-git config --system color.ui 'true'
-git config --system color.interactive 'true'
-git config --system help.format 'web'
-git config --system web.browser 'chrome'
-git config --system core.pager 'less -x1,5'
-git config --system core.editor 'vi'
+git config --global color.status 'always'
+git config --global color.branch 'always'
+git config --global color.log 'true'
+git config --global color.diff 'auto'
+git config --global color.ui 'true'
+git config --global color.interactive 'true'
+git config --global help.format 'web'
+git config --global web.browser 'chrome'
+git config --global core.pager 'less -x1,5'
+git config --global core.editor 'vi'
 
 
 
@@ -1199,3 +1202,20 @@ alias 0='__zh_load_zerohelper'
 # user.name=My User Name
 
 
+
+
+# - - - - - - - - - - - - - - - -
+# xubuntu migration, 2026-08-12
+# - - - - - - - - - - - - - - - -
+### soft-links sample:
+# lrwxrwxrwx  1 root root   44 Jul 29 04:50 SpringToolsForEclipse@ -> /opt/sts-5.2.0.RELEASE/SpringToolsForEclipse
+# lrwxrwxrwx  1 root root   30 Jul 29 04:32 dbeaver@ -> /opt/dbeaver-ce-26.1.3/dbeaver
+# lrwxrwxrwx  1 root root   47 Aug  1 08:41 git-credential-manager@ -> /opt/gcm-linux-x64-2.9.1/git-credential-manager
+# lrwxrwxrwx  1 root root   13 Aug 12 15:23 javaw@ -> /usr/bin/java
+# lrwxrwxrwx  1 root root   27 Jul 29 04:23 kubectl@ -> /opt/kubectl-1.36.3/kubectl
+#
+### to make these soft-links:
+# (1) `sudo su`
+# (2) `cd /usr/local/bin`
+# (3) `ln -s /usr/bin/java javaw`
+# (4) `ln -s /opt/kubectl-1.36.3/kubectl kubectl`
