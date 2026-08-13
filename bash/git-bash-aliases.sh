@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2026-08-12 16:29'
+__ALIAS_LAST_UPDATE__='2026-08-12 20:21'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -292,7 +292,7 @@ alias mdp='echo "--> mvn dependency:purge-local-repository"; sleep ${__ALIAS_TIM
 
 
 
-function __jh_set_java_version {
+function __jh_windows_set_java_version {
 
     # save initial dir into var
     init_dir=$( pwd )
@@ -348,6 +348,45 @@ function __jh_set_java_version {
     # echo 'PATH: '$( grep --color=always -P ':[^:]+java/jdk[^:]+' <( echo $PATH ) ) # debugging
     # echo
     java -version
+}
+
+function __jh_linux_set_java_version {
+
+    # use function `update-java-alternatives`
+    case ${1} in
+		'' )
+			echo 'param ${1} cannot be empty'
+			return 1
+			;;
+		'8' )
+			sudo update-java-alternatives -s 'java-1.8.0-openjdk-amd64'
+			;;
+		'11' )
+			sudo update-java-alternatives -s 'java-1.11.0-openjdk-amd64'
+			;;
+		'17' )
+			sudo update-java-alternatives -s 'java-1.17.0-openjdk-amd64'
+			;;
+		'21' )
+			sudo update-java-alternatives -s 'java-1.21.0-openjdk-amd64'
+			;;
+		'25' )
+			sudo update-java-alternatives -s 'java-1.25.0-openjdk-amd64'
+			;;
+		'NONE' | * )
+			echo 'param ${1} invalid; accepted values: 8, 11, 17, 21'
+			return 1
+			;;
+    esac
+
+    # verifications
+    echo '--> set java version'
+    java -version
+}
+
+function __jh_set_java_version {
+	# jh_windows_set_java_version ${1} ### TODO automate linux/windows function choice
+	__jh_linux_set_java_version ${1} ### TODO automate linux/windows function choice
 }
 
 alias sj8=' __jh_set_java_version 8 '
