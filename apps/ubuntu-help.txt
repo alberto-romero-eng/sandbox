@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-08-06 10:15
+Ubuntu Help -- updated: 2026-08-16 18:36
 
 
 
@@ -296,5 +296,24 @@ XUBUNTU, network manager applet issue
 restart network-manager applet, `nm-applet`
 restart xfce pannel, `xfce4-panel -r`
 StartupMenu -> Settings -> Session Startup -> Add Command -> sh -c "sleep 4 && nm-applet"
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+AI, pending tools review
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+Run LLM locally:
+- Ollama
+- LM-Studio
+- HuggingFace
+AI agents:
+- OpenCode (older)
+- Pi, pi.dev (minimalist, newer)
+- Freebuff (not so trendy)
+AI agents tools/plugins:
+- Agent-Skills, agentskills.io, skills.sh, see also its GitHub repo examples
+AI IDE:
+- VS-Code insider/beta version, Continue plugin (downside, verything through GitHub-Copilot)
 
 
