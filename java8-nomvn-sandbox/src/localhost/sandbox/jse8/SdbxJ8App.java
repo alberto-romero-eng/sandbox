@@ -99,7 +99,7 @@ public class SdbxJ8App {
 		// DatabaseEncryptionMain.main();
 		// ThreadHelper.main();
 		// RunTimeStatsHelper.main();
-		// SimpleDateFormatHelper.main();
+		SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
 		// FileMain.main();
@@ -135,7 +135,7 @@ public class SdbxJ8App {
 		// DateInstantHelper.main();
 		// ConcurrentMapMain.main();
 		// TimeUnixFormatHelper.main();
-		ListSplitHelper.main();
+		// ListSplitHelper.main();
 
 	}
 }

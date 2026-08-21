@@ -27,6 +27,7 @@ import java.util.Locale;
  * <li>2024-04-05: added enums Pattern, TimeZone; added method "parse".
  * <li>2025-11-26: added enum Pattern TIMEZONE_ID.
  * <li>2026-07-07: enhance constants management.
+ * <li>2026-08-21: add static functions, add inner class {@link SDFH}.
  * </ul>
  * 
  * <p>Bash references:
@@ -54,29 +55,70 @@ import java.util.Locale;
  * 
  * @author Alberto Romero
  * @since 2023-10-21
- * @version 2026-07-07
+ * @version 2026-08-21
  * 
  */
 public class SimpleDateFormatHelper {
 
+	/**
+	 * <p>ISO-8601, seconds.
+	 */
 	public static final Pattern PATTERN_DEFAULT = Pattern.ISO_8601_SECONDS;
 
+	/**
+	 * <p>UTC (Universal Time Coordinated).
+	 */
 	public static final java.util.TimeZone TIMEZONE_DEFAULT = java.util.TimeZone.getTimeZone(TimeZone.UTC.strTimeZone);
 
+	/**
+	 * <p>US (United States).
+	 */
 	public static final Locale LOCALE_DEFAULT = Locale.US;
 
+	/**
+	 * <p>Static, default instance of {@link SimpleDateFormat}.  Uses {@link #PATTERN_DEFAULT}, 
+	 * {@link #TIMEZONE_DEFAULT}, {@link #LOCALE_DEFAULT}.
+	 * 
+	 * @since 2026-08-21
+	 * @author Alberto Romero
+	 */
+	private static final SimpleDateFormat SDF_DEFAULT;
+
+	static {
+		SDF_DEFAULT = new SimpleDateFormat(PATTERN_DEFAULT.strPattern(), LOCALE_DEFAULT);
+		SDF_DEFAULT.setTimeZone(TIMEZONE_DEFAULT);
+	}
+
 	private SimpleDateFormat sdf;
+
+
 
 	public static void main() {
 		System.out.println("Hello from SimpleDateFormatHelper !");
 		Date date = new Date();
-		test00_Constructors(date);
-		test01_VaryPattern(date);
-		test02_VaryTimeZones(date);
+		test00_StaticDefaultMethods(date);
+		test01_Constructors(date);
+		test02_VaryPatterns(date);
+		test03_VaryTimeZones(date);
 	}
 
-	public static void test00_Constructors(Date date) {
-		System.out.println("Hello from test00_Constructors !");		
+	public static void test00_StaticDefaultMethods(Date date) {
+		System.out.println("Hello from test00_StaticDefaultMethods !");
+		System.out.println("Date: " + date.toString());
+		String fromFormatD = SDFH.formatD(date);
+		Date fromParseD = null;
+		try {
+			fromParseD = SDFH.parseD(fromFormatD);
+		} catch (Throwable ex) {
+			System.err.println("exception -- " + ex.getClass() + ", " + ex.getMessage());
+		}
+		System.out.println("fromFormatD:   " + fromFormatD);
+		System.out.println("fromParseD:    " + fromParseD);
+		System.out.println("fromFormatHUD: " + SDFH.formatHUD(date));
+	}
+
+	public static void test01_Constructors(Date date) {
+		System.out.println("Hello from test01_Constructors !");
 		long unixTimeMillisecs = date.getTime();
 
 		// no args constructor:
@@ -125,8 +167,8 @@ public class SimpleDateFormatHelper {
 	}
 
 
-	public static void test01_VaryPattern(Date date) {
-		System.out.println("Hello from test01_VaryPattern !");		
+	public static void test02_VaryPatterns(Date date) {
+		System.out.println("Hello from test02_VaryPatterns !");
 		long unixTimeMillisecs = date.getTime();
 
 		// test all Patterns, TimeZone.UTC
@@ -165,8 +207,8 @@ public class SimpleDateFormatHelper {
 
 	}
 
-	public static void test02_VaryTimeZones(Date date) {
-		System.out.println("Hello from test02_VaryTimeZone !");		
+	public static void test03_VaryTimeZones(Date date) {
+		System.out.println("Hello from test03_VaryTimeZone !");
 		long unixTimeMillisecs = date.getTime();
 
 		// args Pattern.ISO_8601_SECONDS, TimeZone all values
@@ -188,6 +230,47 @@ public class SimpleDateFormatHelper {
 		}
 	}
 
+
+
+	/**
+	 * <p>From Date, obtain human readable timestamp String, using {@link #SDF_DEFAULT}.
+	 */
+	public static String formatD(Date date) {
+		if (date==null) {
+			return null;
+		}
+		return SDF_DEFAULT.format(date);
+	}
+
+
+
+	/**
+	 * <p>From human readable timestamp String, obtain Date, using {@link #SDF_DEFAULT}.
+	 */
+	public static Date parseD(String strFormatted) throws Throwable {
+		if (strFormatted==null) {
+			return null;
+		}
+		return SDF_DEFAULT.parse(strFormatted);
+	}
+
+
+
+	/**
+	 * <p>From Date, obtain Human readable timestamp String, using {@link #SDF_DEFAULT}.
+	 */
+	public static String formatHUD(Date date) {
+		if (date==null) {
+			return null;
+		}
+		return SDF_DEFAULT.format(date).replace('T', ' ').replace('Z', ' ') + "UTC";
+	}
+
+
+
+	/*
+	 * Constructors
+	 */
 
 	public SimpleDateFormatHelper () {
 		sdf = new SimpleDateFormat(PATTERN_DEFAULT.strPattern(), LOCALE_DEFAULT);
@@ -214,7 +297,7 @@ public class SimpleDateFormatHelper {
 	public String format(Date date) {
 		if (date==null) {
 			return null;
-		} 
+		}
 		return sdf.format(date);
 	}
 
@@ -226,7 +309,7 @@ public class SimpleDateFormatHelper {
 	public Date parse(String strFormatted) throws Throwable {
 		if (strFormatted==null) {
 			return null;
-		} 
+		}
 		return sdf.parse(strFormatted);
 	}
 
@@ -321,6 +404,17 @@ public class SimpleDateFormatHelper {
 			}
 			throw new IllegalArgumentException("invalid pattern: '" + argTimeZone + "'");
 		}
+	}
+
+
+
+	/**
+	 * <p>Class to aid aliasing of {@link SimpleDateFormatHelper}.
+	 * 
+	 * @author Alberto Romero
+	 * @since 2026-08-21
+	 */
+	public static class SDFH extends SimpleDateFormatHelper {
 	}
 
 }
