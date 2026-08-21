@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-08-21 12:01
+Ubuntu Help -- updated: 2026-08-21 18:40
 
 
 
@@ -158,6 +158,8 @@ write_enable=YES
 chroot_local_user=YES
 ### line added to default config:
 allow_writeable_chroot=YES
+### aditional step, create system ftpuser
+run `sudo adduser ftpuser`
 
 
 
