@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-08-16 18:36
+Ubuntu Help -- updated: 2026-08-21 12:01
 
 
 
@@ -278,7 +278,7 @@ XUBUNTU, git-bash-aliases, notes:
 
 
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-XUBUNTU, camera
+XUBUNTU, camera, install guvcview
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 preferred: `aptitude install guvcview`
 optional:  `aptitude install gnome-snapshot`
@@ -286,6 +286,29 @@ from ubuntu 26-lts, package 'cheese' no longer present in standard debian reposi
 review pending: `systemctl --user restart pipewire `
 review pending: `pulseaudio -k`
 after installing package, restart pc (or find specific-systemctl-unit required to restart)
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, camera, check status, kernel module add / remove
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+check camera status on/off: `ls /dev | grep video0`
+list processes using camera: `lsof | grep /dev/video0`
+info on (video) kernel module: `modinfo uvcvideo`
+check if (video) kernel module is loaded: `lsmod | grep uvcvideo`
+(video) kernel module, add: `modprobe uvcvideo`
+(video) kernel module, remove: `modprobe -r uvcvideo`
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, camera, additional, review pending
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+info on v4l-utils package: `aptitude show v4l-utils`
+with v4l-utils installed, list devices: `v4l2-ctl --list-devices`
+check kernel logs: `dmesg | grep -i uvc`
 
 
 
