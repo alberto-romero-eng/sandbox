@@ -1,4 +1,4 @@
-Ubuntu Help -- updated: 2026-08-21 18:40
+Ubuntu Help -- updated: 2026-08-26 13:15
 
 
 
@@ -151,15 +151,23 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'mypassw'
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 XUBUNTU, VSFTPD:
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-vsftpd, add to configuration /etc/vsftpd.conf, it is not originally present as commented line:
-### existing lines in default config:
+Edit /etc/vsftpd.conf:
+"""
+### existing lines:
 local_enable=YES
 write_enable=YES
 chroot_local_user=YES
-### line added to default config:
+### added line:
 allow_writeable_chroot=YES
-### aditional step, create system ftpuser
-run `sudo adduser ftpuser`
+"""
+Create system user "ftpuser": `sudo adduser ftpuser`
+Add dev-user to group "ftpuser": `sudo usermod -aG ftpuser ${dev_user_name}`
+Check dev-user info, including groups: `id ${dev_user_name}`
+Change permissions for folder "/home/ftpuser": `sudo chmod g+rwx ./ftpuser`
+Restart system for dev-user to pick-up new group addition
+Notes:
+- Initially, to speed things up, permission a+rwx may be convenient
+- Pending, set permissions for uploaded (writen) files
 
 
 
@@ -210,6 +218,14 @@ https://medium.com/@techworldthink/setting-up-github-credential-manager-on-ubunt
 	helper = /usr/local/bin/git-credential-manager
 	credentialStore = secretservice
 """
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+XUBUNTU, GITK:
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+Run `sudo apt install gitk`
 
 
 
