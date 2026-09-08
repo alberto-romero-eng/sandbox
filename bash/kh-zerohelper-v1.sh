@@ -18,7 +18,7 @@
 # for svc in ${__SERVICES_FILTERED__} ; do echo ${svc} ; if [ ${svc} = 'bulk' ] ; then echo 'matched: '${svc} ; break ; fi ; done ;
 
 
-__KH_UPDATED__='2026-08-12 16:25'
+__KH_UPDATED__='2026-09-08 12:12'
 
 
 # initate required vars
@@ -57,7 +57,8 @@ __KH_REGEX_USER__='userm'              # 10
 __KH_REGEX_EBAY__='eebay'              # 15
 __KH_REGEX_MIRAVIA__='miravia'         # 16
 __KH_REGEX_AMAZON__='amazon'           # 17
-__KH_REGEX_CARRIERCORREOSEXPRESS__='correosexpress' # 25
+__KH_REGEX_CARRIER__='carrier( |-)'    # 25 ### 2026-09-08: EXCEPTIONAL REGEX, SPECIAL ATTENTION WHERE PRESENT (inner whitespace may break things)
+__KH_REGEX_CARRIERCORREOSEXPRESS__='correosexpress' # 26
 __KH_REGEX_PIM__='pim'                 # 30
 __KH_REGEX_ICECAT__='icecat'           # 31
 __KH_REGEX_AECOC__='aecoc'             # 32
@@ -82,7 +83,8 @@ __KH_SOURCE_PORT_USER__=10010
 __KH_SOURCE_PORT_EBAY__=10015
 __KH_SOURCE_PORT_MIRAVIA__=10016
 __KH_SOURCE_PORT_AMAZON__=10017
-__KH_SOURCE_PORT_CARRIERCORREOSEXPRESS__=10025
+__KH_SOURCE_PORT_CARRIER__=10025
+__KH_SOURCE_PORT_CARRIERCORREOSEXPRESS__=10026
 __KH_SOURCE_PORT_PIM__=10030
 __KH_SOURCE_PORT_ICECAT__=10031
 __KH_SOURCE_PORT_AECOC__=10032
@@ -156,6 +158,7 @@ function __kh_load {
     __kh_service_ebay=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_EBAY__} | command awk '{print $1}' )
     __kh_service_miravia=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_MIRAVIA__} | command awk '{print $1}' )
     __kh_service_amazon=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_AMAZON__} | command awk '{print $1}' )
+    __kh_service_carrier=$( echo "${service_list}" | command grep -P -i "${__KH_REGEX_CARRIER__}" | command awk '{print $1}' )
     __kh_service_carriercorreosexpress=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_CARRIERCORREOSEXPRESS__} | command awk '{print $1}' )
     __kh_service_pim=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_PIM__} | command awk '{print $1}' )
     __kh_service_icecat=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_ICECAT__} | command awk '{print $1}' )
@@ -182,6 +185,7 @@ function __kh_load {
     __kh_deployment_ebay=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_EBAY__} | command awk '{print $1}' )
     __kh_deployment_miravia=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_MIRAVIA__} | command awk '{print $1}' )
     __kh_deployment_amazon=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_AMAZON__} | command awk '{print $1}' )
+    __kh_deployment_carrier=$( echo "${deployment_list}" | command grep -P -i "${__KH_REGEX_CARRIER__}" | command awk '{print $1}' )
     __kh_deployment_carriercorreosexpress=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_CARRIERCORREOSEXPRESS__} | command awk '{print $1}' )
     __kh_deployment_pim=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_PIM__} | command awk '{print $1}' )
     __kh_deployment_icecat=$( echo "${deployment_list}" | command grep -P -i ${__KH_REGEX_ICECAT__} | command awk '{print $1}' )
@@ -207,6 +211,7 @@ function __kh_load {
     __kh_pod_ebay=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_EBAY__} | command awk '{print $1}' )
     __kh_pod_miravia=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_MIRAVIA__} | command awk '{print $1}' )
     __kh_pod_amazon=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_AMAZON__} | command awk '{print $1}' )
+    __kh_pod_carrier=$( echo "${pod_list}" | command grep -P -i "${__KH_REGEX_CARRIER__}" | command awk '{print $1}' )
     __kh_pod_carriercorreosexpress=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_CARRIERCORREOSEXPRESS__} | command awk '{print $1}' )
     __kh_pod_pim=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_PIM__} | command awk '{print $1}' )
     __kh_pod_icecat=$( echo "${pod_list}" | command grep -P -i ${__KH_REGEX_ICECAT__} | command awk '{print $1}' )
@@ -230,6 +235,7 @@ function __kh_load {
     __kh_container_ebay=${__kh_deployment_ebay}
     __kh_container_miravia=${__kh_deployment_miravia}
     __kh_container_amazon=${__kh_deployment_amazon}
+    __kh_container_carrier=${__kh_deployment_carrier}
     __kh_container_carriercorreosexpress=${__kh_deployment_carriercorreosexpress}
     __kh_container_pim=${__kh_deployment_pim}
     __kh_container_icecat=${__kh_deployment_icecat}
@@ -253,6 +259,7 @@ function __kh_load {
     __kh_target_port_ebay=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_EBAY__} | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' )
     __kh_target_port_miravia=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_MIRAVIA__} | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' )
     __kh_target_port_amazon=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_AMAZON__} | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' )
+    __kh_target_port_carrier=$( echo "${service_list}" | command grep -P -i "${__KH_REGEX_CARRIER__}" | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' )
     __kh_target_port_carriercorreosexpress=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_CARRIERCORREOSEXPRESS__} | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' )
     # __kh_target_port_rabbitmq=$( echo "${service_list}" | command grep -P -i ${__KH_REGEX_RABBITMQ__} | command awk '{print $5}' | sed '{ s/\/TCP$//ig }' ) # manual adjust
     __kh_target_port_rabbitmq=15672 # manual adjust
@@ -290,6 +297,7 @@ function __kh_load {
     s=${s}'__kh_service_ebay='${__kh_service_ebay}' \n'
     s=${s}'__kh_service_miravia='${__kh_service_miravia}' \n'
     s=${s}'__kh_service_amazon='${__kh_service_amazon}' \n'
+    s=${s}'__kh_service_carrier='${__kh_service_carrier}' \n'
     s=${s}'__kh_service_carriercorreosexpress='${__kh_service_carriercorreosexpress}' \n'
     s=${s}'__kh_service_pim='${__kh_service_pim}' \n'
     s=${s}'__kh_service_icecat='${__kh_service_icecat}' \n'
@@ -312,6 +320,7 @@ function __kh_load {
     s=${s}'__kh_deployment_ebay='${__kh_deployment_ebay}' \n'
     s=${s}'__kh_deployment_miravia='${__kh_deployment_miravia}' \n'
     s=${s}'__kh_deployment_amazon='${__kh_deployment_amazon}' \n'
+    s=${s}'__kh_deployment_carrier='${__kh_deployment_carrier}' \n'
     s=${s}'__kh_deployment_carriercorreosexpress='${__kh_deployment_carriercorreosexpress}' \n'
     s=${s}'__kh_deployment_rabbitmq='${__kh_deployment_carriercorreosexpress}' \n'
     s=${s}'__kh_deployment_pim='${__kh_deployment_pim}' \n'
@@ -334,6 +343,7 @@ function __kh_load {
     s=${s}'__kh_pod_ebay='${__kh_pod_ebay}' \n'
     s=${s}'__kh_pod_miravia='${__kh_pod_miravia}' \n'
     s=${s}'__kh_pod_amazon='${__kh_pod_amazon}' \n'
+    s=${s}'__kh_pod_carrier='${__kh_pod_carrier}' \n'
     s=${s}'__kh_pod_carriercorreosexpress='${__kh_pod_carriercorreosexpress}' \n'
     s=${s}'__kh_pod_pim='${__kh_pod_pim}' \n'
     s=${s}'__kh_pod_icecat='${__kh_pod_icecat}' \n'
@@ -356,6 +366,7 @@ function __kh_load {
     s=${s}'__kh_container_ebay='${__kh_container_ebay}' \n'
     s=${s}'__kh_container_miravia='${__kh_container_miravia}' \n'
     s=${s}'__kh_container_amazon='${__kh_container_amazon}' \n'
+    s=${s}'__kh_container_carrier='${__kh_container_carrier}' \n'
     s=${s}'__kh_container_carriercorreosexpress='${__kh_container_carriercorreosexpress}' \n'
     s=${s}'__kh_container_pim='${__kh_container_pim}' \n'
     s=${s}'__kh_container_icecat='${__kh_container_icecat}' \n'
@@ -378,6 +389,7 @@ function __kh_load {
     s=${s}'__KH_SOURCE_PORT_EBAY__='${__KH_SOURCE_PORT_EBAY__}' \n'
     s=${s}'__KH_SOURCE_PORT_MIRAVIA__='${__KH_SOURCE_PORT_MIRAVIA__}' \n'
     s=${s}'__KH_SOURCE_PORT_AMAZON__='${__KH_SOURCE_PORT_AMAZON__}' \n'
+    s=${s}'__KH_SOURCE_PORT_CARRIER__='${__KH_SOURCE_PORT_CARRIER__}' \n'
     s=${s}'__KH_SOURCE_PORT_CARRIERCORREOSEXPRESS__='${__KH_SOURCE_PORT_CARRIERCORREOSEXPRESS__}' \n'
     s=${s}'__KH_SOURCE_PORT_PIM__='${__KH_SOURCE_PORT_PIM__}' \n'
     s=${s}'__KH_SOURCE_PORT_ICECAT__='${__KH_SOURCE_PORT_ICECAT__}' \n'
@@ -400,6 +412,7 @@ function __kh_load {
     s=${s}'__kh_target_port_ebay='${__kh_target_port_ebay}' \n'
     s=${s}'__kh_target_port_miravia='${__kh_target_port_miravia}' \n'
     s=${s}'__kh_target_port_amazon='${__kh_target_port_amazon}' \n'
+    s=${s}'__kh_target_port_carrier='${__kh_source_target_carrier}' \n'
     s=${s}'__kh_target_port_carriercorreosexpress='${__kh_source_target_carriercorreosexpress}' \n'
     s=${s}'__kh_target_port_pim='${__kh_target_port_pim}' \n'
     s=${s}'__kh_target_port_icecat='${__kh_target_port_icecat}' \n'
@@ -465,9 +478,9 @@ function __kh_set_service {
     fi
 
     # define service
-    __regex=${1}
+    __regex="${1}"
     service_list="$( cat ./tmp/get-services.txt )"
-    __kh_service=$( echo "${service_list}" | command grep -P -i ${__regex} | command awk '{print $1}' )
+    __kh_service=$( echo "${service_list}" | command grep -P -i "${__regex}" | command awk '{print $1}' )
     if [ ${__kh_service} = ${__kh_service_api} ] ; then
         __kh_deployment=${__kh_deployment_api}
         __kh_pod=${__kh_pod_api}
@@ -566,6 +579,13 @@ function __kh_set_service {
         # __kh_service=${__kh_service_amazon}
         __kh_source_port=${__KH_SOURCE_PORT_AMAZON__}
         __kh_target_port=${__kh_target_port_amazon}
+    elif [ ${__kh_service} = ${__kh_service_carrier} ] ; then
+        __kh_deployment=${__kh_deployment_carrier}
+        __kh_pod=${__kh_pod_carrier}
+        __kh_container=${__kh_container_carrier}
+        # __kh_service=${__kh_service_carrier}
+        __kh_source_port=${__KH_SOURCE_PORT_CARRIER__}
+        __kh_target_port=${__kh_target_port_carrier}
     elif [ ${__kh_service} = ${__kh_service_carriercorreosexpress} ] ; then
         __kh_deployment=${__kh_deployment_carriercorreosexpress}
         __kh_pod=${__kh_pod_carriercorreosexpress}
@@ -952,7 +972,7 @@ ZH_ZEROHELPER_INIT='__kh_zerohelper_init'
 
 alias __kh_zerohelper_menu='alias 00 ; echo ; alias 01 02 03 04 ; '
 alias __kh_zerohelper_menu_1='alias 1s ; echo ; alias 10 11 12 14 15 17 18 19 110 ; echo ; alias 90 92 94 96'
-alias __kh_zerohelper_menu_2='alias 20 21 22 23 24 ; echo ; alias 25 26 27 28 29 ; echo ; alias 210 215 216 217 225 ; echo ; alias 256 298 299 ; echo ; alias 91 93 95 '
+alias __kh_zerohelper_menu_2='alias 20 21 22 23 24 ; echo ; alias 25 26 27 28 29 ; echo ; alias 210 215 216 217 225 226 ; echo ; alias 256 298 299 ; echo ; alias 91 93 95 '
 alias __kh_zerohelper_menu_3='alias 30 31 33 34 3b ; echo ; alias 36 36a 36b 36c ;'
 alias __kh_zerohelper_menu_4='alias 40 41 42;'
 
@@ -994,7 +1014,8 @@ alias 210=' __kh_set_service '${__KH_REGEX_USER__}' ; '
 alias 215=' __kh_set_service '${__KH_REGEX_EBAY__}' ; '
 alias 216=' __kh_set_service '${__KH_REGEX_MIRAVIA__}' ; '
 alias 217=' __kh_set_service '${__KH_REGEX_AMAZON__}' ; '
-alias 225=' __kh_set_service '${__KH_REGEX_CARRIERCORREOSEXPRESS__}' ; '
+alias 225=' __kh_set_service '\'"${__KH_REGEX_CARRIER__}"\'' ; '
+alias 226=' __kh_set_service '${__KH_REGEX_CARRIERCORREOSEXPRESS__}' ; '
 alias 230=' __kh_set_service '${__KH_REGEX_PIM__}' ; '
 alias 231=' __kh_set_service '${__KH_REGEX_ICECAT__}' ; '
 alias 232=' __kh_set_service '${__KH_REGEX_AECOC__}' ; '

@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh, jh-wm-platform.sh
 
-__JH_WMP_START_LIST_UPDATED__='2026-08-12 16:22'
+__JH_WMP_START_LIST_UPDATED__='2026-09-08 18:01'
 
 
 ### list(s)
@@ -50,6 +50,11 @@ _s=${_s}'bulkfileprocessor'' '
 # _s=${_s}'apiprocessor'' '
 
 # _s=${_s}'merchantlogisfashion'' '
+# _s=${_s}'groupelgaprocessor'' '
+
+# _s=${_s}'carrier'' '
+# _s=${_s}'carriercorreosexpress'' '
+# _s=${_s}'carriergls'' '
 # _s=${_s}'carrierseur'' '
 # _s=${_s}'carriertipsa'' '
 
@@ -57,7 +62,7 @@ _s=${_s}'bulkfileprocessor'' '
 # _s=${_s}'translationservice'' '
 # _s=${_s}'mailing'' '
 # _s=${_s}'redirectionmanager'' '
-_s=${_s}'ui'' '
+# _s=${_s}'ui'' '
 
 _jh_wm_list=${_s}
 

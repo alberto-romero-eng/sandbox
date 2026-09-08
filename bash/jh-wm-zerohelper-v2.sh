@@ -3,7 +3,7 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2026-08-12 16:21'
+__JH_WMP_UPDATED__='2026-09-08 10:45'
 __JH_TIMEOUT_RETRY_SEC__=15
 __JH_TIMEOUT_CONTINUE_SEC__=5
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh'
@@ -45,9 +45,11 @@ apiprocessor
 merchantlogisfashion
 groupelgaprocessor
 
+carrier
+carriercorreosexpress
+carriergls
 carrierseur
 carriertipsa
-carriercorreosexpress
 
 templategenerator
 translationservice
@@ -188,6 +190,21 @@ __JH_WM_GROUPELGAPROCESSOR_FOLDER__='grupelgaprocessor'
 __JH_WM_GROUPELGAPROCESSOR_JAR_REGEX__='groupelgaprocessor'
 __JH_WM_GROUPELGAPROCESSOR_XMX__='192m'
 
+# carrier
+__JH_WM_CARRIER_FOLDER__='carrier'
+__JH_WM_CARRIER_JAR_REGEX__='carrier'
+__JH_WM_CARRIER_XMX__='128m'
+
+# carriercorreosexpress
+__JH_WM_CARRIERCORREOSEXPRESS_FOLDER__='carriercorreosexpress'
+__JH_WM_CARRIERCORREOSEXPRESS_JAR_REGEX__='carriercorreosexpress'
+__JH_WM_CARRIERCORREOSEXPRESS_XMX__='128m'
+
+# carriergls
+__JH_WM_CARRIERGLS_FOLDER__='carriergls'
+__JH_WM_CARRIERGLS_JAR_REGEX__='carriergls'
+__JH_WM_CARRIERGLS_XMX__='128m'
+
 # carrierseur
 __JH_WM_CARRIERSEUR_FOLDER__='carrierseur'
 __JH_WM_CARRIERSEUR_JAR_REGEX__='carrierseur'
@@ -197,11 +214,6 @@ __JH_WM_CARRIERSEUR_XMX__='128m'
 __JH_WM_CARRIERTIPSA_FOLDER__='carriertipsa'
 __JH_WM_CARRIERTIPSA_JAR_REGEX__='carriertipsa'
 __JH_WM_CARRIERTIPSA_XMX__='128m'
-
-# carriercorreosexpress
-__JH_WM_CARRIERCORREOSEXPRESS_FOLDER__='carriercorreosexpress'
-__JH_WM_CARRIERCORREOSEXPRESS_JAR_REGEX__='carriercorreosexpress'
-__JH_WM_CARRIERCORREOSEXPRESS_XMX__='128m'
 
 # templategenerator
 __JH_WM_TEMPLATEGENERATOR_FOLDER__='templategenerator'
