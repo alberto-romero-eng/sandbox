@@ -27,7 +27,7 @@
 # Constants
 # ----------------------------------
 
-__ALIAS_LAST_UPDATE__='2026-08-12 20:21'
+__ALIAS_LAST_UPDATE__='2026-09-21 15:40'
 __ALIAS_TIMEOUT__='0.3'
 
 __BHS_FILE__=${HOME}/'.bash-help-src'
@@ -281,6 +281,7 @@ function __bh_h_greeting {
 alias mc='echo "--> mvn clean"; sleep ${__ALIAS_TIMEOUT__}; mvn clean'
 alias mci='echo "--> mvn clean install -U -Dmaven.test.skip=true"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn clean install -U -Dmaven.test.skip=true'
 alias mcc='echo "--> mvn -T 1C clean compile -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C clean compile -Dmaven.test.skip=true --offline'
+alias mct='echo "--> mvn -T 1C clean test --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C clean test --offline'
 alias mcp='echo "--> mvn -T 1C clean package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C clean package -Dmaven.test.skip=true --offline'
 alias mp='echo "--> mvn -T 1C package -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C package -Dmaven.test.skip=true --offline'
 alias mrjr='echo "--> mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline"; sleep ${__ALIAS_TIMEOUT__}; sjp; mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline'
@@ -780,6 +781,7 @@ read -r -d '' _jh_help_string <<- HEREDOC_EOF
 	  mc  : mvn clean
 	  mci : mvn clean install -U -Dmaven.test.skip=true
 	  mcc : mvn -T 1C clean compile -Dmaven.test.skip=true --offline
+	  mct : mvn -T 1C clean test --offline
 	  mcp : mvn -T 1C clean package -Dmaven.test.skip=true --offline
 	  mp  : mvn -T 1C package -Dmaven.test.skip=true --offline
 	  mrjr: mvn -T 1C resources:resources jar:jar spring-boot:repackage -Dmaven.test.skip=true --offline
