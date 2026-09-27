@@ -3,9 +3,9 @@
 # JAVA HELPER WM PLATFORM
 # dependencies: git-bash-aliases.sh, set-java-version.sh
 
-__JH_WMP_UPDATED__='2026-09-08 10:45'
+__JH_WMP_UPDATED__='2026-09-27 10:40'
 __JH_TIMEOUT_RETRY_SEC__=15
-__JH_TIMEOUT_CONTINUE_SEC__=5
+__JH_TIMEOUT_CONTINUE_SEC__=10
 __JH_WMP_THIS_FILE__='jh-wm-zerohelper-v2.sh'
 __JH_WMP_START_LIST_FILE__='_jh-wm-start-platform-list-v2.sh'
 __JH_GIT_CHECKOUT_PULL_DEV_FAIL_FILE__='zgit-checkout-pull-dev-fail.tmp'
