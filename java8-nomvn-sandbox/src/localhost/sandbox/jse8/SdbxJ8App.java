@@ -99,7 +99,7 @@ public class SdbxJ8App {
 		// DatabaseEncryptionMain.main();
 		// ThreadHelper.main();
 		// RunTimeStatsHelper.main();
-		SimpleDateFormatHelper.main();
+		// SimpleDateFormatHelper.main();
 		// ThreadMain.main();
 		// GenericsMain.main();
 		// FileMain.main();
@@ -117,7 +117,7 @@ public class SdbxJ8App {
 		// JoinHelper.main();
 		// LinkedHashMapAndSetMain.main();
 		// AbstractClassMain.main();
-		// EnumMain.main();
+		EnumMain.main();
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();

@@ -30,37 +30,67 @@ public class Test00Enum {
 
 
 
-	static public void test01_SimpleEnumInsensitive() {
-		System.out.println("Start test01_SimpleEnumInsensitive");
+	static public void test01_SimpleEnumCaseInsensitive() {
+		System.out.println("Start test01_SimpleEnumCaseInsensitive");
 
-		AnimalIns cat = AnimalIns.fromString("CAT");
+		Animal cat = Animal.from("CAT");
 		System.out.println("cat: " + cat + " ; cat.name(): " + cat.name() + " ; cat.ordinal(): " + cat.ordinal());
 
-		AnimalIns dog = AnimalIns.fromString("dog");
+		Animal dog = Animal.from("dog");
 		System.out.println("dog: " + dog + " ; dog.name(): " + dog.name() + " ; dog.ordinal(): " + dog.ordinal());
 
 		try {
-			AnimalIns fish = AnimalIns.fromString("_fish_");
+			Animal fish = Animal.from("_fish_");
 			System.out.println("fish: " + fish + " ; fish.name(): " + fish.name() + " ; fish.ordinal(): " + fish.ordinal());
 		} catch (Throwable ex) {
 			System.err.println("error -- ex.getClass(): " + ex.getClass() + " -- ex.getMessage(): " + ex.getMessage());
 		}
 
-		AnimalIns bird = AnimalIns.fromString("Ird");
+		Animal bird = Animal.from("Ird");
 		System.out.println("bird: " + bird + " ; bird.name(): " + bird.name() + " ; bird.ordinal(): " + bird.ordinal());
 
-		System.out.println("AnimalIns.values(): " + AnimalIns.values());
-		for (AnimalIns ai : AnimalIns.values()) {
+		System.out.println("AnimalIns.values(): " + Animal.values());
+		for (Animal ai : Animal.values()) {
 			System.out.println("animalIns: " + ai);
 		}
 	}
 
 
 
-	static public void test02_EnumWithSeveralAttributes() {
+	/**
+	 * <p>Of interest: read java-source of {@link String#equals(Object)} and {@link Enum#equals(Object)}.
+	 */
+	static public void test02_EnumEquals() {
+		System.out.println("Start test02_EnumEquals");
+
+		String catStr = "CAT";
+		Animal catE = Animal.valueOf(catStr);
+		System.out.println("catE: " + catE + " ; cat.name(): " + catE.name() + " ; cat.ordinal(): " + catE.ordinal());
+
+		Animal dogE = Enum.valueOf(Animal.class, "DOG");
+		System.out.println("dog: " + dogE + " ; dog.name(): " + dogE.name() + " ; dog.ordinal(): " + dogE.ordinal());
+
+
+		// equals
+		boolean stringToStringEqualsEquals = catStr == "CAT";
+		System.out.println("stringToStringEqualsEquals: " + stringToStringEqualsEquals);
+		boolean stringToStringEqualsMethod = "CAT".equals(catStr);
+		System.out.println("stringToStringEqualsMethod: " + stringToStringEqualsMethod);
+
+		boolean enumToEnumEqualsEquals = Animal.CAT == catE;
+		System.out.println("enumToEnumEqualsEquals: " + enumToEnumEqualsEquals);
+		boolean enumToEnumEqualsMethod = Animal.CAT.equals(catE);
+		System.out.println("enumToEnumEqualsMethod: " + enumToEnumEqualsMethod);
+		boolean enumToStringEqualsMethod = Animal.CAT.equals(catStr);
+		System.out.println("enumToStringEqualsMethod: " + enumToStringEqualsMethod);
+	}
+
+
+
+	static public void test03_EnumWithSeveralAttributes() {
 		System.out.println("Start test02_EnumWithSeveralAttributes");
 
-		CarBrand ford = CarBrand.fromString("ford");
+		CarBrand ford = CarBrand.from("ford");
 		System.out.println("ford: " + ford);
 
 		CarBrand chevy = CarBrand.valueOf("CHEVY");
@@ -78,21 +108,13 @@ public class Test00Enum {
 		DOG,
 		FISH,
 		BIRD;
-	}
 
-
-
-	private enum AnimalIns {
-		CAT,
-		DOG,
-		FISH,
-		BIRD;
 
 		/**
 		 * <p> Method {@link java.lang.Enum#valueOf(String)} cannot be overridden.
 		 */
-		public static AnimalIns fromString(String input) {
-			for (AnimalIns ai : AnimalIns.values()) {
+		public static Animal from(String input) {
+			for (Animal ai : Animal.values()) {
 				if (ai.name().matches("(?i)^.*" + input.toLowerCase() + ".*$")) {
 					return ai;
 				}
@@ -125,15 +147,15 @@ public class Test00Enum {
 			this.superCar = superCar;
 		}
 
-		String brand() {
+		public String brand() {
 			return this.brand;
 		}
 
-		Integer year() {
+		public Integer year() {
 			return this.year;
 		}
 
-		Boolean superCar() {
+		public Boolean superCar() {
 			return this.superCar;
 		}
 
@@ -151,7 +173,7 @@ public class Test00Enum {
 		/**
 		 * <p> Method {@link java.lang.Enum#valueOf(String)} cannot be overridden.
 		 */
-		public static CarBrand fromString(String input) {
+		public static CarBrand from(String input) {
 			for (CarBrand cb : CarBrand.values()) {
 				if ( cb.brand.matches("(?i)^.*" + input + ".*$") || cb.year.toString().matches("(?i)^.*" + input + ".*$") ) {
 					return cb;
