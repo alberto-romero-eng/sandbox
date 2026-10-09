@@ -56,6 +56,7 @@ import localhost.sandbox.jse8.Process.ProcessMain;
 import localhost.sandbox.jse8.Reflection.ReflectionMain;
 import localhost.sandbox.jse8.Stream.StreamMain;
 import localhost.sandbox.jse8.String.StringMain;
+import localhost.sandbox.jse8.Synchronized.SynchronizedMain;
 import localhost.sandbox.jse8.Thread.ThreadMain;
 import localhost.sandbox.jse8.ThreadExecutors.ThreadExecutorsMain;
 import localhost.sandbox.jse8.ThreadGroupThreadMXBean.ThreadGroupThreadMXBeanMain;
@@ -117,7 +118,7 @@ public class SdbxJ8App {
 		// JoinHelper.main();
 		// LinkedHashMapAndSetMain.main();
 		// AbstractClassMain.main();
-		EnumMain.main();
+		// EnumMain.main();
 		// CustomSkuHelperV1.main();
 		// CustomSkuHelper.main();
 		// RecursiveGeneratorB62Helper.main();
@@ -136,6 +137,7 @@ public class SdbxJ8App {
 		// ConcurrentMapMain.main();
 		// TimeUnixFormatHelper.main();
 		// ListSplitHelper.main();
+		SynchronizedMain.main();
 
 	}
 }

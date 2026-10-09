@@ -2,9 +2,16 @@ package localhost.sandbox.jse8.ThreadRaceConditionSynchroWaitNotifyAtomic;
 
 import java.util.Date;
 
+import localhost.sandbox.jse8.Synchronized.SynchronizedMain;
+
+/**
+ * <p>IMPORTANT, 2026-10-09: see {@link SynchronizedMain}.
+ */
 public class Test01_SynchroWaitNotify {
 
 	/**
+	 * <p>IMPORTANT, 2026-10-09: see {@link SynchronizedMain}.
+	 * 
 	 * <p>Test to check "wait()" and "notifyAll()" within synchronized 
 	 * methods.
 	 * 
@@ -50,6 +57,8 @@ public class Test01_SynchroWaitNotify {
 
 
 	/**
+	 * <p>IMPORTANT, 2026-10-09: see {@link SynchronizedMain}.
+	 * 
 	 * <p>Use debugger, place breakpoints at beginning of methods of 
 	 * class "StringValueWrapper".
 	 * Look at (monitor) locks detail in eclipse's thread stack.
